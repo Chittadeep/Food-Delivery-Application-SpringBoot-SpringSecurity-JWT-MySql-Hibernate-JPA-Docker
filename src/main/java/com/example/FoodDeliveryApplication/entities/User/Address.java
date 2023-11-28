@@ -1,11 +1,17 @@
 package com.example.FoodDeliveryApplication.entities.User;
 
+import java.util.List;
+
+import com.example.FoodDeliveryApplication.entities.Order.OrderCustom;
+
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
 
 @Entity
@@ -27,6 +33,17 @@ public class Address {
     @JoinColumn(name="userId", referencedColumnName = "userId")
     private User user;
 
+    //foriegn relations inverse side
+    @OneToMany(mappedBy = "address")
+    private List<OrderCustom> orders;
+
+    public List<OrderCustom> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<OrderCustom> orders) {
+        this.orders = orders;
+    }
 
     public Address(){}
 

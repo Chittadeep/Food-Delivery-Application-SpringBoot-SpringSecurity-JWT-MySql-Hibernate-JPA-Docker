@@ -5,16 +5,21 @@ import java.sql.Timestamp;
 import java.util.List;
 
 import com.example.FoodDeliveryApplication.entities.Enums.OrderStatus;
+import com.example.FoodDeliveryApplication.entities.Resturant.Resturant;
 import com.example.FoodDeliveryApplication.entities.Rider.Rider;
+import com.example.FoodDeliveryApplication.entities.User.Address;
 import com.example.FoodDeliveryApplication.entities.User.User;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotBlank;
 
 @Entity
@@ -22,11 +27,8 @@ public class OrderCustom {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int orderId;
-    @NotBlank(message = "Order cannot be created without resturantId")
-    private int resturantId;
+    @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
-    @NotBlank(message = "Order cannot be created without addressId")
-    private int addressId;
     private Timestamp orderPlacedTimeStamp;
     private Timestamp orderDeliveredTimestamp;
 
@@ -37,10 +39,17 @@ public class OrderCustom {
     @ManyToOne
     @JoinColumn(name="riderId", referencedColumnName="riderId")
     private Rider rider;
+    @ManyToOne
+    @JoinColumn(name = "resturantId", referencedColumnName = "resturantId")
+    private Resturant resturant;
+    @ManyToOne
+    @JoinColumn(name = "addressId", referencedColumnName = "addressId")
+    private Address address;
 
     //foreign relations inverse side
     @OneToMany(mappedBy = "order")
     private List<OrderItem> orderItems;
+    
 
     public OrderCustom(){}
 
@@ -51,24 +60,11 @@ public class OrderCustom {
     public void setOrderId(int orderId) {
         this.orderId = orderId;
     }
-    public int getResturantId() {
-        return resturantId;
-    }
-    public void setResturantId(int resturantId) {
-        this.resturantId = resturantId;
-    }
-    
     public OrderStatus getOrderStatus() {
         return orderStatus;
     }
     public void setOrderStatus(OrderStatus orderStatus) {
         this.orderStatus = orderStatus;
-    }
-    public int getAddressId() {
-        return addressId;
-    }
-    public void setAddressId(int addressId) {
-        this.addressId = addressId;
     }
     public Timestamp getOrderPlacedTimeStamp() {
         return orderPlacedTimeStamp;
@@ -104,6 +100,25 @@ public class OrderCustom {
 
     public void setOrderItems(List<OrderItem> orderItems) {
         this.orderItems = orderItems;
+    }
+
+        public Resturant getResturant() {
+        return resturant;
+    }
+
+
+    public void setResturant(Resturant resturant) {
+        this.resturant = resturant;
+    }
+
+
+    public Address getAddress() {
+        return address;
+    }
+
+
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
 }

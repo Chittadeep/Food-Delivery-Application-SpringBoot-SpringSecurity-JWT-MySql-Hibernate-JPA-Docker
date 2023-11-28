@@ -46,7 +46,7 @@ public class OrderService {
 
     public List<OrderCustom> getOrderCustomByResturantId(int resturantId)
     {
-        return orderRepository.getOrderCustomByResturantId(resturantId);
+        return orderRepository.getOrderCustomByResturant_ResturantId(resturantId);
     }
 
     public List<OrderCustom> getOrderCustomByRiderId(int riderId)

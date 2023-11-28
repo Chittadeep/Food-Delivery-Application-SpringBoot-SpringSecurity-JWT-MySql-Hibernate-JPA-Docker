@@ -14,8 +14,10 @@ public interface OrderRepository extends CrudRepository<OrderCustom, Integer> {
     public List<OrderCustom> getOrderCustomByUser_UserId(int userId);
 
     //@Query("Select o from OrderCustom o where o.resturantId = :resturantId")
-    public List<OrderCustom> getOrderCustomByResturantId(int resturantId);
+    public List<OrderCustom> getOrderCustomByResturant_ResturantId(int resturantId);
 
     //@Query("Select o from OrderCustom o where o.riderId = :riderId")
     public List<OrderCustom> getOrderCustomByRider_RiderId(int riderId);
+
+    public List<OrderCustom> getOrderCustomByAddress_AddressId(int addressId);
 }
