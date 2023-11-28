@@ -27,7 +27,7 @@ public class OrderCustom {
     private Timestamp orderPlacedTimeStamp;
     private Timestamp orderDeliveredTimestamp;
 
-    //forign relations owning side
+    //foreign relations owning side
     @ManyToOne
     @JoinColumn(name="userId", referencedColumnName = "userId")
     private User user;

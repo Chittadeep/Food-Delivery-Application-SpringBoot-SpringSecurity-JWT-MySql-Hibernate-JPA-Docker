@@ -73,9 +73,11 @@ public class MenuController {
         return new ResponseEntity<Boolean>(menuService.deleteMenu(menuId), HttpStatus.OK);
     }
 
+    /*
     @PostMapping(path="/menu/createFromCSV")
     public ResponseEntity<List<Menu>> createFromCSV(@RequestParam("file") MultipartFile file) throws IOException
     {
         return new ResponseEntity<List<Menu>>(menuService.createMenusFromCSV(file), HttpStatus.CREATED);
     }
+    */
 }

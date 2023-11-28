@@ -11,7 +11,10 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -20,8 +23,6 @@ public class Menu {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int menuId;
-    @NotNull(message = "Need the resturant id for creating menu item")
-    private int resturantId;
     @NotBlank(message = "Item name cannot be null when you are creating the menu item")
     private String itemName;
     @NotBlank(message = "Item cannot be created without description")
@@ -34,6 +35,12 @@ public class Menu {
     @Enumerated(EnumType.STRING)
     private MenuCategory menuCategory;
     
+
+    //foreign relations owning side
+    @ManyToOne()
+    @JoinColumn(name = "resturantId", referencedColumnName = "resturantId")
+    private Resturant resturant;
+
     public Menu(){}
 
     public int getMenuId() {
@@ -41,12 +48,6 @@ public class Menu {
     }
     public void setMenuId(int menuId) {
         this.menuId = menuId;
-    }
-    public int getResturantId() {
-        return resturantId;
-    }
-    public void setResturantId(int resturantId) {
-        this.resturantId = resturantId;
     }
     public String getItemName() {
         return itemName;
@@ -78,4 +79,12 @@ public class Menu {
     public void setMenuCategory(MenuCategory menuCategory) {
         this.menuCategory = menuCategory;
     }
+    public Resturant getResturant() {
+        return resturant;
+    }
+
+    public void setResturant(Resturant resturant) {
+        this.resturant = resturant;
+    }
+
 }

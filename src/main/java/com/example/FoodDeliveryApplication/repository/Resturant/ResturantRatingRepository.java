@@ -12,7 +12,7 @@ public interface ResturantRatingRepository extends CrudRepository<ResturantRatin
     
     public List<ResturantRating> getResturantRatingByUserId(int userId);
     
-    public List<ResturantRating> getResturantRatingByResturantId(int resturantId);
+    public List<ResturantRating> getResturantRatingByResturant_ResturantId(int resturantId);
 
-    public ResturantRating getResturantRatingByResturantIdAndUserId(int resturantId, int userId);
+    public ResturantRating getResturantRatingByResturant_ResturantIdAndUserId(int resturantId, int userId);
 }

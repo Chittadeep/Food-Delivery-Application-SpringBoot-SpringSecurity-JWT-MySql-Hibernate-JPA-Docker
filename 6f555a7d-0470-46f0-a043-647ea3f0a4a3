@@ -1,9 +1,0 @@
-resturantId,itemName,description,price,menuCategory
-1,Butter Chicken,abcd,350,NON_SPICY
-1,Naan,efgh,40,NON_SPICY
-1,Champaran Mutton,ijkl,450,SPICY
-1,Mutton,abcd,300,BENGALI
-1,Shahi Paneer,efgh,200,NORTH_INDIAN
-1,Palak Paneer,ijkl,250,NORTH_INDIAN
-1,Peas pulao,abcd,90,NORTH_INDIAN
-1,Hariyali chicken,efgh,160,NORTH_INDIAN

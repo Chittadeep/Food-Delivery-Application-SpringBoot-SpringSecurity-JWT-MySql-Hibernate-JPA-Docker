@@ -42,7 +42,7 @@ public class MenuService {
 
     public List<Menu> getMenuByResturantId(int resturantId)
     {
-        return menuRepository.getMenuByResturantId(resturantId);
+        return menuRepository.getMenuByResturant_ResturantId(resturantId);
     }
     
     public List<Menu> getMenuByMenuCategory(MenuCategory menuCategory)
@@ -74,7 +74,7 @@ public class MenuService {
         menuRepository.deleteById(menuId);
         return true;
     }
-
+/*
     public List<Menu> createMenusFromCSV(MultipartFile multipartFile) throws IOException
     {
         byte[] bytes = multipartFile.getBytes();
@@ -112,5 +112,6 @@ public class MenuService {
         
     return list;
     }
+    */
 
 }

@@ -1,5 +1,7 @@
 package com.example.FoodDeliveryApplication.entities.Resturant;
 
+import java.util.Set;
+
 import org.hibernate.annotations.ColumnDefault;
 
 import com.example.FoodDeliveryApplication.entities.Enums.ResturantType;
@@ -8,6 +10,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
@@ -46,6 +49,12 @@ public class Resturant {
     private String password;
     @ColumnDefault(value = "false")
     private boolean approved;
+
+    //foreign relations inverse side
+    @OneToMany(mappedBy="resturant")
+    private Set<Menu> menu;
+    @OneToMany(mappedBy = "resturant")
+    private Set<ResturantRating> resturantRatings;
 
     public Resturant() {}
     
@@ -148,6 +157,22 @@ public class Resturant {
 
     public void setBankDetails(byte[] bankDetails) {
         this.bankDetails = bankDetails;
+    }
+
+    public Set<Menu> getMenu() {
+        return menu;
+    }
+
+    public void setMenu(Set<Menu> menu) {
+        this.menu = menu;
+    }
+
+    public Set<ResturantRating> getResturantRatings() {
+        return resturantRatings;
+    }
+
+    public void setResturantRatings(Set<ResturantRating> resturantRatings) {
+        this.resturantRatings = resturantRatings;
     }
 
 }

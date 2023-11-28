@@ -36,11 +36,11 @@ public class ResturantRatingService {
 
     public List<ResturantRating> getResturantRatingByResturantId(int resturantID)
     {
-        return resturantRatingRepository.getResturantRatingByResturantId(resturantID);
+        return resturantRatingRepository.getResturantRatingByResturant_ResturantId(resturantID);
     }
 
     public ResturantRating getResturantRatingByResturantIdAndUserId(int resturantID, int userId)
     {
-        return resturantRatingRepository.getResturantRatingByResturantIdAndUserId(resturantID, userId);
+        return resturantRatingRepository.getResturantRatingByResturant_ResturantIdAndUserId(resturantID, userId);
     }
 }
