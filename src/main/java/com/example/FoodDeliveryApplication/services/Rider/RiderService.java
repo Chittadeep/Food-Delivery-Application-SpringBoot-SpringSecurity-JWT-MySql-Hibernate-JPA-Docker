@@ -1,11 +1,17 @@
 package com.example.FoodDeliveryApplication.services.Rider;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.FoodDeliveryApplication.entities.Rider.Rider;
+import com.example.FoodDeliveryApplication.entities.User.User;
 import com.example.FoodDeliveryApplication.exceptions.EntityDoesNotExistException;
 import com.example.FoodDeliveryApplication.repository.Rider.RiderRepository;
 
@@ -53,9 +59,25 @@ public class RiderService {
         return oldRider;
     }
 
-    public boolean changeProfilePicture(int riderId, byte[] image)
+    public boolean changeProfilePicture(int riderId, MultipartFile file)
     {
+        Rider oldRider = getRider(riderId);
+        try {
+            oldRider.setImage(file.getBytes());
+            riderRepository.save(oldRider);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
         return true;
+    }
+
+       public InputStreamResource getProfilePicture(int riderId)
+    {
+        byte[] bytes = getRider(riderId).getImage();
+        InputStream stream = new ByteArrayInputStream(bytes);
+        InputStreamResource resource = new InputStreamResource(stream);
+        return resource;
     }
 
     public boolean blockRider(int riderId)
