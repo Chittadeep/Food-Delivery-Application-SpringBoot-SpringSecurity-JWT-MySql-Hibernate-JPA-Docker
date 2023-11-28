@@ -31,7 +31,7 @@ public class ResturantPaymentService {
 
     public List<ResturantPayment> getResturantPaymentByResturantId(int resturantId)
     {
-        return resturantPaymentRepository.getResturantPaymentByResturantId(resturantId);
+        return resturantPaymentRepository.getResturantPaymentByResturant_ResturantId(resturantId);
     }
 
     public List<ResturantPayment> getResturantPaymentByAmount(double amount)

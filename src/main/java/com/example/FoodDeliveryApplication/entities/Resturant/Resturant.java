@@ -55,6 +55,8 @@ public class Resturant {
     private Set<Menu> menu;
     @OneToMany(mappedBy = "resturant")
     private Set<ResturantRating> resturantRatings;
+    @OneToMany(mappedBy="resturant")
+    private Set<ResturantPayment> resturantPayments;
 
     public Resturant() {}
     
@@ -173,6 +175,14 @@ public class Resturant {
 
     public void setResturantRatings(Set<ResturantRating> resturantRatings) {
         this.resturantRatings = resturantRatings;
+    }
+
+    public Set<ResturantPayment> getResturantPayments() {
+        return resturantPayments;
+    }
+
+    public void setResturantPayments(Set<ResturantPayment> resturantPayments) {
+        this.resturantPayments = resturantPayments;
     }
 
 }

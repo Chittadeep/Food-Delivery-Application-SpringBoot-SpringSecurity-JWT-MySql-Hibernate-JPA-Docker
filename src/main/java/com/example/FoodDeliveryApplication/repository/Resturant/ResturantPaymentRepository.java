@@ -11,7 +11,7 @@ import com.example.FoodDeliveryApplication.entities.Resturant.ResturantPayment;
 public interface ResturantPaymentRepository extends CrudRepository<ResturantPayment, Integer> {
     
   //  @Query("Select rp from ResturantPayment rp where rp.resturantId = :resturantId")
-    public List<ResturantPayment> getResturantPaymentByResturantId(int resturantId);
+    public List<ResturantPayment> getResturantPaymentByResturant_ResturantId(int resturantId);
     
   //  @Query("Select rp from ResturantPayment rp where rp.amount = :amount")
     public List<ResturantPayment> getResturantPaymentByAmount(double amount);

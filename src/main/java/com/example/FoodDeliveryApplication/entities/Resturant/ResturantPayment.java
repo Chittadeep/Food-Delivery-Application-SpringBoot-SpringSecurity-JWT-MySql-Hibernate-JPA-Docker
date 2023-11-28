@@ -4,10 +4,13 @@ import java.util.Date;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotBlank;
 
 @Entity
@@ -15,14 +18,18 @@ public class ResturantPayment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int resturantPaymentId;
-    @NotBlank(message = "Resturant Payment cannot be created without Resturant Id")
-    private int resturantId;
     @NotBlank(message = "Resturant Payment cannot be created without amount")
     private double amount;
     @NotBlank(message = "Resturant Payment cannot be created without transaction ID")
+    @Column(unique=true)
     private String transactionId;
     @CreationTimestamp
     private Date timeStamp;
+
+    //foreign relations owning side
+    @ManyToOne
+    @JoinColumn(name = "resturantId", referencedColumnName = "resturantId")
+    private Resturant resturant;
 
     public ResturantPayment(){}
 
@@ -32,12 +39,7 @@ public class ResturantPayment {
     public void setResturantPaymentId(int resturantPaymentId) {
         this.resturantPaymentId = resturantPaymentId;
     }
-    public int getResturantId() {
-        return resturantId;
-    }
-    public void setResturantId(int resturantId) {
-        this.resturantId = resturantId;
-    }
+    
     public double getAmount() {
         return amount;
     }
@@ -57,5 +59,11 @@ public class ResturantPayment {
         this.timeStamp = timeStamp;
     }
 
-    
+    public Resturant getResturant() {
+        return resturant;
+    }
+
+    public void setResturant(Resturant resturant) {
+        this.resturant = resturant;
+    }
 }
