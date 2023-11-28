@@ -3,6 +3,7 @@ package com.example.FoodDeliveryApplication.entities.Resturant;
 import java.util.List;
 
 import com.example.FoodDeliveryApplication.entities.Enums.MenuCategory;
+import com.example.FoodDeliveryApplication.entities.Order.OrderItem;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -40,6 +41,10 @@ public class Menu {
     @ManyToOne()
     @JoinColumn(name = "resturantId", referencedColumnName = "resturantId")
     private Resturant resturant;
+
+    //foreign relations inverse side
+    @OneToMany(mappedBy = "menu")
+    private List<OrderItem> orderItems;
 
     public Menu(){}
 

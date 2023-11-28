@@ -31,7 +31,7 @@ public class ResturantRatingService {
 
     public List<ResturantRating> getResturantRatingByUserId(int userId)
     {
-        return resturantRatingRepository.getResturantRatingByUserId(userId);
+        return resturantRatingRepository.getResturantRatingByUser_UserId(userId);
     }
 
     public List<ResturantRating> getResturantRatingByResturantId(int resturantID)
@@ -41,6 +41,6 @@ public class ResturantRatingService {
 
     public ResturantRating getResturantRatingByResturantIdAndUserId(int resturantID, int userId)
     {
-        return resturantRatingRepository.getResturantRatingByResturant_ResturantIdAndUserId(resturantID, userId);
+        return resturantRatingRepository.getResturantRatingByResturant_ResturantIdAndUser_UserId(resturantID, userId);
     }
 }

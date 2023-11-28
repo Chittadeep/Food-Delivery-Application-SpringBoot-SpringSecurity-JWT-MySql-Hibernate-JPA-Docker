@@ -2,6 +2,8 @@ package com.example.FoodDeliveryApplication.entities.Order;
 
 import java.sql.Timestamp;
 
+import java.util.List;
+
 import com.example.FoodDeliveryApplication.entities.Enums.OrderStatus;
 import com.example.FoodDeliveryApplication.entities.Rider.Rider;
 import com.example.FoodDeliveryApplication.entities.User.User;
@@ -12,6 +14,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
 
 @Entity
@@ -34,6 +37,10 @@ public class OrderCustom {
     @ManyToOne
     @JoinColumn(name="riderId", referencedColumnName="riderId")
     private Rider rider;
+
+    //foreign relations inverse side
+    @OneToMany(mappedBy = "order")
+    private List<OrderItem> orderItems;
 
     public OrderCustom(){}
 
@@ -90,4 +97,13 @@ public class OrderCustom {
     public void setRider(Rider rider) {
         this.rider = rider;
     }
+
+    public List<OrderItem> getOrderItems() {
+        return orderItems;
+    }
+
+    public void setOrderItems(List<OrderItem> orderItems) {
+        this.orderItems = orderItems;
+    }
+
 }
