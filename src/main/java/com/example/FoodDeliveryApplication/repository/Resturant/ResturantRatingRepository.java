@@ -10,9 +10,9 @@ import com.example.FoodDeliveryApplication.entities.Resturant.ResturantRating;
 @Repository
 public interface ResturantRatingRepository extends CrudRepository<ResturantRating, Integer> {
     
-    public List<ResturantRating> getResturantRatingByUserId(int userId);
+    public List<ResturantRating> getResturantRatingByUser_UserId(int userId);
     
     public List<ResturantRating> getResturantRatingByResturant_ResturantId(int resturantId);
 
-    public ResturantRating getResturantRatingByResturant_ResturantIdAndUserId(int resturantId, int userId);
+    public ResturantRating getResturantRatingByResturant_ResturantIdAndUser_UserId(int resturantId, int userId);
 }

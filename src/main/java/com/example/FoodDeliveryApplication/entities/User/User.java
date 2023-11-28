@@ -5,6 +5,7 @@ import java.util.Set;
 import org.hibernate.annotations.ColumnDefault;
 
 import com.example.FoodDeliveryApplication.entities.Order.OrderCustom;
+import com.example.FoodDeliveryApplication.entities.Resturant.ResturantRating;
 import com.example.FoodDeliveryApplication.entities.Rider.RiderRating;
 
 import jakarta.persistence.Column;
@@ -46,6 +47,9 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private Set<RiderRating> riderRatings;
+
+    @OneToMany(mappedBy = "user")
+    private Set<ResturantRating> resturantRatings;
 
     public User(){}
     

@@ -2,6 +2,8 @@ package com.example.FoodDeliveryApplication.entities.Resturant;
 
 import org.hibernate.validator.constraints.Length;
 
+import com.example.FoodDeliveryApplication.entities.User.User;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -15,8 +17,6 @@ public class ResturantRating {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int resturantRatingId;
-    @NotBlank(message = "Resturant rating cannot be created without userID")
-    private int userId;
     @NotBlank(message = "Resturant rating cannot be created without rating")
     @Length(max = 6, min = 1)
     private int rating;
@@ -26,6 +26,9 @@ public class ResturantRating {
     @JoinColumn(name = "resturantId", referencedColumnName = "resturantId")
     private Resturant resturant;
 
+    @ManyToOne
+    @JoinColumn(name="userId", referencedColumnName = "userId")
+    private User user;
 
     public ResturantRating() {}
     
@@ -34,12 +37,6 @@ public class ResturantRating {
     }
     public void setResturantRatingId(int resturantRatingId) {
         this.resturantRatingId = resturantRatingId;
-    }
-    public int getUserId() {
-        return userId;
-    }
-    public void setUserId(int userId) {
-        this.userId = userId;
     }
     public int getRating() {
         return rating;
@@ -56,4 +53,11 @@ public class ResturantRating {
         this.resturant = resturant;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }
