@@ -9,6 +9,7 @@ import com.example.FoodDeliveryApplication.entities.Resturant.Resturant;
 import com.example.FoodDeliveryApplication.entities.Rider.Rider;
 import com.example.FoodDeliveryApplication.entities.User.Address;
 import com.example.FoodDeliveryApplication.entities.User.User;
+import com.example.FoodDeliveryApplication.entities.User.UserPayment;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -49,6 +50,8 @@ public class OrderCustom {
     //foreign relations inverse side
     @OneToMany(mappedBy = "order")
     private List<OrderItem> orderItems;
+    @OneToOne(mappedBy = "order")
+    private UserPayment userPayment;
     
 
     public OrderCustom(){}

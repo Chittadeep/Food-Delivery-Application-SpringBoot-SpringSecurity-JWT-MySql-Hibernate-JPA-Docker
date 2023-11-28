@@ -3,11 +3,16 @@ package com.example.FoodDeliveryApplication.entities.User;
 import java.util.Date;
 
 import com.example.FoodDeliveryApplication.entities.Enums.ModeOfPayment;
+import com.example.FoodDeliveryApplication.entities.Order.OrderCustom;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotBlank;
 
 @Entity
@@ -15,8 +20,6 @@ public class UserPayment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int userPaymentId;
-    @NotBlank(message = "User payment cannot be generated without orderId")
-    private int orderId;
     @NotBlank(message = "User payment cannot be generated without totalAmount")
     private double totalAmount;
     @NotBlank(message = "User payment cannot be generated without baseAmount")
@@ -32,10 +35,15 @@ public class UserPayment {
     @NotBlank
     private Date timestamp;
     @NotBlank(message = "User payment cannot be generated without transactionId")
-    //unique for transaction id
+    @Column(unique=true)
     private String transactionId;
     @NotBlank(message = "User payment cannot be generated without modeOfPayment")
     private ModeOfPayment modeOfPayment;
+
+    //foriegn relations owning side
+    @OneToOne
+    @JoinColumn(name = "orderId", referencedColumnName = "orderId")
+    private OrderCustom order;
 
     public UserPayment(){}
         
@@ -44,13 +52,6 @@ public class UserPayment {
     }
     public void setUserPaymentId(int userPaymentId) {
         this.userPaymentId = userPaymentId;
-    }
-    public int getOrderId() {
-        return orderId;
-    }
-    
-    public void setOrderId(int orderId) {
-        this.orderId = orderId;
     }
     public double getTotalAmount() {
         return totalAmount;
@@ -106,4 +107,13 @@ public class UserPayment {
     public void setModeOfPayment(ModeOfPayment modeOfPayment) {
         this.modeOfPayment = modeOfPayment;
     }
+
+    public OrderCustom getOrder() {
+        return order;
+    }
+
+    public void setOrder(OrderCustom order) {
+        this.order = order;
+    }
+
 }
