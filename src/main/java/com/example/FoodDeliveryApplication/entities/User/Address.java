@@ -3,7 +3,7 @@ package com.example.FoodDeliveryApplication.entities.User;
 import java.util.List;
 
 import com.example.FoodDeliveryApplication.entities.Order.OrderCustom;
-
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -31,19 +31,20 @@ public class Address {
     //foreign relations owning side
     @ManyToOne
     @JoinColumn(name="userId", referencedColumnName = "userId")
+    // @JsonBackReference
     private User user;
 
-    //foriegn relations inverse side
-    @OneToMany(mappedBy = "address")
-    private List<OrderCustom> orders;
+    // //foriegn relations inverse side
+    // @OneToMany(mappedBy = "address")
+    // private List<OrderCustom> orders;
 
-    public List<OrderCustom> getOrders() {
-        return orders;
-    }
+    // public List<OrderCustom> getOrders() {
+    //     return orders;
+    // }
 
-    public void setOrders(List<OrderCustom> orders) {
-        this.orders = orders;
-    }
+    // public void setOrders(List<OrderCustom> orders) {
+    //     this.orders = orders;
+    // }
 
     public Address(){}
 

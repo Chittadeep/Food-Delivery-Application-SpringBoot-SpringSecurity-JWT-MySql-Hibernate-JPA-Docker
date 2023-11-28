@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -53,6 +54,12 @@ public class AddressController {
     public ResponseEntity<List<Address>> getAddressByPincode(@PathVariable String pinCode)
     {
         return new ResponseEntity<List<Address>>(addressService.getAddressByPincode(pinCode), HttpStatus.OK);
+    }
+
+    @PostMapping(path="/address")
+    public ResponseEntity<Address> createAddress(@RequestBody Address address)
+    {
+        return new ResponseEntity<Address>(addressService.createAddress(address), HttpStatus.CREATED);
     }
 
     @PutMapping(path = "/address")

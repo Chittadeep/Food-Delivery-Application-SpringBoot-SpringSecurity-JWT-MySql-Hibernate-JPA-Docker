@@ -7,6 +7,7 @@ import org.hibernate.annotations.ColumnDefault;
 import com.example.FoodDeliveryApplication.entities.Order.OrderCustom;
 import com.example.FoodDeliveryApplication.entities.Resturant.ResturantRating;
 import com.example.FoodDeliveryApplication.entities.Rider.RiderRating;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -29,6 +30,7 @@ public class User {
     @Size(min=10, max = 10)
     private String phoneNumber;
     @Email
+    @Column(unique=true)
     private String mail;
     @Lob
     @Column(length=500000)
@@ -40,6 +42,7 @@ public class User {
 
     //foreign relations inverse side
     @OneToMany(mappedBy = "user")
+    @JsonManagedReference
     private Set<Address> address;
 
     @OneToMany(mappedBy ="user")
