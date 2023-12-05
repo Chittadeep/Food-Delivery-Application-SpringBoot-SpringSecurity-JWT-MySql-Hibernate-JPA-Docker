@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.FoodDeliveryApplication.entities.Rider.Rider;
-import com.example.FoodDeliveryApplication.entities.User.User;
 import com.example.FoodDeliveryApplication.exceptions.EntityDoesNotExistException;
 import com.example.FoodDeliveryApplication.repository.Rider.RiderRepository;
 

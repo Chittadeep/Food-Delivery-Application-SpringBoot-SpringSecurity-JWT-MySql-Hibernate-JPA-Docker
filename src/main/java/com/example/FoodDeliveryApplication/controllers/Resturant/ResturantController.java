@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -32,6 +33,11 @@ public class ResturantController {
     public ResponseEntity<Resturant> createResturant(@RequestBody Resturant resturant)
     {
         return new ResponseEntity<Resturant>(resturantService.createResturant(resturant), HttpStatus.CREATED);
+    }
+
+    public ResponseEntity<List<Resturant>> getResturantByPincode(@PathVariable String pincode)
+    {
+        return new ResponseEntity<List<Resturant>>(resturantService.getResturantByPincode(pincode), HttpStatus.OK);
     }
 
     @GetMapping(path="/resturant/{id}")

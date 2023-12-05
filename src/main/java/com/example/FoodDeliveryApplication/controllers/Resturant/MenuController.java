@@ -31,7 +31,7 @@ public class MenuController {
         return new ResponseEntity<Menu>(menuService.createMenuItem(menu), HttpStatus.CREATED);
     }
 
-    @GetMapping(path = "/menu")
+    @GetMapping(path = "/admin/menu")
     public ResponseEntity<List<Menu>> getAllMenusOutThere()
     {
         return new ResponseEntity<List<Menu>>(menuService.getAllMenusOutThere(), HttpStatus.OK);
@@ -43,31 +43,31 @@ public class MenuController {
         return new ResponseEntity<Menu>(menuService.getMenuById(menuId), HttpStatus.OK);
     }
 
-    @GetMapping(path = "/menu/{resturantId}")
+    @GetMapping(path = "/resturant/{resturantId}/menu/")
     public ResponseEntity<List<Menu>> getMenuByResturantId(@PathVariable int resturantId)
     {
         return new ResponseEntity<List<Menu>>(menuService.getMenuByResturantId(resturantId), HttpStatus.OK);
     }
 
-    @PutMapping(path = "/menu")
+    @PutMapping(path = "/resturant/menu")
     public ResponseEntity<Menu> updateMenu(@RequestBody Menu menu)
     {
         return new ResponseEntity<Menu>(menuService.updateMenu(menu), HttpStatus.ACCEPTED);
     } 
 
-    @GetMapping(path = "/menu/category/{category}")
+    @GetMapping(path = "/user/menu/category/{category}")
     public ResponseEntity<List<Menu>> getMenuByMenuCategory(@PathVariable MenuCategory menuCategory)
     {
         return new ResponseEntity<List<Menu>>(menuService.getMenuByMenuCategory(menuCategory), HttpStatus.OK);
     }
 
-    @GetMapping(path="/menu/price/{price}")
+    @GetMapping(path="/user/menu/price/{price}")
     public ResponseEntity<List<Menu>> getMenuByPrice(@PathVariable double price)
     {
         return new ResponseEntity<List<Menu>>(menuService.getMenuByPrice(price), HttpStatus.OK);
     }
 
-    @DeleteMapping(path="/menu/delere/{menuId}")
+    @DeleteMapping(path="/resturant/menu/delete/{menuId}")
     public ResponseEntity<Boolean> deleteMenu(@PathVariable int menuId)
     {
         return new ResponseEntity<Boolean>(menuService.deleteMenu(menuId), HttpStatus.OK);

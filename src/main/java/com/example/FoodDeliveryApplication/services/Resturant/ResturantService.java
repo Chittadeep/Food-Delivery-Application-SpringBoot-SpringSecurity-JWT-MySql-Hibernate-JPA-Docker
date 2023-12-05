@@ -30,6 +30,11 @@ public class ResturantService {
         return resturantRepository.findById(resturantId).orElseThrow(()-> new EntityNotFoundException("Resturant with this id does not exist"));
     }
 
+    public List<Resturant> getResturantByPincode(String pincode)
+    {
+        return resturantRepository.getResturantByPincode(pincode);
+    }
+
     public Resturant updateResturant(Resturant resturant)
     {
         Resturant oldResturant= getResturantById(resturant.getResturantId());

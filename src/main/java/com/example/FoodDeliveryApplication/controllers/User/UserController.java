@@ -28,7 +28,7 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @GetMapping(path = "/user")
+    @GetMapping(path = "/admin/user")
     ResponseEntity<List<User>> getAllUsers()
     {
         return new ResponseEntity<List<User>>(userService.getAllUsers(), HttpStatus.OK);
@@ -52,13 +52,13 @@ public class UserController {
         return new ResponseEntity<User>(userService.updateUser(user), HttpStatus.ACCEPTED);
     }
 
-    @PatchMapping(path="/user/block/{id}")
+    @PatchMapping(path="/admin/user/block/{id}")
     ResponseEntity<Boolean> blockUser(@PathVariable int id)
     {
         return new ResponseEntity<Boolean>(userService.blockUser(id), HttpStatus.ACCEPTED);
     }
 
-    @PatchMapping(path="/user/unblock/{id}")
+    @PatchMapping(path="/admin/user/unblock/{id}")
     ResponseEntity<Boolean> unblockUser(@PathVariable int id)
     {
         return new ResponseEntity<Boolean>(userService.unblockUser(id), HttpStatus.ACCEPTED);

@@ -57,7 +57,7 @@ public class Rider {
     // @NotEmpty(message = "Rider cannot be created with empty bank account info")
     // private List<byte[]> bankAccountInfo;
 
-    @NotBlank(message = "Rider cannot be created without vehicleType")
+    //@NotBlank(message = "Rider cannot be created without vehicleType")
     @Enumerated(value = EnumType.STRING)
     private VehicleType vehicleType;
     @NotBlank(message = "Rider cannot be created without vehicle")
