@@ -1,11 +1,13 @@
 package com.example.FoodDeliveryApplication.entities.Resturant;
 
 import java.util.Set;
-
+import java.util.List;
 import org.hibernate.annotations.ColumnDefault;
 
 import com.example.FoodDeliveryApplication.entities.Enums.ResturantType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -13,6 +15,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.Email;
@@ -25,7 +28,7 @@ public class Resturant {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int resturantId;
     @NotBlank(message = "Name of a resturant cannot be null")
-    private String name;
+    private String resturantName;
     @NotNull(message = "Latitude of a resturant cannot be null")
     private double latitude;
     @NotNull(message = "Longitude of a resturant cannot be null")
@@ -33,15 +36,16 @@ public class Resturant {
     @NotBlank(message = "City of a resturant cannot be null")
     private String city;
     @NotBlank(message = "Address of a resturant cannot be null")
-    private String Address;
+    private String address;
     @NotBlank(message = "Pincode of a resturant cannot be null")
     private String pincode;
-    @NotBlank(message = "Phone number of a resturant cannot be null")
+    //@NotBlank(message = "Phone number of a resturant cannot be null")
     @Column(unique=true)
     private String phoneNumber;
-    @NotBlank(message = "Website of a resturant cannot be null")
+    //@NotBlank(message = "Website of a resturant cannot be null")
     //validation for website
     private String website;
+    private List<byte[]> pictures;
     @Lob
     @Column(length = 500000)
     private byte[] bankDetails;
@@ -61,7 +65,8 @@ public class Resturant {
     private boolean approved;
 
     //foreign relations inverse side
-    @OneToMany
+    @JsonIgnore
+    @OneToMany(mappedBy = "resturant")
     private Set<Menu> menu;
     @OneToMany(mappedBy = "resturant")
     private Set<ResturantRating> resturantRatings;
@@ -77,10 +82,10 @@ public class Resturant {
         this.resturantId = resturantId;
     }
     public String getName() {
-        return name;
+        return resturantName;
     }
-    public void setName(String name) {
-        this.name = name;
+    public void setName(String resturantName) {
+        this.resturantName = resturantName;
     }
     public double getLatitude() {
         return latitude;
@@ -101,10 +106,10 @@ public class Resturant {
         this.city = city;
     }
     public String getAddress() {
-        return Address;
+        return address;
     }
     public void setAddress(String address) {
-        Address = address;
+        this.address = address;
     }
     public String getPincode() {
         return pincode;

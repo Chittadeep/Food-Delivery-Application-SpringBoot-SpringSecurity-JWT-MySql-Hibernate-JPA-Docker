@@ -1,6 +1,7 @@
 package com.example.FoodDeliveryApplication.entities.Rider;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
@@ -8,6 +9,8 @@ import org.hibernate.annotations.ColumnDefault;
 
 import com.example.FoodDeliveryApplication.entities.Enums.VehicleType;
 import com.example.FoodDeliveryApplication.entities.Order.OrderCustom;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -35,7 +38,8 @@ public class Rider {
     @NotBlank(message = "Rider cannot be created without address")
     private String address;
     @NotBlank(message = "Rider cannot be created without dob")
-    private Date dob;
+    @JsonFormat(shape=Shape.STRING, pattern="dd-MM-yyyy")
+    private LocalDateTime dob;
     @NotBlank(message = "Rider cannot be created without state")
     private String state;
     @NotBlank(message = "Rider cannot be created without pincode")
@@ -102,10 +106,10 @@ public class Rider {
     public void setAddress(String address) {
         this.address = address;
     }
-    public Date getDob() {
+    public LocalDateTime getDob() {
         return dob;
     }
-    public void setDob(Date dob) {
+    public void setDob(LocalDateTime dob) {
         this.dob = dob;
     }
     public String getState() {

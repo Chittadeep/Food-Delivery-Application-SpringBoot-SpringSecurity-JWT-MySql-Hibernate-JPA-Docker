@@ -5,10 +5,12 @@ import java.util.List;
 import com.example.FoodDeliveryApplication.entities.Enums.MenuCategory;
 import com.example.FoodDeliveryApplication.entities.Order.OrderItem;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -38,12 +40,9 @@ public class Menu {
     
 
     //foreign relations owning side
-    //@ManyToOne()
-    private int resturantId;
-
-    //foreign relations inverse side
-    @OneToMany(mappedBy = "menu")
-    private List<OrderItem> orderItems;
+    @ManyToOne(fetch=FetchType.LAZY, cascade = CascadeType.DETACH)
+    @JoinColumn(name="resturantId", referencedColumnName="resturantId")
+    private Resturant resturant;
 
     public Menu(){}
 
@@ -83,12 +82,12 @@ public class Menu {
     public void setMenuCategory(MenuCategory menuCategory) {
         this.menuCategory = menuCategory;
     }
-    public int getResturantId() {
-        return resturantId;
+    public Resturant getResturant() {
+        return resturant;
     }
 
-    public void setResturantId(int resturantId) {
-        this.resturantId = resturantId;
+    public void setResturant(Resturant resturant) {
+        this.resturant = resturant;
     }
 
 }

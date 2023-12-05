@@ -11,7 +11,7 @@ import com.example.FoodDeliveryApplication.entities.Resturant.Menu;
 @Repository
 public interface MenuRepository extends CrudRepository<Menu, Integer> {
     //@Query("Select m from Menu m where m.resturantId = :resturantId")
-    public List<Menu> getMenuByResturantId(int resturantId);
+    public List<Menu> getMenuByResturant_ResturantId(int resturantId);
 
     //@Query("Select m from Menu m where m.menuCategory = :menuCategory")
     public List<Menu> getMenuByMenuCategory(MenuCategory menuCategory);

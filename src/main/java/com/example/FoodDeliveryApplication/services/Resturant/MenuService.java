@@ -39,7 +39,7 @@ public class MenuService {
 
     public List<Menu> getMenuByResturantId(int resturantId)
     {
-        return menuRepository.getMenuByResturantId(resturantId);
+        return menuRepository.getMenuByResturant_ResturantId(resturantId);
     }
     
     public List<Menu> getMenuByMenuCategory(MenuCategory menuCategory)
