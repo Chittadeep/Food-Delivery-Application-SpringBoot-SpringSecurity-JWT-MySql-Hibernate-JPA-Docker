@@ -11,6 +11,8 @@ import com.example.FoodDeliveryApplication.entities.Order.OrderCustom;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -18,6 +20,7 @@ import jakarta.persistence.Lob;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 @Entity
@@ -38,6 +41,7 @@ public class Rider {
     @NotBlank(message = "Rider cannot be created without pincode")
     private String pincode;
     @Size(min=10, max = 10)
+    @Column(unique=true)
     private String phoneNumber;
     @Lob
     @Column(length=5000000)
@@ -50,18 +54,19 @@ public class Rider {
     @Lob
     @Column(length=5000000)
     private byte[] dl;
-    @NotEmpty(message = "Rider cannot be created with empty bank account info")
-    private List<byte[]> bankAccountInfo;
+    // @NotEmpty(message = "Rider cannot be created with empty bank account info")
+    // private List<byte[]> bankAccountInfo;
 
     @NotBlank(message = "Rider cannot be created without vehicleType")
+    @Enumerated(value = EnumType.STRING)
     private VehicleType vehicleType;
     @NotBlank(message = "Rider cannot be created without vehicle")
     private String vehicle;
-    @NotBlank(message = "Rider cannot be created without Latitude")
+    @NotNull(message = "Rider cannot be created without Latitude")
     private double latittude;
-    @NotBlank(message = "Rider cannot be created without Longitude")
+    @NotNull(message = "Rider cannot be created without Longitude")
     private double longitude;
-    @ColumnDefault(value = "false")
+    @ColumnDefault(value = "true")
     private boolean isAvailable;
 
     //foreign relations inverse side
@@ -182,13 +187,13 @@ public class Rider {
         this.vehicleType = vehicleType;
     }
 
-    public List<byte[]> getBankAccountInfo() {
-        return bankAccountInfo;
-    }
+    // public List<byte[]> getBankAccountInfo() {
+    //     return bankAccountInfo;
+    // }
 
-    public void setBankAccountInfo(List<byte[]> bankAccountInfo) {
-        this.bankAccountInfo = bankAccountInfo;
-    }
+    // public void setBankAccountInfo(List<byte[]> bankAccountInfo) {
+    //     this.bankAccountInfo = bankAccountInfo;
+    // }
 
 
 }

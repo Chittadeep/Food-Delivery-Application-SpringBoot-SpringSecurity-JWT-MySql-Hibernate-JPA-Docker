@@ -4,8 +4,12 @@ import java.util.List;
 
 import com.example.FoodDeliveryApplication.entities.Order.OrderCustom;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerator;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -15,6 +19,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
 
 @Entity
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "addressId")
 public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,11 +33,11 @@ public class Address {
     @NotBlank(message = "Pin Code required for address")
     private String pincode;
 
-    //foreign relations owning side
-    @ManyToOne
-    @JoinColumn(name="userId", referencedColumnName = "userId")
-    // @JsonBackReference
-    private User user;
+    // //foreign relations owning side
+    // @ManyToOne(fetch=FetchType.EAGER)
+    // @JoinColumn(name="userId", referencedColumnName = "userId")
+    //@JsonBackReference
+    private int userId;
 
     // //foriegn relations inverse side
     // @OneToMany(mappedBy = "address")
@@ -45,7 +50,6 @@ public class Address {
     // public void setOrders(List<OrderCustom> orders) {
     //     this.orders = orders;
     // }
-
     public Address(){}
 
     public int getAddressId() {
@@ -78,10 +82,10 @@ public class Address {
     public void setPincode(String pinCode) {
         this.pincode = pinCode;
     }
-    public User getUser() {
-        return user;
+    public int getUserId() {
+        return userId;
     }
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 }

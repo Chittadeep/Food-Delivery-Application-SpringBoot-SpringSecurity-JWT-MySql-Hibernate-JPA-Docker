@@ -28,31 +28,31 @@ public class ResturantController {
         return new ResponseEntity<List<Resturant>>(resturantService.getAllResturants(), HttpStatus.OK);
     }
 
-    @PostMapping(path="/Resturant")
+    @PostMapping(path="/resturant")
     public ResponseEntity<Resturant> createResturant(@RequestBody Resturant resturant)
     {
         return new ResponseEntity<Resturant>(resturantService.createResturant(resturant), HttpStatus.CREATED);
     }
 
-    @GetMapping(path="/Resturant/{id}")
+    @GetMapping(path="/resturant/{id}")
     public ResponseEntity<Resturant> getResturantById(int resturantId)
     {
         return new ResponseEntity<Resturant>(resturantService.getResturantById(resturantId), HttpStatus.OK);
     }
 
-    @PutMapping(path = "/Resturant")
+    @PutMapping(path = "/resturant")
     public ResponseEntity<Resturant> updateResturant(@RequestBody Resturant resturant)
     {
         return new ResponseEntity<Resturant>(resturantService.updateResturant(resturant), HttpStatus.OK);
     }
 
-    @PatchMapping(path = "/Resturant/block/{resturantId}")
+    @PatchMapping(path = "/resturant/block/{resturantId}")
     public ResponseEntity<Boolean> blockResturant(@PathVariable int resturantId)
     {
         return new ResponseEntity<Boolean>(resturantService.blockResturant(resturantId), HttpStatus.OK);
     }
 
-    @PatchMapping(path = "/Resturant/unblock/{resturantId}")
+    @PatchMapping(path = "/resturant/unblock/{resturantId}")
     public ResponseEntity<Boolean> unblockResturant(@PathVariable int resturantId)
     {
         return new ResponseEntity<Boolean>(resturantService.unblockResturant(resturantId), HttpStatus.OK);

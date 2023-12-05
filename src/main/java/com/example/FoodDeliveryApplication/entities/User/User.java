@@ -1,5 +1,6 @@
 package com.example.FoodDeliveryApplication.entities.User;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import org.hibernate.annotations.ColumnDefault;
@@ -7,13 +8,17 @@ import org.hibernate.annotations.ColumnDefault;
 import com.example.FoodDeliveryApplication.entities.Order.OrderCustom;
 import com.example.FoodDeliveryApplication.entities.Resturant.ResturantRating;
 import com.example.FoodDeliveryApplication.entities.Rider.RiderRating;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.Email;
@@ -21,6 +26,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 @Entity
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "userId")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,8 +47,10 @@ public class User {
     private boolean valid;
 
     //foreign relations inverse side
-    @OneToMany(mappedBy = "user")
-    @JsonManagedReference
+    // @JsonIgnore
+    @OneToMany
+    //@JsonManagedReference
+    @JoinColumn(name = "userId", referencedColumnName = "userId")
     private Set<Address> address;
 
     @OneToMany(mappedBy ="user")

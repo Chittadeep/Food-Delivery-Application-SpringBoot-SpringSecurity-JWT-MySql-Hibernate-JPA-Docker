@@ -38,9 +38,8 @@ public class Menu {
     
 
     //foreign relations owning side
-    @ManyToOne()
-    @JoinColumn(name = "resturantId", referencedColumnName = "resturantId")
-    private Resturant resturant;
+    //@ManyToOne()
+    private int resturantId;
 
     //foreign relations inverse side
     @OneToMany(mappedBy = "menu")
@@ -84,12 +83,12 @@ public class Menu {
     public void setMenuCategory(MenuCategory menuCategory) {
         this.menuCategory = menuCategory;
     }
-    public Resturant getResturant() {
-        return resturant;
+    public int getResturantId() {
+        return resturantId;
     }
 
-    public void setResturant(Resturant resturant) {
-        this.resturant = resturant;
+    public void setResturantId(int resturantId) {
+        this.resturantId = resturantId;
     }
 
 }

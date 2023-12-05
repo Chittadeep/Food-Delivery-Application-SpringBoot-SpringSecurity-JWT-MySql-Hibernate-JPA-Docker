@@ -11,7 +11,7 @@ import com.example.FoodDeliveryApplication.entities.User.Address;
 public interface AddressRepository extends CrudRepository<Address, Integer> {
     
     //@Query("Select a from Address a where a.userId= :userId")
-    public List<Address> getAddressByUser_UserId(int userId);
+    public List<Address> getAddressByUserId(int userId);
 
     //@Query("Select a from Address a where a.city = :city")
     public List<Address> getAddressByCity(String city);

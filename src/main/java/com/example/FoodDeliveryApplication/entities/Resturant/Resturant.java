@@ -6,13 +6,18 @@ import org.hibernate.annotations.ColumnDefault;
 
 import com.example.FoodDeliveryApplication.entities.Enums.ResturantType;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class Resturant {
@@ -21,9 +26,9 @@ public class Resturant {
     private int resturantId;
     @NotBlank(message = "Name of a resturant cannot be null")
     private String name;
-    @NotBlank(message = "Latitude of a resturant cannot be null")
+    @NotNull(message = "Latitude of a resturant cannot be null")
     private double latitude;
-    @NotBlank(message = "Longitude of a resturant cannot be null")
+    @NotNull(message = "Longitude of a resturant cannot be null")
     private double longitude;
     @NotBlank(message = "City of a resturant cannot be null")
     private String city;
@@ -32,18 +37,23 @@ public class Resturant {
     @NotBlank(message = "Pincode of a resturant cannot be null")
     private String pincode;
     @NotBlank(message = "Phone number of a resturant cannot be null")
+    @Column(unique=true)
     private String phoneNumber;
     @NotBlank(message = "Website of a resturant cannot be null")
+    //validation for website
     private String website;
-    @NotBlank
+    @Lob
+    @Column(length = 500000)
     private byte[] bankDetails;
     @NotBlank(message = "GST of a resturant cannot be null")
     private String gst;
     @NotBlank(message = "FSSAI status of a resturant cannot be null")
-    private String fssaiStatus;
-    @NotBlank(message = "Resturant Type of a resturant cannot be null")
+    private String fssaiStatus;     
+    //@NotBlank(message = "Resturant Type of a resturant cannot be null")
+    @Enumerated(value=EnumType.STRING)
     private ResturantType resturantType;
     @Email
+    @Column(unique = true)
     private String email;
     @NotBlank(message = "Password for a resturant cannot be null")
     private String password;
@@ -51,7 +61,7 @@ public class Resturant {
     private boolean approved;
 
     //foreign relations inverse side
-    @OneToMany(mappedBy="resturant")
+    @OneToMany
     private Set<Menu> menu;
     @OneToMany(mappedBy = "resturant")
     private Set<ResturantRating> resturantRatings;

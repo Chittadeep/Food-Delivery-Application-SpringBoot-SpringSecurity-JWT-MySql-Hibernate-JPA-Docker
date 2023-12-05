@@ -32,7 +32,7 @@ public class AddressService {
 
     public List<Address> getAdressOfAnUser(int userId)
     {
-        return addressRepository.getAddressByUser_UserId(userId);
+        return addressRepository.getAddressByUserId(userId);
     }
 
     public List<Address> getAddressesByCity(String city)

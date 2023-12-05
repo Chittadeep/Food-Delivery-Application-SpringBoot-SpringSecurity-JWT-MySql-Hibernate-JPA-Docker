@@ -49,7 +49,7 @@ public class RiderService {
         oldRider.setImage(rider.getImage());
         oldRider.setMail(rider.getMail());
         oldRider.setPassword(rider.getPassword());
-        oldRider.setBankAccountInfo(rider.getBankAccountInfo());
+        //oldRider.setBankAccountInfo(rider.getBankAccountInfo());
         oldRider.setVehicleType(rider.getVehicleType());
         oldRider.setVehicle(rider.getVehicle());
         oldRider.setLatittude(rider.getLatittude());
