@@ -23,7 +23,7 @@ public class ResturantController {
     @Autowired
     ResturantService resturantService;
 
-    @GetMapping(path="/allResturants")
+    @GetMapping(path="/admin/allResturants")
     public ResponseEntity<List<Resturant>> getAllResutrants()
     {
         return new ResponseEntity<List<Resturant>>(resturantService.getAllResturants(), HttpStatus.OK);
@@ -34,7 +34,8 @@ public class ResturantController {
     {
         return new ResponseEntity<Resturant>(resturantService.createResturant(resturant), HttpStatus.CREATED);
     }
-
+    
+    @GetMapping(path="/resturant/getNearest/{pincode}")
     public ResponseEntity<List<Resturant>> getResturantByPincode(@PathVariable String pincode)
     {
         return new ResponseEntity<List<Resturant>>(resturantService.getResturantByPincode(pincode), HttpStatus.OK);
@@ -52,13 +53,13 @@ public class ResturantController {
         return new ResponseEntity<Resturant>(resturantService.updateResturant(resturant), HttpStatus.OK);
     }
 
-    @PatchMapping(path = "/resturant/block/{resturantId}")
+    @PatchMapping(path = "/admin/resturant/block/{resturantId}")
     public ResponseEntity<Boolean> blockResturant(@PathVariable int resturantId)
     {
         return new ResponseEntity<Boolean>(resturantService.blockResturant(resturantId), HttpStatus.OK);
     }
 
-    @PatchMapping(path = "/resturant/unblock/{resturantId}")
+    @PatchMapping(path = "/admin/resturant/unblock/{resturantId}")
     public ResponseEntity<Boolean> unblockResturant(@PathVariable int resturantId)
     {
         return new ResponseEntity<Boolean>(resturantService.unblockResturant(resturantId), HttpStatus.OK);

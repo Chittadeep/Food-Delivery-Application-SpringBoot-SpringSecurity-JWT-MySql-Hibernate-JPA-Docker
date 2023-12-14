@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.example.FoodDeliveryApplication.entities.Enums.MenuCategory;
 import com.example.FoodDeliveryApplication.entities.Order.OrderItem;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -40,9 +41,7 @@ public class Menu {
     
 
     //foreign relations owning side
-    @ManyToOne(fetch=FetchType.LAZY, cascade = CascadeType.DETACH)
-    @JoinColumn(name="resturantId", referencedColumnName="resturantId")
-    private Resturant resturant;
+    private int resturantId;
 
     public Menu(){}
 
@@ -82,12 +81,12 @@ public class Menu {
     public void setMenuCategory(MenuCategory menuCategory) {
         this.menuCategory = menuCategory;
     }
-    public Resturant getResturant() {
-        return resturant;
+    public int getResturantId() {
+        return resturantId;
+    }
+    public void setResturantId(int resturantId) {
+        this.resturantId = resturantId;
     }
 
-    public void setResturant(Resturant resturant) {
-        this.resturant = resturant;
-    }
 
 }

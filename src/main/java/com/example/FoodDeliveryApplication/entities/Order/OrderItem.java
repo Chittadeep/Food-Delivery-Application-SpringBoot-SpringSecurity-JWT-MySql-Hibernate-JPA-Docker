@@ -1,6 +1,7 @@
 package com.example.FoodDeliveryApplication.entities.Order;
 
 import com.example.FoodDeliveryApplication.entities.Resturant.Menu;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -9,24 +10,27 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class OrderItem {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int orderItemId;
-
     private double price;
+    @NotNull(message = "order item quantity cannot be null")
     private int quantity;
 
     //foreign relations owning side
     @ManyToOne
     @JoinColumn(name="menuId", referencedColumnName="menuId")
     private Menu menu;
+    
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name="orderId", referencedColumnName="orderId")
     private OrderCustom order;
-
 
     public OrderItem() {
     }
@@ -65,6 +69,5 @@ public class OrderItem {
     public void setOrder(OrderCustom order) {
         this.order = order;
     }
-
 
 }

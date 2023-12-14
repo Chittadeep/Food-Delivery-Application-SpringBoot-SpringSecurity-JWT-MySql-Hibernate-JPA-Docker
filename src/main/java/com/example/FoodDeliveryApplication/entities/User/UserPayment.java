@@ -41,9 +41,8 @@ public class UserPayment {
     private ModeOfPayment modeOfPayment;
 
     //foriegn relations owning side
-    @OneToOne
-    @JoinColumn(name = "orderId", referencedColumnName = "orderId")
-    private OrderCustom order;
+
+    private int orderId;
 
     public UserPayment(){}
         
@@ -108,12 +107,12 @@ public class UserPayment {
         this.modeOfPayment = modeOfPayment;
     }
 
-    public OrderCustom getOrder() {
-        return order;
+    public int getOrderId() {
+        return orderId;
     }
 
-    public void setOrder(OrderCustom order) {
-        this.order = order;
+    public void setOrderId(int orderId) {
+        this.orderId = orderId;
     }
 
 }

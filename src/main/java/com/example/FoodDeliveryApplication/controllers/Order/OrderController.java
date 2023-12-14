@@ -12,35 +12,44 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.FoodDeliveryApplication.entities.Order.OrderCustom;
+import com.example.FoodDeliveryApplication.model.OrderResponse;
 import com.example.FoodDeliveryApplication.services.order.OrderService;
+
+import io.micrometer.core.ipc.http.HttpSender.Response;
 
 @RestController
 public class OrderController {
     @Autowired
     OrderService orderService;
 
-    @GetMapping(path="/Order")
+    @GetMapping(path="/order")
     public ResponseEntity<List<OrderCustom>> getAllOrder()
     {
         return new ResponseEntity<List<OrderCustom>>(orderService.getAllOrderForAdmin(), HttpStatus.OK);
     }
 
-    @GetMapping(path = "/Resturant/{resturantId}/Order")
+    @GetMapping(path="/admin/order/{orderId}")
+    public ResponseEntity<OrderCustom> getOrderCustomById(@PathVariable int orderId)
+    {
+        return new ResponseEntity<OrderCustom>(orderService.getOrder(orderId), HttpStatus.OK);
+    }
+    
+    @GetMapping(path = "/resturant/{resturantId}/order")
     public ResponseEntity<List<OrderCustom>> getOrderCustomByResturantId(@PathVariable int resturantId)
     {
         return new ResponseEntity<List<OrderCustom>>(orderService.getOrderCustomByResturantId(resturantId), HttpStatus.OK);
     }
     
-    @GetMapping(path = "/User/{userId}/Order")
+    @GetMapping(path = "/user/{userId}/order")
     public ResponseEntity<List<OrderCustom>> getOrderCustomByUserId(@PathVariable int userId)
     {
         return new ResponseEntity<List<OrderCustom>>(orderService.getOrderCustomByUserId(userId), HttpStatus.OK);
     }
 
-    @PostMapping(path="/Order")
-    public ResponseEntity<OrderCustom> createOrder(@RequestBody OrderCustom order)
+    @PostMapping(path="/order")
+    public ResponseEntity<OrderResponse> createOrder(@RequestBody OrderCustom order)
     {
-        return new ResponseEntity<OrderCustom>(orderService.createOrder(order), HttpStatus.CREATED);
+        return new ResponseEntity<OrderResponse>(orderService.createOrder(order), HttpStatus.CREATED);
     }
 
     //@PatchMapping(path="/Order/{id}")\

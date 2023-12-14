@@ -65,8 +65,8 @@ public class Resturant {
     private boolean approved;
 
     //foreign relations inverse side
-    @JsonIgnore
-    @OneToMany(mappedBy = "resturant")
+    @OneToMany
+    @JoinColumn(name = "resturantId", referencedColumnName = "resturantId")
     private Set<Menu> menu;
     @OneToMany(mappedBy = "resturant")
     private Set<ResturantRating> resturantRatings;

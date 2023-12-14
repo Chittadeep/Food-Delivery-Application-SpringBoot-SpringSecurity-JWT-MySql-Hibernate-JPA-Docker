@@ -4,6 +4,9 @@ import java.sql.Timestamp;
 
 import java.util.List;
 
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CurrentTimestamp;
+
 import com.example.FoodDeliveryApplication.entities.Enums.OrderStatus;
 import com.example.FoodDeliveryApplication.entities.Resturant.Resturant;
 import com.example.FoodDeliveryApplication.entities.Rider.Rider;
@@ -11,6 +14,8 @@ import com.example.FoodDeliveryApplication.entities.User.Address;
 import com.example.FoodDeliveryApplication.entities.User.User;
 import com.example.FoodDeliveryApplication.entities.User.UserPayment;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -22,6 +27,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class OrderCustom {
@@ -29,28 +35,35 @@ public class OrderCustom {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int orderId;
     @Enumerated(EnumType.STRING)
+    @ColumnDefault(value = "INITIATED")
     private OrderStatus orderStatus;
+    @CurrentTimestamp
+    private Timestamp orderInitiated;
     private Timestamp orderPlacedTimeStamp;
     private Timestamp orderDeliveredTimestamp;
 
     //foreign relations owning side
+    @NotNull(message = "Order cannot be created without user Id")
     @ManyToOne
     @JoinColumn(name="userId", referencedColumnName = "userId")
     private User user;
     @ManyToOne
     @JoinColumn(name="riderId", referencedColumnName="riderId")
     private Rider rider;
+    @NotNull(message = "Order cannot be created without resturantId")
     @ManyToOne
     @JoinColumn(name = "resturantId", referencedColumnName = "resturantId")
     private Resturant resturant;
+    
     @ManyToOne
     @JoinColumn(name = "addressId", referencedColumnName = "addressId")
     private Address address;
 
     //foreign relations inverse side
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy="order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems;
-    @OneToOne(mappedBy = "order")
+    @OneToOne
+    @JoinColumn(name = "orderId", referencedColumnName = "orderId")
     private UserPayment userPayment;
     
 
@@ -124,4 +137,11 @@ public class OrderCustom {
         this.address = address;
     }
 
+    public Timestamp getOrderInitiated() {
+        return orderInitiated;
+    }
+
+    public void setOrderInitiated(Timestamp orderInitiated) {
+        this.orderInitiated = orderInitiated;
+    }
 }

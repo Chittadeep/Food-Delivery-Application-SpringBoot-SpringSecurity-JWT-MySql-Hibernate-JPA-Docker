@@ -1,6 +1,6 @@
 package com.example.FoodDeliveryApplication.entities.Rider;
 
-import java.sql.Date;
+import java.util.Date;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
@@ -21,6 +21,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -37,9 +38,9 @@ public class Rider {
     private String city;
     @NotBlank(message = "Rider cannot be created without address")
     private String address;
-    @NotBlank(message = "Rider cannot be created without dob")
+    @NotNull(message = "Rider cannot be created without dob")
     @JsonFormat(shape=Shape.STRING, pattern="dd-MM-yyyy")
-    private LocalDateTime dob;
+    private Date dob;
     @NotBlank(message = "Rider cannot be created without state")
     private String state;
     @NotBlank(message = "Rider cannot be created without pincode")
@@ -51,7 +52,8 @@ public class Rider {
     @Column(length=5000000)
     private byte[] image;
     
-    @NotBlank(message = "Rider cannot be created without mail")
+    @NotNull(message = "Rider cannot be created without mail")
+    @Email
     private String mail;
     @NotBlank(message = "Rider cannot be created without password")
     private String password;
@@ -61,7 +63,7 @@ public class Rider {
     // @NotEmpty(message = "Rider cannot be created with empty bank account info")
     // private List<byte[]> bankAccountInfo;
 
-    //@NotBlank(message = "Rider cannot be created without vehicleType")
+    @NotNull(message = "Rider cannot be created without vehicleType")
     @Enumerated(value = EnumType.STRING)
     private VehicleType vehicleType;
     @NotBlank(message = "Rider cannot be created without vehicle")
@@ -106,10 +108,10 @@ public class Rider {
     public void setAddress(String address) {
         this.address = address;
     }
-    public LocalDateTime getDob() {
+    public Date getDob() {
         return dob;
     }
-    public void setDob(LocalDateTime dob) {
+    public void setDob(Date dob) {
         this.dob = dob;
     }
     public String getState() {

@@ -32,7 +32,7 @@ public class UserPaymentService {
 
     public UserPayment getUserPaymentByOrderId(int orderId)
     {
-        return userPaymentRepository.getUserPaymentByOrder_OrderId(orderId);
+        return userPaymentRepository.getUserPaymentByOrderId(orderId);
     }
 
     public UserPayment getUserPaymentByTransactionId(String transactionId)

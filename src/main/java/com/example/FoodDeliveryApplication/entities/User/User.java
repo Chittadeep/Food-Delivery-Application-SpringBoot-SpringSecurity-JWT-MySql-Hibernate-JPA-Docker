@@ -53,6 +53,7 @@ public class User {
     @JoinColumn(name = "userId", referencedColumnName = "userId")
     private Set<Address> address;
 
+    @JsonIgnore
     @OneToMany(mappedBy ="user")
     private Set<OrderCustom> orders;
 
