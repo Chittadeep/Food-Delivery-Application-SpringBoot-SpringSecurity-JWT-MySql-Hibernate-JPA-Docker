@@ -3,6 +3,7 @@ package com.example.FoodDeliveryApplication.model;
 import java.util.List;
 
 import com.example.FoodDeliveryApplication.entities.Enums.OrderStatus;
+import com.example.FoodDeliveryApplication.entities.Order.OrderCustom;
 import com.example.FoodDeliveryApplication.entities.Order.OrderItem;
 
 public class OrderResponse {
@@ -13,7 +14,26 @@ public class OrderResponse {
     private int riderId;
     private OrderStatus orderStatus;
     private List<OrderItem> orderItems;
+
+    public OrderResponse(OrderCustom orderCustom)
+    {
+        this.orderId=orderCustom.getOrderId();
+        this.userId=orderCustom.getUser().getUserId();
+        this.resturantId=orderCustom.getResturant().getResturantId();
+        if(orderCustom.getUserPayment()!=null)
+        {
+            this.paymentId=orderCustom.getUserPayment().getUserPaymentId();
+        }
+        if(orderCustom.getRider()!=null)
+        {
+            this.riderId=orderCustom.getRider().getRiderId();
+        }
+        this.orderStatus=orderCustom.getOrderStatus();
+        this.orderItems=orderCustom.getOrderItems();
+    }
     
+    public OrderResponse(){}
+
     public int getOrderId() {
         return orderId;
     }

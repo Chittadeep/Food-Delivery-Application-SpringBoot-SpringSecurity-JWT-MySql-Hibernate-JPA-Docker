@@ -41,9 +41,9 @@ public class OrderController {
     }
     
     @GetMapping(path = "/user/{userId}/order")
-    public ResponseEntity<List<OrderCustom>> getOrderCustomByUserId(@PathVariable int userId)
+    public ResponseEntity<List<OrderResponse>> getOrderCustomByUserId(@PathVariable int userId)
     {
-        return new ResponseEntity<List<OrderCustom>>(orderService.getOrderCustomByUserId(userId), HttpStatus.OK);
+        return new ResponseEntity<List<OrderResponse>>(orderService.getOrderCustomByUserId(userId), HttpStatus.OK);
     }
 
     @PostMapping(path="/order")

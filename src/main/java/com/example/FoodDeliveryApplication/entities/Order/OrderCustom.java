@@ -35,7 +35,7 @@ public class OrderCustom {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int orderId;
     @Enumerated(EnumType.STRING)
-    @ColumnDefault(value = "INITIATED")
+    @Column(columnDefinition = "varchar(32) default 'INITIATED'")
     private OrderStatus orderStatus;
     @CurrentTimestamp
     private Timestamp orderInitiated;
@@ -66,7 +66,6 @@ public class OrderCustom {
     @JoinColumn(name = "orderId", referencedColumnName = "orderId")
     private UserPayment userPayment;
     
-
     public OrderCustom(){}
 
     
@@ -144,4 +143,14 @@ public class OrderCustom {
     public void setOrderInitiated(Timestamp orderInitiated) {
         this.orderInitiated = orderInitiated;
     }
+
+    public UserPayment getUserPayment() {
+        return userPayment;
+    }
+
+
+    public void setUserPayment(UserPayment userPayment) {
+        this.userPayment = userPayment;
+    }
+
 }
