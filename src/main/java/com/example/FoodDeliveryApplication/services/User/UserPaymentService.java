@@ -5,8 +5,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.FoodDeliveryApplication.entities.Enums.ModeOfPayment;
+import com.example.FoodDeliveryApplication.entities.Enums.OrderStatus;
+import com.example.FoodDeliveryApplication.entities.Order.OrderCustom;
 import com.example.FoodDeliveryApplication.entities.User.UserPayment;
 import com.example.FoodDeliveryApplication.exceptions.EntityDoesNotExistException;
+import com.example.FoodDeliveryApplication.repository.Order.OrderRepository;
 import com.example.FoodDeliveryApplication.repository.User.UserPaymentRepository;
 
 @Service
@@ -40,5 +44,10 @@ public class UserPaymentService {
         return userPaymentRepository.getUserPaymentByTransactionId(transactionId);
     }
 
-    
+    public UserPayment completeUserPayment(int userPaymentId, ModeOfPayment modeOfPayment)
+    {
+        UserPayment userPayment = getUserPaymentById(userPaymentId);
+        userPayment.setModeOfPayment(modeOfPayment);
+        return userPayment;
+    }
 }

@@ -5,10 +5,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.FoodDeliveryApplication.entities.Enums.ModeOfPayment;
 import com.example.FoodDeliveryApplication.entities.User.UserPayment;
 import com.example.FoodDeliveryApplication.services.User.UserPaymentService;
 
@@ -46,5 +49,9 @@ public class UserPaymentController {
         return new ResponseEntity<UserPayment>(userPaymentService.createUserPayment(userPayment), HttpStatus.ACCEPTED);
     }
 
-
+    @PatchMapping(path="/userPayment")
+    public ResponseEntity<UserPayment> completeUserPayment(@RequestParam int paymentId, @RequestParam ModeOfPayment modeOfPayment)
+    {
+        return new ResponseEntity<UserPayment>(userPaymentService.completeUserPayment(paymentId, modeOfPayment), HttpStatus.OK);
+    }
 }

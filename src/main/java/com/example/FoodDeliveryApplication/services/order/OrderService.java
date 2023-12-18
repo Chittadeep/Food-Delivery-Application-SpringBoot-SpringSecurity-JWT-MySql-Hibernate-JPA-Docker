@@ -7,6 +7,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.FoodDeliveryApplication.entities.Enums.ModeOfPayment;
 import com.example.FoodDeliveryApplication.entities.Enums.OrderStatus;
 import com.example.FoodDeliveryApplication.entities.Order.OrderCustom;
 import com.example.FoodDeliveryApplication.entities.Order.OrderItem;
@@ -14,8 +15,11 @@ import com.example.FoodDeliveryApplication.entities.Resturant.Menu;
 import com.example.FoodDeliveryApplication.entities.Resturant.Resturant;
 import com.example.FoodDeliveryApplication.entities.User.Address;
 import com.example.FoodDeliveryApplication.entities.User.User;
-import com.example.FoodDeliveryApplication.model.OrderResponse;
+import com.example.FoodDeliveryApplication.entities.User.UserPayment;
+import com.example.FoodDeliveryApplication.entities.globals.Globals;
+import com.example.FoodDeliveryApplication.model.response.OrderResponse;
 import com.example.FoodDeliveryApplication.repository.Order.OrderRepository;
+import com.example.FoodDeliveryApplication.repository.User.UserPaymentRepository;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
@@ -29,6 +33,8 @@ public class OrderService {
     private EntityManagerFactory entityManagerFactory;
     @Autowired
     private EntityManager entityManager;
+    @Autowired
+    private UserPaymentRepository userPaymentRepository;
     
     @Transactional
     public OrderResponse createOrder(OrderCustom order)
@@ -50,7 +56,23 @@ public class OrderService {
         //sessionFactory.getCurrentSession().flush();
 
         //create order items repository to save and repository save all 
+        // when order gets created the user payment should also get created
+        UserPayment userPayment = new UserPayment();
+        userPayment.setBaseAmount(getBasePrice(items));
+        userPayment.setUserPaymentId(orderCustom.getUser().getUserId());
+        userPayment.setOrderId(orderCustom.getOrderId());
+        userPayment.setGstAmount((Globals.getGstPercentage()*userPayment.getBaseAmount())/100);
+        userPayment.setMiscellaneousFee((Globals.getMiscellaneousFee()*userPayment.getBaseAmount())/100);
+        userPayment.setDeliveryFee(id);
+        userPayment.setPaid(false);
+        userPayment.setModeOfPayment(ModeOfPayment.INITIATED);
+        userPayment.setTransactionId("abcd");
+        //getting the user payment after saving
+        userPayment = userPaymentRepository.save(userPayment);
+        //resetting the user payment in the order custom for response
+        orderCustom.setUserPayment(userPayment);
         OrderResponse orderResponse = new OrderResponse(orderCustom);
+
         return orderResponse;
     }
 
@@ -63,6 +85,16 @@ public class OrderService {
         }
         return orderItems;
     } 
+
+    private double getBasePrice(List<OrderItem> orderItems)
+    {
+        double tot = 0;
+        for(OrderItem orderItem : orderItems)
+        {
+            tot+=orderItem.getPrice();
+        }
+        return tot;
+    }
 
     public OrderCustom updateOrderStatus(int id, OrderStatus status)
     {
@@ -98,4 +130,8 @@ public class OrderService {
         return orderRepository.getOrderCustomByRider_RiderId(riderId);
     }
 
+    public List<OrderCustom> getOrderCustomByResturantIdAndOrderStatus(int resturantId, OrderStatus orderStatus)
+    {
+        return orderRepository.getOrderCustomByResturant_ResturantIdAndOrderStatus(resturantId, orderStatus);
+    }
 }

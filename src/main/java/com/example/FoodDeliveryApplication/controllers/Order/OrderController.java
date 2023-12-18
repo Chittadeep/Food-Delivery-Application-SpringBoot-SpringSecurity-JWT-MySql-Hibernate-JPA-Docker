@@ -11,18 +11,21 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.FoodDeliveryApplication.entities.Enums.OrderStatus;
 import com.example.FoodDeliveryApplication.entities.Order.OrderCustom;
-import com.example.FoodDeliveryApplication.model.OrderResponse;
+import com.example.FoodDeliveryApplication.model.response.OrderResponse;
 import com.example.FoodDeliveryApplication.services.order.OrderService;
 
 import io.micrometer.core.ipc.http.HttpSender.Response;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 public class OrderController {
     @Autowired
     OrderService orderService;
 
-    @GetMapping(path="/order")
+    @GetMapping(path="admin/order")
     public ResponseEntity<List<OrderCustom>> getAllOrder()
     {
         return new ResponseEntity<List<OrderCustom>>(orderService.getAllOrderForAdmin(), HttpStatus.OK);
@@ -51,6 +54,12 @@ public class OrderController {
     {
         return new ResponseEntity<OrderResponse>(orderService.createOrder(order), HttpStatus.CREATED);
     }
+
+    @GetMapping(path="/order/{resturantId}/{orderStatus}")
+    public ResponseEntity<List<OrderCustom>> getOrderCustomByResturantIdAndOrderStatus(@PathVariable int resturantId, @PathVariable OrderStatus orderStatus) {
+        return new ResponseEntity<List<OrderCustom>>(orderService.getOrderCustomByResturantIdAndOrderStatus(resturantId, orderStatus), HttpStatus.OK);
+    }
+    
 
     //@PatchMapping(path="/Order/{id}")\
     //How to pass enums via path variable??

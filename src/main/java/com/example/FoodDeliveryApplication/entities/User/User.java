@@ -33,9 +33,9 @@ public class User {
     private int userId;
     @NotBlank(message = "Name of an user cannot be blank")
     private String name;
-    @Size(min=10, max = 10)
+    @Size(min=10, max = 10, message = "phone number should be of 10 digits")
     private String phoneNumber;
-    @Email
+    @Email(message = "The email address is invalid")
     @Column(unique=true)
     private String mail;
     @Lob

@@ -45,7 +45,7 @@ public class Rider {
     private String state;
     @NotBlank(message = "Rider cannot be created without pincode")
     private String pincode;
-    @Size(min=10, max = 10)
+    @Size(min=10, max = 10, message = "phone number should be of 10 digits")
     @Column(unique=true)
     private String phoneNumber;
     @Lob
@@ -53,7 +53,7 @@ public class Rider {
     private byte[] image;
     
     @NotNull(message = "Rider cannot be created without mail")
-    @Email
+    @Email(message = "The email address is invalid")
     private String mail;
     @NotBlank(message = "Rider cannot be created without password")
     private String password;

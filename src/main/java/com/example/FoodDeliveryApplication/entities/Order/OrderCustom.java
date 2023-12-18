@@ -34,8 +34,9 @@ public class OrderCustom {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int orderId;
-    @Enumerated(EnumType.STRING)
+    @NotNull(message="Order cannot be created without order status")
     @Column(columnDefinition = "varchar(32) default 'INITIATED'")
+    @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
     @CurrentTimestamp
     private Timestamp orderInitiated;
@@ -62,7 +63,7 @@ public class OrderCustom {
     //foreign relations inverse side
     @OneToMany(mappedBy="order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "orderId", referencedColumnName = "orderId")
     private UserPayment userPayment;
     

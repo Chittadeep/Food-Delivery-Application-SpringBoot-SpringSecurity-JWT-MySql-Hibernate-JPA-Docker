@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import com.example.FoodDeliveryApplication.entities.Enums.OrderStatus;
 import com.example.FoodDeliveryApplication.entities.Order.OrderCustom;
 
 @Repository
@@ -20,4 +21,6 @@ public interface OrderRepository extends CrudRepository<OrderCustom, Integer> {
     public List<OrderCustom> getOrderCustomByRider_RiderId(int riderId);
 
     public List<OrderCustom> getOrderCustomByAddress_AddressId(int addressId);
+
+    public List<OrderCustom> getOrderCustomByResturant_ResturantIdAndOrderStatus(int resturantId, OrderStatus orderStatus);
 }

@@ -56,7 +56,7 @@ public class Resturant {
     //@NotBlank(message = "Resturant Type of a resturant cannot be null")
     @Enumerated(value=EnumType.STRING)
     private ResturantType resturantType;
-    @Email
+    @Email(message = "The email address is invalid")
     @Column(unique = true)
     private String email;
     @NotBlank(message = "Password for a resturant cannot be null")

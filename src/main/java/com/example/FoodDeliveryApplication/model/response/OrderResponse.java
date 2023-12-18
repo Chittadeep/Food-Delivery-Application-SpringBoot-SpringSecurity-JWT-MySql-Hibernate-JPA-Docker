@@ -1,4 +1,4 @@
-package com.example.FoodDeliveryApplication.model;
+package com.example.FoodDeliveryApplication.model.response;
 
 import java.util.List;
 
