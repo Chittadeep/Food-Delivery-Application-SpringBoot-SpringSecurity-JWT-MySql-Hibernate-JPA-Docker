@@ -2,6 +2,7 @@ package com.example.FoodDeliveryApplication.repository.Order;
 
 import java.util.List;
 
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -23,4 +24,11 @@ public interface OrderRepository extends CrudRepository<OrderCustom, Integer> {
     public List<OrderCustom> getOrderCustomByAddress_AddressId(int addressId);
 
     public List<OrderCustom> getOrderCustomByResturant_ResturantIdAndOrderStatus(int resturantId, OrderStatus orderStatus);
+
+    public OrderCustom getOrderCustomByUserPayment_UserPaymentId(int userPaymentId);
+
+    public List<OrderCustom> getOrderCustomByResturant_PincodeAndOrderStatus(String resturantPincode, OrderStatus orderStatus);
+
+    @Query("Select o from OrderCustom o where o.rider.riderId is null and (o.orderStatus = PLACED or o.orderStatus=ACCEPTED or o.orderStatus=READY_FOR_PICKUP) order by o.orderPlacedTimestamp")
+    public List<OrderCustom> getOrderCustomForAssigningRider();
 }

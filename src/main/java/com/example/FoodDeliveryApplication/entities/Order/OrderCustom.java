@@ -39,9 +39,13 @@ public class OrderCustom {
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
     @CurrentTimestamp
-    private Timestamp orderInitiated;
-    private Timestamp orderPlacedTimeStamp;
+    private Timestamp orderInitiatedTimestamp;
+    private Timestamp orderPlacedTimestamp;
+    private Timestamp orderAcceptedTimestamp;
+    private Timestamp orderReadyForPickupTimestamp;
+    private Timestamp orderOnTheWayTimestamp;
     private Timestamp orderDeliveredTimestamp;
+    private Timestamp orderCancelledTimestamp;
 
     //foreign relations owning side
     @NotNull(message = "Order cannot be created without user Id")
@@ -82,12 +86,7 @@ public class OrderCustom {
     public void setOrderStatus(OrderStatus orderStatus) {
         this.orderStatus = orderStatus;
     }
-    public Timestamp getOrderPlacedTimeStamp() {
-        return orderPlacedTimeStamp;
-    }
-    public void setOrderPlacedTimeStamp(Timestamp orderPlacedTimeStamp) {
-        this.orderPlacedTimeStamp = orderPlacedTimeStamp;
-    }
+    
     public Timestamp getOrderDeliveredTimestamp() {
         return orderDeliveredTimestamp;
     }
@@ -137,21 +136,63 @@ public class OrderCustom {
         this.address = address;
     }
 
-    public Timestamp getOrderInitiated() {
-        return orderInitiated;
+    public Timestamp getOrderInitiatedTimestamp() {
+        return orderInitiatedTimestamp;
     }
 
-    public void setOrderInitiated(Timestamp orderInitiated) {
-        this.orderInitiated = orderInitiated;
+    public void setOrderInitiatedTimestamp(Timestamp orderInitiatedTimestamp) {
+        this.orderInitiatedTimestamp = orderInitiatedTimestamp;
     }
 
     public UserPayment getUserPayment() {
         return userPayment;
     }
 
-
     public void setUserPayment(UserPayment userPayment) {
         this.userPayment = userPayment;
     }
 
+    public Timestamp getOrderAcceptedTimestamp() {
+        return orderAcceptedTimestamp;
+    }
+
+    public void setOrderAcceptedTimestamp(Timestamp orderAcceptedTimestamp) {
+        this.orderAcceptedTimestamp = orderAcceptedTimestamp;
+    }
+
+    public Timestamp getOrderCancelledTimestamp() {
+        return orderCancelledTimestamp;
+    }
+
+    public void setOrderCancelledTimestamp(Timestamp orderCancelledTimestamp) {
+        this.orderCancelledTimestamp = orderCancelledTimestamp;
+    }
+
+    public Timestamp getOrderPlacedTimestamp() {
+        return orderPlacedTimestamp;
+    }
+
+    public void setOrderPlacedTimestamp(Timestamp orderPlacedTimestamp) {
+        this.orderPlacedTimestamp = orderPlacedTimestamp;
+    }
+
+
+    public Timestamp getOrderReadyForPickupTimestamp() {
+        return orderReadyForPickupTimestamp;
+    }
+
+
+    public void setOrderReadyForPickupTimestamp(Timestamp orderReadyForPickupTimestamp) {
+        this.orderReadyForPickupTimestamp = orderReadyForPickupTimestamp;
+    }
+
+
+    public Timestamp getOrderOnTheWayTimestamp() {
+        return orderOnTheWayTimestamp;
+    }
+
+
+    public void setOrderOnTheWayTimestamp(Timestamp orderOnTheWayTimestamp) {
+        this.orderOnTheWayTimestamp = orderOnTheWayTimestamp;
+    }
 }

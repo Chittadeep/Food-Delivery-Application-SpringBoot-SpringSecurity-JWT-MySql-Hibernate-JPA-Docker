@@ -1,5 +1,6 @@
 package com.example.FoodDeliveryApplication.services.order;
 
+import java.sql.Timestamp;
 import java.util.*;
 
 import org.hibernate.Session;
@@ -13,12 +14,14 @@ import com.example.FoodDeliveryApplication.entities.Order.OrderCustom;
 import com.example.FoodDeliveryApplication.entities.Order.OrderItem;
 import com.example.FoodDeliveryApplication.entities.Resturant.Menu;
 import com.example.FoodDeliveryApplication.entities.Resturant.Resturant;
+import com.example.FoodDeliveryApplication.entities.Rider.Rider;
 import com.example.FoodDeliveryApplication.entities.User.Address;
 import com.example.FoodDeliveryApplication.entities.User.User;
 import com.example.FoodDeliveryApplication.entities.User.UserPayment;
 import com.example.FoodDeliveryApplication.entities.globals.Globals;
 import com.example.FoodDeliveryApplication.model.response.OrderResponse;
 import com.example.FoodDeliveryApplication.repository.Order.OrderRepository;
+import com.example.FoodDeliveryApplication.repository.Rider.RiderRepository;
 import com.example.FoodDeliveryApplication.repository.User.UserPaymentRepository;
 
 import jakarta.persistence.EntityManager;
@@ -35,6 +38,8 @@ public class OrderService {
     private EntityManager entityManager;
     @Autowired
     private UserPaymentRepository userPaymentRepository;
+    @Autowired
+    private RiderRepository riderRepository;
     
     @Transactional
     public OrderResponse createOrder(OrderCustom order)
@@ -71,6 +76,8 @@ public class OrderService {
         userPayment = userPaymentRepository.save(userPayment);
         //resetting the user payment in the order custom for response
         orderCustom.setUserPayment(userPayment);
+
+        //For the order rider should be available
         OrderResponse orderResponse = new OrderResponse(orderCustom);
 
         return orderResponse;
@@ -84,7 +91,8 @@ public class OrderService {
             orderItem.setPrice(orderItem.getQuantity()*orderItem.getMenu().getPrice());
         }
         return orderItems;
-    } 
+    }
+    
 
     private double getBasePrice(List<OrderItem> orderItems)
     {
@@ -100,6 +108,30 @@ public class OrderService {
     {
         OrderCustom order = getOrder(id);
         order.setOrderStatus(status);
+        if(status.equals(OrderStatus.INITIATED))
+        {
+            order.setOrderInitiatedTimestamp(new Timestamp(System.currentTimeMillis()));
+        }
+        else if(status.equals(OrderStatus.PLACED))
+        {
+            order.setOrderPlacedTimestamp(new Timestamp(System.currentTimeMillis()));
+        }
+        else if(status.equals(OrderStatus.ACCEPTED))
+        {
+            order.setOrderAcceptedTimestamp(new Timestamp(System.currentTimeMillis()));
+        }
+        else if(status.equals(OrderStatus.READY_FOR_PICKUP))
+        {
+            order.setOrderReadyForPickupTimestamp(new Timestamp(System.currentTimeMillis()));
+        }
+        else if(status.equals(OrderStatus.ON_THE_WAY))
+        {
+            order.setOrderOnTheWayTimestamp(new Timestamp(System.currentTimeMillis()));
+        }
+        else
+        {
+            order.setOrderDeliveredTimestamp(new Timestamp(System.currentTimeMillis()));
+        }
         return orderRepository.save(order);
     }
 
@@ -134,4 +166,6 @@ public class OrderService {
     {
         return orderRepository.getOrderCustomByResturant_ResturantIdAndOrderStatus(resturantId, orderStatus);
     }
+
+    
 }
