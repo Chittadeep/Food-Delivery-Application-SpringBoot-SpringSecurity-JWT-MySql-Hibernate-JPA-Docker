@@ -11,9 +11,12 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.FoodDeliveryApplication.entities.Enums.Role;
 import com.example.FoodDeliveryApplication.entities.User.User;
+import com.example.FoodDeliveryApplication.entities.globals.LoginDetails;
 import com.example.FoodDeliveryApplication.exceptions.EntityDoesNotExistException;
 import com.example.FoodDeliveryApplication.repository.User.UserRepository;
+import com.example.FoodDeliveryApplication.repository.globals.LoginDetailsRepository;
 
 
 
@@ -21,11 +24,15 @@ import com.example.FoodDeliveryApplication.repository.User.UserRepository;
 public class UserService {
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private LoginDetailsRepository loginDetailsRepository;
 
     public User createUser(User user)
     {
         user.setValid(true);
         userRepository.save(user);
+        LoginDetails loginDetails = new LoginDetails(user.getMail(), user.getPassword(), Role.USER);
+        loginDetailsRepository.save(loginDetails);
         return user;
     }
 
