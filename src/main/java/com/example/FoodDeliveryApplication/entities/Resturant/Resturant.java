@@ -21,6 +21,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @Entity
 public class Resturant {
@@ -41,6 +42,7 @@ public class Resturant {
     private String pincode;
     //@NotBlank(message = "Phone number of a resturant cannot be null")
     @Column(unique=true)
+    @Size(max=10, min = 10)
     private String phoneNumber;
     //@NotBlank(message = "Website of a resturant cannot be null")
     //validation for website

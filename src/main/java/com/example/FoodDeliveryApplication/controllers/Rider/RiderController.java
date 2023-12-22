@@ -77,4 +77,22 @@ public class RiderController {
         headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=riderProfilePic.jpg");
         return ResponseEntity.ok().headers(headers).contentType(MediaType.IMAGE_JPEG).body(riderService.getProfilePicture(riderId));
     } 
+
+    @PatchMapping(path = "/rider")
+    public ResponseEntity<Boolean> updateRiderPincode(@RequestParam int riderId, @RequestParam String pincode)
+    {
+        return new ResponseEntity<Boolean>(riderService.updateRiderPincode(riderId, pincode), HttpStatus.OK);
+    }
+
+    @PatchMapping(path = "/rider/{riderId}/makeRiderAvailable")
+    public ResponseEntity<Boolean> makeRiderAvailable(@PathVariable int riderId)
+    {
+        return new ResponseEntity<Boolean>(riderService.makeRiderAvailable(riderId), HttpStatus.OK);
+    }
+    
+    @PatchMapping(path = "/rider/{riderId}/makeRiderUnAvailable")
+    public ResponseEntity<Boolean> makeRiderUnavailable(@PathVariable int riderId)
+    {
+        return new ResponseEntity<Boolean>(riderService.makeRiderUnavailable(riderId), HttpStatus.OK);
+    }
 }

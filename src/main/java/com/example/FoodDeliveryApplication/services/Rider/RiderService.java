@@ -95,4 +95,28 @@ public class RiderService {
         return true;
     }
 
+    public boolean updateRiderPincode(int riderId, String pincode)
+    {
+        Rider rider = getRider(riderId);
+        rider.setPincode(pincode);
+        riderRepository.save(rider);
+        return true;
+    }
+
+    public boolean makeRiderAvailable(int riderId)
+    {
+        Rider rider = getRider(riderId);
+        rider.setAvailable(true);
+        riderRepository.save(rider);
+        return true;
+    }
+
+    public boolean makeRiderUnavailable(int riderId)
+    {
+        Rider rider = getRider(riderId);
+        rider.setAvailable(false);
+        riderRepository.save(rider);
+        return true;
+    }
+
 }

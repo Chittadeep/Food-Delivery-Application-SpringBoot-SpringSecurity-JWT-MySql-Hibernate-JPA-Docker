@@ -10,11 +10,14 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.FoodDeliveryApplication.entities.Enums.MenuCategory;
 import com.example.FoodDeliveryApplication.entities.Resturant.Menu;
 import com.example.FoodDeliveryApplication.exceptions.EntityDoesNotExistException;
 import com.example.FoodDeliveryApplication.repository.Resturant.MenuRepository;
+import com.opencsv.CSVReader;
+import com.opencsv.CSVReaderBuilder;
 
 @Service
 public class MenuService {
@@ -71,7 +74,7 @@ public class MenuService {
         menuRepository.deleteById(menuId);
         return true;
     }
-/*
+
     public List<Menu> createMenusFromCSV(MultipartFile multipartFile) throws IOException
     {
         byte[] bytes = multipartFile.getBytes();
@@ -109,6 +112,6 @@ public class MenuService {
         
     return list;
     }
-    */
+    
 
 }

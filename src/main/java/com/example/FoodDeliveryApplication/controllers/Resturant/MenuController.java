@@ -1,5 +1,6 @@
 package com.example.FoodDeliveryApplication.controllers.Resturant;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.FoodDeliveryApplication.entities.Enums.MenuCategory;
 import com.example.FoodDeliveryApplication.entities.Resturant.Menu;
@@ -70,11 +73,11 @@ public class MenuController {
         return new ResponseEntity<Boolean>(menuService.deleteMenu(menuId), HttpStatus.OK);
     }
 
-    /*
+    
     @PostMapping(path="/menu/createFromCSV")
     public ResponseEntity<List<Menu>> createFromCSV(@RequestParam("file") MultipartFile file) throws IOException
     {
         return new ResponseEntity<List<Menu>>(menuService.createMenusFromCSV(file), HttpStatus.CREATED);
     }
-    */
+    
 }
