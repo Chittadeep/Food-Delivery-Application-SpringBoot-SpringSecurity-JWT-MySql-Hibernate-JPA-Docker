@@ -39,7 +39,8 @@ public class UserPayment {
     @NotNull(message = "User payment cannot be generated without tip")
     private double tip;
     @CurrentTimestamp
-    private Date timestamp;
+    private Date generatedTimestamp;
+    private Date completedTimestamp;
     @NotBlank(message = "User payment cannot be generated without transactionId")
     @Column(unique=true)
     private String transactionId;
@@ -70,6 +71,7 @@ public class UserPayment {
     public void setTotalAmount(double totalAmount) {
         this.totalAmount = totalAmount;
     }
+
     public double getBaseAmount() {
         return baseAmount;
     }
@@ -100,11 +102,21 @@ public class UserPayment {
     public void setTip(double tip) {
         this.tip = tip;
     }
-    public Date getTimestamp() {
-        return timestamp;
+    
+     public Date getGeneratedTimestamp() {
+        return generatedTimestamp;
     }
-    public void setTimestamp(Date timestamp) {
-        this.timestamp = timestamp;
+
+    public void setGeneratedTimestamp(Date generatedTimestamp) {
+        this.generatedTimestamp = generatedTimestamp;
+    }
+
+    public Date getCompletedTimestamp() {
+        return completedTimestamp;
+    }
+
+    public void setCompletedTimestamp(Date completedTimestamp) {
+        this.completedTimestamp = completedTimestamp;
     }
     public String getTransactionId() {
         return transactionId;
@@ -134,5 +146,6 @@ public class UserPayment {
     public void setPaid(boolean paid) {
         this.paid = paid;
     }
+
 
 }

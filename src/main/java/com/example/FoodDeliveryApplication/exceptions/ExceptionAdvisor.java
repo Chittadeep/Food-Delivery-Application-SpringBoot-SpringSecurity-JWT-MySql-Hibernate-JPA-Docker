@@ -46,4 +46,10 @@ public class ExceptionAdvisor {
     {
         return new ResponseEntity<String>(exception.getMessage(), HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(PaymentIsAlreadyPaidException.class)
+    public ResponseEntity<String> handlePaymentIsAlreadyPaidException(PaymentIsAlreadyPaidException exception)
+    {
+        return new ResponseEntity<String>(exception.getMessage(), HttpStatus.BAD_REQUEST);
+    }
 }

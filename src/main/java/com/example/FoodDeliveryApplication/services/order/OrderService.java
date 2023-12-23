@@ -71,7 +71,8 @@ public class OrderService {
         userPayment.setOrderId(orderCustom.getOrderId());
         userPayment.setGstAmount((Globals.getGstPercentage()*userPayment.getBaseAmount())/100);
         userPayment.setMiscellaneousFee((Globals.getMiscellaneousFee()*userPayment.getBaseAmount())/100);
-        userPayment.setDeliveryFee(id);
+        userPayment.setDeliveryFee(Globals.getDeliveryFeePerKm()*1);
+        userPayment.setTotalAmount(userPayment.getBaseAmount()+userPayment.getDeliveryFee()+userPayment.getGstAmount()+userPayment.getTip());
         userPayment.setPaid(false);
         userPayment.setModeOfPayment(ModeOfPayment.INITIATED);
         userPayment.setTransactionId(new Timestamp(System.currentTimeMillis()).toString());//currently since for implementing new TransactionId we have to use microservices for integrating with actual payment gateways 

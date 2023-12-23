@@ -12,6 +12,7 @@ import com.example.FoodDeliveryApplication.entities.Order.OrderCustom;
 import com.example.FoodDeliveryApplication.entities.Rider.Rider;
 import com.example.FoodDeliveryApplication.entities.User.UserPayment;
 import com.example.FoodDeliveryApplication.exceptions.EntityDoesNotExistException;
+import com.example.FoodDeliveryApplication.exceptions.PaymentIsAlreadyPaidException;
 import com.example.FoodDeliveryApplication.repository.Order.OrderRepository;
 import com.example.FoodDeliveryApplication.repository.Rider.RiderRepository;
 import com.example.FoodDeliveryApplication.repository.User.UserPaymentRepository;
@@ -57,7 +58,10 @@ public class UserPaymentService {
     public UserPayment completeUserPayment(int userPaymentId, ModeOfPayment modeOfPayment)
     {
         UserPayment userPayment = getUserPaymentById(userPaymentId);
+        if(userPayment.isPaid()) throw new PaymentIsAlreadyPaidException();
         userPayment.setModeOfPayment(modeOfPayment);
+        userPayment.setPaid(true);
+        userPayment.setCompletedTimestamp(new Timestamp(System.currentTimeMillis()));
         OrderCustom order =orderRepository.findById(userPayment.getOrderId()).get();
         order.setOrderStatus(OrderStatus.PLACED);
         order.setOrderPlacedTimestamp(new Timestamp(System.currentTimeMillis()));
