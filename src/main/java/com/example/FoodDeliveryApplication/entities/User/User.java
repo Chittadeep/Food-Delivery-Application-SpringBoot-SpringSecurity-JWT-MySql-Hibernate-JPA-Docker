@@ -34,12 +34,13 @@ public class User {
     @NotBlank(message = "Name of an user cannot be blank")
     private String name;
     @Size(min=10, max = 10, message = "phone number should be of 10 digits")
+    @Column(unique = true)
     private String phoneNumber;
     @Email(message = "The email address is invalid")
     @Column(unique=true)
     private String mail;
     @Lob
-    @Column(length=500000)
+    @Column(length=50000000)
     private byte[] image;
     @NotBlank(message = "Password cannot be blank")
     private String password;

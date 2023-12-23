@@ -31,8 +31,8 @@ public class UserService {
     {
         user.setValid(true);
         userRepository.save(user);
-        LoginDetails loginDetails = new LoginDetails(user.getMail(), user.getPassword(), Role.USER);
-        loginDetailsRepository.save(loginDetails);
+        //LoginDetails loginDetails = new LoginDetails(user.getMail(), user.getPassword(), Role.USER);
+        //loginDetailsRepository.save(loginDetails);
         return user;
     }
 

@@ -35,14 +35,20 @@ public class ResturantController {
         return new ResponseEntity<Resturant>(resturantService.createResturant(resturant), HttpStatus.CREATED);
     }
     
-    @GetMapping(path="/resturant/getNearest/{pincode}")
+    @GetMapping(path="/resturant/getNearestAvailableResturantsByPincode/{pincode}")
+    public ResponseEntity<List<Resturant>> getNearestAvailableResturantByPincode(@PathVariable String pincode)
+    {
+        return new ResponseEntity<List<Resturant>>(resturantService.getNearestAvailableResturantByPincode(pincode), HttpStatus.OK);
+    }
+
+    @GetMapping(path="/resturant/getResturantByPincode/{pincode}")
     public ResponseEntity<List<Resturant>> getResturantByPincode(@PathVariable String pincode)
     {
         return new ResponseEntity<List<Resturant>>(resturantService.getResturantByPincode(pincode), HttpStatus.OK);
     }
 
-    @GetMapping(path="/resturant/{id}")
-    public ResponseEntity<Resturant> getResturantById(int resturantId)
+    @GetMapping(path="/resturant/{resturantId}")
+    public ResponseEntity<Resturant> getResturantById(@PathVariable int resturantId)
     {
         return new ResponseEntity<Resturant>(resturantService.getResturantById(resturantId), HttpStatus.OK);
     }

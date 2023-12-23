@@ -17,6 +17,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 //@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "addressId")
@@ -37,6 +38,7 @@ public class Address {
     // @ManyToOne(fetch=FetchType.EAGER)
     // @JoinColumn(name="userId", referencedColumnName = "userId")
     //@JsonBackReference
+    @NotNull
     private int userId;
 
     // //foriegn relations inverse side

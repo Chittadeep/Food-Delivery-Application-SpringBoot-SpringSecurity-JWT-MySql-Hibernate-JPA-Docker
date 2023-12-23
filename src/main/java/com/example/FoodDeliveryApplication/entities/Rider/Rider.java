@@ -25,6 +25,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
 
 @Entity
@@ -39,6 +40,7 @@ public class Rider {
     @NotBlank(message = "Rider cannot be created without address")
     private String address;
     @NotNull(message = "Rider cannot be created without dob")
+    @Past
     @JsonFormat(shape=Shape.STRING, pattern="dd-MM-yyyy")
     private Date dob;
     @NotBlank(message = "Rider cannot be created without state")
@@ -54,6 +56,7 @@ public class Rider {
     
     @NotNull(message = "Rider cannot be created without mail")
     @Email(message = "The email address is invalid")
+    @Column(unique = true)
     private String mail;
     @NotBlank(message = "Rider cannot be created without password")
     private String password;
@@ -69,7 +72,7 @@ public class Rider {
     @NotBlank(message = "Rider cannot be created without vehicle")
     private String vehicle;
     @NotNull(message = "Rider cannot be created without Latitude")
-    private double latittude;
+    private double latitude;
     @NotNull(message = "Rider cannot be created without Longitude")
     private double longitude;
     @ColumnDefault(value = "true")
@@ -150,11 +153,11 @@ public class Rider {
     public void setVehicle(String vehicle) {
         this.vehicle = vehicle;
     }
-    public double getLatittude() {
-        return latittude;
+    public double getLatitude() {
+        return latitude;
     }
-    public void setLatittude(double latittude) {
-        this.latittude = latittude;
+    public void setLatitude(double latittude) {
+        this.latitude = latittude;
     }
     public double getLongitude() {
         return longitude;
@@ -200,6 +203,5 @@ public class Rider {
     // public void setBankAccountInfo(List<byte[]> bankAccountInfo) {
     //     this.bankAccountInfo = bankAccountInfo;
     // }
-
 
 }

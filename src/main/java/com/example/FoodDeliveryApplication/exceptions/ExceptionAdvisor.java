@@ -1,5 +1,6 @@
 package com.example.FoodDeliveryApplication.exceptions;
 
+import org.apache.commons.lang3.text.StrBuilder;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,15 +24,25 @@ public class ExceptionAdvisor {
     }
 
     @ExceptionHandler(EnumOptionNotAvailableException.class)
-    
     public ResponseEntity<String> handleEnumOptionNotAvailableException(EnumOptionNotAvailableException exception)
     {
         return new ResponseEntity<String>(exception.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
-    
     public ResponseEntity<String> handleDataIntegrityViolationException(DataIntegrityViolationException exception)
+    {
+        return new ResponseEntity<String>(exception.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ResturantAndUserAddressTooFarException.class)
+    public ResponseEntity<String> handleResturantAndUserAddresTooFarException(ResturantAndUserAddressTooFarException exception)
+    {
+        return new ResponseEntity<String>(exception.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(OrderAlreadyCancelledException.class)
+    public ResponseEntity<String> handleOrderAlreadyCancelledException(OrderAlreadyCancelledException exception)
     {
         return new ResponseEntity<String>(exception.getMessage(), HttpStatus.BAD_REQUEST);
     }

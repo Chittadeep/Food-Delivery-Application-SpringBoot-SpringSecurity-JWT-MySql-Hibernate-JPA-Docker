@@ -1,11 +1,7 @@
 package com.example.FoodDeliveryApplication;
 
-import org.hibernate.SessionFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
-
-import com.example.FoodDeliveryApplication.services.AssignRiderService;
 
 @SpringBootApplication
 public class FoodDeliveryApplication {

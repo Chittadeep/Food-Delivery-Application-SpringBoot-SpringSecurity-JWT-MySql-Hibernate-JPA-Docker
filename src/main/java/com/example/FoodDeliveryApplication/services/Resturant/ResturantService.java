@@ -30,11 +30,14 @@ public class ResturantService {
         return resturantRepository.findById(resturantId).orElseThrow(()-> new EntityNotFoundException("Resturant with this id does not exist"));
     }
 
+    public List<Resturant> getNearestAvailableResturantByPincode(String pincode)
+    {
+        return resturantRepository.getResturantByPincode(pincode);//get Nearest and Available change to be done
+    }
     public List<Resturant> getResturantByPincode(String pincode)
     {
-        return resturantRepository.getResturantByPincode(pincode);
+        return resturantRepository.getResturantByPincode(pincode);//get Nearest and Available change to be done
     }
-
     public Resturant updateResturant(Resturant resturant)
     {
         Resturant oldResturant= getResturantById(resturant.getResturantId());

@@ -78,10 +78,10 @@ public class RiderController {
         return ResponseEntity.ok().headers(headers).contentType(MediaType.IMAGE_JPEG).body(riderService.getProfilePicture(riderId));
     } 
 
-    @PatchMapping(path = "/rider")
-    public ResponseEntity<Boolean> updateRiderPincode(@RequestParam int riderId, @RequestParam String pincode)
+    @PatchMapping(path = "/rider/updateLocation")
+    public ResponseEntity<Boolean> updateRiderLocation(@RequestParam int riderId, @RequestParam String pincode, @RequestParam double latitude, @RequestParam double longitude)
     {
-        return new ResponseEntity<Boolean>(riderService.updateRiderPincode(riderId, pincode), HttpStatus.OK);
+        return new ResponseEntity<Boolean>(riderService.updateRiderLocation(riderId, pincode, latitude, longitude), HttpStatus.OK);
     }
 
     @PatchMapping(path = "/rider/{riderId}/makeRiderAvailable")

@@ -51,7 +51,7 @@ public class RiderService {
         //oldRider.setBankAccountInfo(rider.getBankAccountInfo());
         oldRider.setVehicleType(rider.getVehicleType());
         oldRider.setVehicle(rider.getVehicle());
-        oldRider.setLatittude(rider.getLatittude());
+        oldRider.setLatitude(rider.getLatitude());
         oldRider.setLongitude(rider.getLongitude());
         riderRepository.save(oldRider);
         //why cant we save the new rider directly when both old rider and new rider have their primary keys equal?
@@ -95,10 +95,11 @@ public class RiderService {
         return true;
     }
 
-    public boolean updateRiderPincode(int riderId, String pincode)
-    {
+    public boolean updateRiderLocation(int riderId, String pincode, double latitude, double longitude)  {
         Rider rider = getRider(riderId);
         rider.setPincode(pincode);
+        rider.setLatitude(latitude);
+        rider.setLongitude(longitude);
         riderRepository.save(rider);
         return true;
     }

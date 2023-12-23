@@ -19,6 +19,8 @@ import com.example.FoodDeliveryApplication.entities.User.Address;
 import com.example.FoodDeliveryApplication.entities.User.User;
 import com.example.FoodDeliveryApplication.entities.User.UserPayment;
 import com.example.FoodDeliveryApplication.entities.globals.Globals;
+import com.example.FoodDeliveryApplication.exceptions.OrderAlreadyCancelledException;
+import com.example.FoodDeliveryApplication.exceptions.ResturantAndUserAddressTooFarException;
 import com.example.FoodDeliveryApplication.model.response.OrderResponse;
 import com.example.FoodDeliveryApplication.repository.Order.OrderRepository;
 import com.example.FoodDeliveryApplication.repository.Rider.RiderRepository;
@@ -44,6 +46,7 @@ public class OrderService {
     @Transactional
     public OrderResponse createOrder(OrderCustom order)
     {
+        if(order.getAddress().getPincode()!=order.getResturant().getPincode()) throw new ResturantAndUserAddressTooFarException();
         SessionFactory sessionFactory = entityManagerFactory.unwrap(SessionFactory.class);
         Session session = entityManager.unwrap(Session.class);
         //session.beginTransaction();
@@ -71,7 +74,7 @@ public class OrderService {
         userPayment.setDeliveryFee(id);
         userPayment.setPaid(false);
         userPayment.setModeOfPayment(ModeOfPayment.INITIATED);
-        userPayment.setTransactionId("abcd");
+        userPayment.setTransactionId(new Timestamp(System.currentTimeMillis()).toString());//currently since for implementing new TransactionId we have to use microservices for integrating with actual payment gateways 
         //getting the user payment after saving
         userPayment = userPaymentRepository.save(userPayment);
         //resetting the user payment in the order custom for response
@@ -81,7 +84,9 @@ public class OrderService {
         OrderResponse orderResponse = new OrderResponse(orderCustom);
 
         return orderResponse;
-    }
+        }
+        
+    
 
     private List<OrderItem> updatePrice(List<OrderItem> orderItems, Session session)
     {
@@ -108,6 +113,7 @@ public class OrderService {
     {
         OrderCustom order = getOrder(id);
         order.setOrderStatus(status);
+        if(order.getOrderStatus()==OrderStatus.CANCELLED) throw new OrderAlreadyCancelledException();
         if(status.equals(OrderStatus.INITIATED))
         {
             order.setOrderInitiatedTimestamp(new Timestamp(System.currentTimeMillis()));

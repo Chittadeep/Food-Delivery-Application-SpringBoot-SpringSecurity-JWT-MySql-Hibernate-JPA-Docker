@@ -1,13 +1,14 @@
 package com.example.FoodDeliveryApplication.entities.globals;
 
-import org.springframework.data.annotation.Id;
-
 import com.example.FoodDeliveryApplication.entities.Enums.Role;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 @Entity
 public class LoginDetails {
@@ -17,6 +18,7 @@ public class LoginDetails {
     @Column(unique = true)
     private String userName;
     private String password;
+    @Enumerated(EnumType.STRING)
     private Role role;
 
     public LoginDetails(String userName, String password, Role role) {
