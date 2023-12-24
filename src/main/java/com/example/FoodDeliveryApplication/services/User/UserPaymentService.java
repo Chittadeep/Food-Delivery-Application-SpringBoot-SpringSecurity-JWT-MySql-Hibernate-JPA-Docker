@@ -66,11 +66,6 @@ public class UserPaymentService {
         order.setOrderStatus(OrderStatus.PLACED);
         order.setOrderPlacedTimestamp(new Timestamp(System.currentTimeMillis()));
         orderRepository.save(order);
-        if(!isAssignedRiderThreadInitialized)
-        {
-        new Thread(new AssignRiderService(orderRepository, riderRepository), "AssignRiderThread").start();
-        isAssignedRiderThreadInitialized=true;
-        }
         return userPayment;
     }
 }

@@ -10,5 +10,7 @@ import com.example.FoodDeliveryApplication.entities.Resturant.Resturant;
 public interface ResturantRepository extends CrudRepository<Resturant, Integer> {
     public List<Resturant> getResturantByPincode(String pincode);
 
+    public List<Resturant> getResturantByPincodeAndApproved(String pincode, boolean approved);
+
     //getResturantByPincode and available==true change to be introduced
 }

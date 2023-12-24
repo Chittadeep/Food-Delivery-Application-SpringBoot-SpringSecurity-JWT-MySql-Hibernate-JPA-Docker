@@ -40,7 +40,7 @@ public class Rider {
     @NotBlank(message = "Rider cannot be created without address")
     private String address;
     @NotNull(message = "Rider cannot be created without dob")
-    @Past
+    @Past(message = "The birthdate of the rider should be in the past")
     @JsonFormat(shape=Shape.STRING, pattern="dd-MM-yyyy")
     private Date dob;
     @NotBlank(message = "Rider cannot be created without state")
@@ -51,7 +51,7 @@ public class Rider {
     @Column(unique=true)
     private String phoneNumber;
     @Lob
-    @Column(length=5000000)
+    @Column(length=50000000)
     private byte[] image;
     
     @NotNull(message = "Rider cannot be created without mail")
@@ -61,7 +61,7 @@ public class Rider {
     @NotBlank(message = "Rider cannot be created without password")
     private String password;
     @Lob
-    @Column(length=5000000)
+    @Column(length=50000000)
     private byte[] dl;
     // @NotEmpty(message = "Rider cannot be created with empty bank account info")
     // private List<byte[]> bankAccountInfo;

@@ -33,9 +33,9 @@ public class OrderController {
     }
 
     @GetMapping(path="/admin/order/{orderId}")
-    public ResponseEntity<OrderCustom> getOrderCustomById(@PathVariable int orderId)
+    public ResponseEntity<OrderResponse> getOrderResponseById(@PathVariable int orderId)
     {
-        return new ResponseEntity<OrderCustom>(orderService.getOrder(orderId), HttpStatus.OK);
+        return new ResponseEntity<OrderResponse>(new OrderResponse(orderService.getOrder(orderId)), HttpStatus.OK);
     }
     
     @GetMapping(path = "/resturant/{resturantId}/order")
@@ -60,10 +60,16 @@ public class OrderController {
     public ResponseEntity<List<OrderCustom>> getOrderCustomByResturantIdAndOrderStatus(@PathVariable int resturantId, @PathVariable OrderStatus orderStatus) {
         return new ResponseEntity<List<OrderCustom>>(orderService.getOrderCustomByResturantIdAndOrderStatus(resturantId, orderStatus), HttpStatus.OK);
     }
+
+    @GetMapping(path="/order/{resturantId}/checkPendingOrders")
+    public ResponseEntity<List<OrderResponse>> getOrderCustomPendingByResturantId(@PathVariable int resturantId) {
+        return new ResponseEntity<List<OrderResponse>>(orderService.getOrderCustomPendingByResturantId(resturantId), HttpStatus.OK);
+    }
     
     @PatchMapping(path="/order/{orderId}/{orderStatus}")
-    public ResponseEntity<OrderCustom> updateOrderCustomByOrderIdAndOrderStatus(@PathVariable int orderId, @PathVariable OrderStatus orderStatus)
+    public ResponseEntity<OrderResponse> updateOrderCustomByOrderIdAndOrderStatus(@PathVariable int orderId, @PathVariable OrderStatus orderStatus)
     {
-        return new ResponseEntity<OrderCustom>(orderService.updateOrderStatus(orderId, orderStatus), HttpStatus.OK);
+        return new ResponseEntity<OrderResponse>(orderService.updateOrderStatus(orderId, orderStatus), HttpStatus.OK);
     }
+
 }

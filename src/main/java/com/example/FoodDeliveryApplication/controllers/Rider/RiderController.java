@@ -95,4 +95,18 @@ public class RiderController {
     {
         return new ResponseEntity<Boolean>(riderService.makeRiderUnavailable(riderId), HttpStatus.OK);
     }
+
+    @PatchMapping(path = "/rider/submitDl/{riderId}")
+    public ResponseEntity<Boolean> submitRiderDl(@PathVariable int riderId, @RequestParam("file") MultipartFile file)
+    {
+        return new ResponseEntity<Boolean>(riderService.submitDl(riderId, file), HttpStatus.ACCEPTED);
+    }
+
+    @GetMapping(path = "/rider/{riderId}/getDl")
+    public ResponseEntity<InputStreamResource> getDl(@PathVariable int riderId) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=RiderDl.jpg");
+        return ResponseEntity.ok().headers(headers).contentType(MediaType.IMAGE_JPEG).body(riderService.getDl(riderId));
+    }
+    
 }

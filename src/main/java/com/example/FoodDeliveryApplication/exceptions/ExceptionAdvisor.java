@@ -52,4 +52,28 @@ public class ExceptionAdvisor {
     {
         return new ResponseEntity<String>(exception.getMessage(), HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(AddressIsNotOfUserException.class)
+    public ResponseEntity<String> handleAddressIsNotOfUserException(AddressIsNotOfUserException exception)
+    {
+        return new ResponseEntity<String>(exception.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ImageRequestedDoesNotExistException.class)
+    public ResponseEntity<String> handleImageRequestDoesNotExistException(ImageRequestedDoesNotExistException exception)
+    {
+        return new ResponseEntity<String>(exception.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ItemDoesNotBelongToTheMenuOfTheResturantException.class)
+    public ResponseEntity<String> handleItemDoesNotBelongToTheMenuOfTheResturantException(ItemDoesNotBelongToTheMenuOfTheResturantException exception)
+    {
+        return new ResponseEntity<String>(exception.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(MenuNotAvailableInAnyResturantException.class)
+    public ResponseEntity<String> handleMenuNotAvailableInAnyResturantException(MenuNotAvailableInAnyResturantException exception)
+    {
+        return new ResponseEntity<String>(exception.getMessage(), HttpStatus.BAD_REQUEST);
+    }
 }

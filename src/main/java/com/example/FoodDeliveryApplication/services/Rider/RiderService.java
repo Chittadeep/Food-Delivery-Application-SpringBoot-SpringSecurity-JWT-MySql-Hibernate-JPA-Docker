@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.example.FoodDeliveryApplication.entities.Rider.Rider;
 import com.example.FoodDeliveryApplication.exceptions.EntityDoesNotExistException;
+import com.example.FoodDeliveryApplication.exceptions.ImageRequestedDoesNotExistException;
 import com.example.FoodDeliveryApplication.repository.Rider.RiderRepository;
 
 @Service
@@ -71,11 +72,35 @@ public class RiderService {
         return true;
     }
 
-       public InputStreamResource getProfilePicture(int riderId)
+    public boolean submitDl(int riderId, MultipartFile file)
+    {
+        Rider oldRider = getRider(riderId);
+        try{
+            oldRider.setDl(file.getBytes());
+            riderRepository.save(oldRider);
+        }catch(IOException e)
+        {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    public InputStreamResource getProfilePicture(int riderId)
     {
         byte[] bytes = getRider(riderId).getImage();
+        if(bytes==null) throw new ImageRequestedDoesNotExistException();
         InputStream stream = new ByteArrayInputStream(bytes);
         InputStreamResource resource = new InputStreamResource(stream);
+        return resource;
+    }
+
+    public InputStreamResource getDl(int riderId)
+    {
+        byte[] bytes = getRider(riderId).getDl();
+        if(bytes==null) throw new ImageRequestedDoesNotExistException();
+        InputStream stream = new ByteArrayInputStream(bytes);
+        InputStreamResource resource= new InputStreamResource(stream);
         return resource;
     }
 

@@ -34,6 +34,13 @@ public class ResturantService {
     {
         return resturantRepository.getResturantByPincode(pincode);//get Nearest and Available change to be done
     }
+
+
+    public List<Resturant> getNearestAvailableResturantByPincodeAndApproved(String pincode)
+    {
+        return resturantRepository.getResturantByPincodeAndApproved(pincode, true);//get Nearest and Available change to be done
+    }
+
     public List<Resturant> getResturantByPincode(String pincode)
     {
         return resturantRepository.getResturantByPincode(pincode);//get Nearest and Available change to be done

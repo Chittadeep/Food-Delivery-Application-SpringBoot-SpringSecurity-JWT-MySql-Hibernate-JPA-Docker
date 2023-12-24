@@ -15,6 +15,7 @@ import com.example.FoodDeliveryApplication.entities.Enums.Role;
 import com.example.FoodDeliveryApplication.entities.User.User;
 import com.example.FoodDeliveryApplication.entities.globals.LoginDetails;
 import com.example.FoodDeliveryApplication.exceptions.EntityDoesNotExistException;
+import com.example.FoodDeliveryApplication.exceptions.ImageRequestedDoesNotExistException;
 import com.example.FoodDeliveryApplication.repository.User.UserRepository;
 import com.example.FoodDeliveryApplication.repository.globals.LoginDetailsRepository;
 
@@ -92,6 +93,7 @@ public class UserService {
     public InputStreamResource getProfilePicture(int userId)
     {
         byte[] bytes = getUser(userId).getImage();
+        if(bytes==null) throw new ImageRequestedDoesNotExistException();
         InputStream stream = new ByteArrayInputStream(bytes);
         InputStreamResource resource = new InputStreamResource(stream);
         return resource;

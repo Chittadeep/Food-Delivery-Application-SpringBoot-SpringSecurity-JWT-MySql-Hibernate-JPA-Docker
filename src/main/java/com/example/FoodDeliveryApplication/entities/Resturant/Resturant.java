@@ -3,6 +3,7 @@ package com.example.FoodDeliveryApplication.entities.Resturant;
 import java.util.Set;
 import java.util.List;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.validator.constraints.URL;
 
 import com.example.FoodDeliveryApplication.entities.Enums.ResturantType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -44,10 +45,11 @@ public class Resturant {
     @Column(unique=true)
     @Size(max=10, min = 10)
     private String phoneNumber;
-    //@NotBlank(message = "Website of a resturant cannot be null")
-    //validation for website
+    @NotBlank(message = "Website of a resturant cannot be null")
+    @URL(message = "The website format is not proper")
     private String website;
     private List<byte[]> pictures;
+
     @Lob
     @Column(length = 500000)
     private byte[] bankDetails;
@@ -200,6 +202,14 @@ public class Resturant {
 
     public void setResturantPayments(Set<ResturantPayment> resturantPayments) {
         this.resturantPayments = resturantPayments;
+    }
+    
+    public List<byte[]> getPictures() {
+        return pictures;
+    }
+
+    public void setPictures(List<byte[]> pictures) {
+        this.pictures = pictures;
     }
 
 }

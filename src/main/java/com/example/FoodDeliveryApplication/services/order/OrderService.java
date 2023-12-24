@@ -19,12 +19,16 @@ import com.example.FoodDeliveryApplication.entities.User.Address;
 import com.example.FoodDeliveryApplication.entities.User.User;
 import com.example.FoodDeliveryApplication.entities.User.UserPayment;
 import com.example.FoodDeliveryApplication.entities.globals.Globals;
+import com.example.FoodDeliveryApplication.exceptions.AddressIsNotOfUserException;
+import com.example.FoodDeliveryApplication.exceptions.ItemDoesNotBelongToTheMenuOfTheResturantException;
+import com.example.FoodDeliveryApplication.exceptions.MenuNotAvailableInAnyResturantException;
 import com.example.FoodDeliveryApplication.exceptions.OrderAlreadyCancelledException;
 import com.example.FoodDeliveryApplication.exceptions.ResturantAndUserAddressTooFarException;
 import com.example.FoodDeliveryApplication.model.response.OrderResponse;
 import com.example.FoodDeliveryApplication.repository.Order.OrderRepository;
 import com.example.FoodDeliveryApplication.repository.Rider.RiderRepository;
 import com.example.FoodDeliveryApplication.repository.User.UserPaymentRepository;
+import com.example.FoodDeliveryApplication.services.AssignRiderService;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
@@ -32,30 +36,39 @@ import jakarta.transaction.Transactional;
 
 @Service
 public class OrderService {
-    @Autowired
     private OrderRepository orderRepository;
-    @Autowired
     private EntityManagerFactory entityManagerFactory;
-    @Autowired
     private EntityManager entityManager;
-    @Autowired
     private UserPaymentRepository userPaymentRepository;
-    @Autowired
     private RiderRepository riderRepository;
     
+    @Autowired
+    public OrderService(OrderRepository orderRepository, EntityManagerFactory entityManagerFactory,
+        EntityManager entityManager, UserPaymentRepository userPaymentRepository, RiderRepository riderRepository) {
+        this.orderRepository = orderRepository;
+        this.entityManagerFactory = entityManagerFactory;
+        this.entityManager = entityManager;
+        this.userPaymentRepository = userPaymentRepository;
+        this.riderRepository = riderRepository;
+        new Thread(new AssignRiderService(orderRepository, riderRepository), "AssignRiderThread").start();
+    }
+
     @Transactional
     public OrderResponse createOrder(OrderCustom order)
     {
-        if(order.getAddress().getPincode()!=order.getResturant().getPincode()) throw new ResturantAndUserAddressTooFarException();
         SessionFactory sessionFactory = entityManagerFactory.unwrap(SessionFactory.class);
         Session session = entityManager.unwrap(Session.class);
         //session.beginTransaction();
-        //OrderCustom orderCustom =  orderRepository.save(order);
         Resturant resturant = session.get(Resturant.class, order.getResturant().getResturantId());
         User user = session.get(User.class, order.getUser().getUserId());
         Address address = session.get(Address.class, order.getAddress().getAddressId());
+        System.out.println(address.getPincode());
+        System.out.println(resturant.getPincode());
+        if(address.getUserId()!=user.getUserId()) throw new AddressIsNotOfUserException();
+        if(!address.getPincode().equals(resturant.getPincode())) throw new ResturantAndUserAddressTooFarException();
         List<OrderItem> items =  updatePrice(order.getOrderItems(), session);
-        items.stream().forEach(item->item.setOrder(order));
+        items.stream().forEach((item)->{
+            item.setOrder(order);});
         order.setOrderStatus(OrderStatus.INITIATED); 
         int id =(Integer) session.save(order);
         session.flush();
@@ -72,6 +85,7 @@ public class OrderService {
         userPayment.setGstAmount((Globals.getGstPercentage()*userPayment.getBaseAmount())/100);
         userPayment.setMiscellaneousFee((Globals.getMiscellaneousFee()*userPayment.getBaseAmount())/100);
         userPayment.setDeliveryFee(Globals.getDeliveryFeePerKm()*1);
+        userPayment.setTip(20);
         userPayment.setTotalAmount(userPayment.getBaseAmount()+userPayment.getDeliveryFee()+userPayment.getGstAmount()+userPayment.getTip());
         userPayment.setPaid(false);
         userPayment.setModeOfPayment(ModeOfPayment.INITIATED);
@@ -82,24 +96,23 @@ public class OrderService {
         orderCustom.setUserPayment(userPayment);
 
         //For the order rider should be available
+        orderRepository.save(orderCustom);
         OrderResponse orderResponse = new OrderResponse(orderCustom);
 
         return orderResponse;
         }
         
-    
-
     private List<OrderItem> updatePrice(List<OrderItem> orderItems, Session session)
     {
         for(OrderItem orderItem : orderItems)
         {
+            if(orderItem.getMenu()==null) throw new MenuNotAvailableInAnyResturantException();
             orderItem.setMenu(session.get(Menu.class, orderItem.getMenu().getMenuId()));
             orderItem.setPrice(orderItem.getQuantity()*orderItem.getMenu().getPrice());
         }
         return orderItems;
     }
     
-
     private double getBasePrice(List<OrderItem> orderItems)
     {
         double tot = 0;
@@ -110,7 +123,7 @@ public class OrderService {
         return tot;
     }
 
-    public OrderCustom updateOrderStatus(int id, OrderStatus status)
+    public OrderResponse updateOrderStatus(int id, OrderStatus status)
     {
         OrderCustom order = getOrder(id);
         order.setOrderStatus(status);
@@ -139,7 +152,7 @@ public class OrderService {
         {
             order.setOrderDeliveredTimestamp(new Timestamp(System.currentTimeMillis()));
         }
-        return orderRepository.save(order);
+        return new OrderResponse(orderRepository.save(order));
     }
 
     public OrderCustom getOrder(int id)
@@ -174,5 +187,21 @@ public class OrderService {
         return orderRepository.getOrderCustomByResturant_ResturantIdAndOrderStatus(resturantId, orderStatus);
     }
 
-    
+    public List<OrderResponse> getOrderCustomPendingByResturantId(int resturantId)
+    {
+        /*
+        List<OrderResponse> results = new ArrayList<>();
+        for(OrderCustom order: getOrderCustomByResturantIdAndOrderStatus(resturantId, OrderStatus.INITIATED))
+        {
+            results.add(new OrderResponse(order));
+        }
+        for(OrderCustom order : getOrderCustomByResturantIdAndOrderStatus(resturantId, OrderStatus.PLACED))
+        {
+            results.add(new OrderResponse(order));
+        }
+        return results;
+        */
+        return orderRepository.getPendingOrdersForResturant(resturantId).stream().map(OrderResponse::new).toList();
+        //return orderRepository.getPendingOrdersForResturant(resturantId);
+    }
 }

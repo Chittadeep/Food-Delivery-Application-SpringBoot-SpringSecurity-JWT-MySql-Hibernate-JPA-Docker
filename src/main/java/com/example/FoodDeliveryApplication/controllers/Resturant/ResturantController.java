@@ -47,6 +47,12 @@ public class ResturantController {
         return new ResponseEntity<List<Resturant>>(resturantService.getResturantByPincode(pincode), HttpStatus.OK);
     }
 
+    @GetMapping(path="/resturant/getResturantByPincodeAndApproved/{pincode}")
+    public ResponseEntity<List<Resturant>> getResturantByPincodeAndApproved(@PathVariable String pincode)
+    {
+        return new ResponseEntity<List<Resturant>>(resturantService.getNearestAvailableResturantByPincodeAndApproved(pincode), HttpStatus.OK);
+    }
+
     @GetMapping(path="/resturant/{resturantId}")
     public ResponseEntity<Resturant> getResturantById(@PathVariable int resturantId)
     {
