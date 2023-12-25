@@ -39,9 +39,9 @@ public class OrderController {
     }
     
     @GetMapping(path = "/resturant/{resturantId}/order")
-    public ResponseEntity<List<OrderCustom>> getOrderCustomByResturantId(@PathVariable int resturantId)
+    public ResponseEntity<List<OrderResponse>> getOrderCustomByResturantId(@PathVariable int resturantId)
     {
-        return new ResponseEntity<List<OrderCustom>>(orderService.getOrderCustomByResturantId(resturantId), HttpStatus.OK);
+        return new ResponseEntity<List<OrderResponse>>(orderService.getOrderCustomByResturantId(resturantId), HttpStatus.OK);
     }
     
     @GetMapping(path = "/user/{userId}/order")
@@ -71,5 +71,11 @@ public class OrderController {
     {
         return new ResponseEntity<OrderResponse>(orderService.updateOrderStatus(orderId, orderStatus), HttpStatus.OK);
     }
+    
+    @GetMapping(path="/order/{riderId}/getOrderForRiderToPickUp")
+    public ResponseEntity<List<OrderResponse>> getOrderForRiderToPickUp(@PathVariable int riderId) {
+        return new ResponseEntity<List<OrderResponse>>(orderService.getOrderCustomByRiderId(riderId), HttpStatus.OK);
+    }
+    
 
 }

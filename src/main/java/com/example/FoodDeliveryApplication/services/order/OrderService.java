@@ -14,7 +14,10 @@ import com.example.FoodDeliveryApplication.entities.Order.OrderCustom;
 import com.example.FoodDeliveryApplication.entities.Order.OrderItem;
 import com.example.FoodDeliveryApplication.entities.Resturant.Menu;
 import com.example.FoodDeliveryApplication.entities.Resturant.Resturant;
+import com.example.FoodDeliveryApplication.entities.Resturant.ResturantPayment;
+import com.example.FoodDeliveryApplication.entities.Resturant.ResturantRating;
 import com.example.FoodDeliveryApplication.entities.Rider.Rider;
+import com.example.FoodDeliveryApplication.entities.Rider.RiderRating;
 import com.example.FoodDeliveryApplication.entities.User.Address;
 import com.example.FoodDeliveryApplication.entities.User.User;
 import com.example.FoodDeliveryApplication.entities.User.UserPayment;
@@ -26,6 +29,8 @@ import com.example.FoodDeliveryApplication.exceptions.OrderAlreadyCancelledExcep
 import com.example.FoodDeliveryApplication.exceptions.ResturantAndUserAddressTooFarException;
 import com.example.FoodDeliveryApplication.model.response.OrderResponse;
 import com.example.FoodDeliveryApplication.repository.Order.OrderRepository;
+import com.example.FoodDeliveryApplication.repository.Resturant.ResturantRatingRepository;
+import com.example.FoodDeliveryApplication.repository.Rider.RiderRatingRepositiory;
 import com.example.FoodDeliveryApplication.repository.Rider.RiderRepository;
 import com.example.FoodDeliveryApplication.repository.User.UserPaymentRepository;
 import com.example.FoodDeliveryApplication.services.AssignRiderService;
@@ -41,15 +46,19 @@ public class OrderService {
     private EntityManager entityManager;
     private UserPaymentRepository userPaymentRepository;
     private RiderRepository riderRepository;
+    private RiderRatingRepositiory riderRatingRepositiory;
+    private ResturantRatingRepository resturantRatingRepository;
     
     @Autowired
     public OrderService(OrderRepository orderRepository, EntityManagerFactory entityManagerFactory,
-        EntityManager entityManager, UserPaymentRepository userPaymentRepository, RiderRepository riderRepository) {
+        EntityManager entityManager, UserPaymentRepository userPaymentRepository, RiderRepository riderRepository, RiderRatingRepositiory riderRatingRepositiory, ResturantRatingRepository resturantRatingRepository) {
         this.orderRepository = orderRepository;
         this.entityManagerFactory = entityManagerFactory;
         this.entityManager = entityManager;
         this.userPaymentRepository = userPaymentRepository;
         this.riderRepository = riderRepository;
+        this.riderRatingRepositiory = riderRatingRepositiory;
+        this.resturantRatingRepository = resturantRatingRepository;
         new Thread(new AssignRiderService(orderRepository, riderRepository), "AssignRiderThread").start();
     }
 
@@ -128,6 +137,7 @@ public class OrderService {
         OrderCustom order = getOrder(id);
         order.setOrderStatus(status);
         if(order.getOrderStatus()==OrderStatus.CANCELLED) throw new OrderAlreadyCancelledException();
+        if(order.getOrderStatus()==OrderStatus.DELIVERED) throw new OrderAlreadyCancelledException();
         if(status.equals(OrderStatus.INITIATED))
         {
             order.setOrderInitiatedTimestamp(new Timestamp(System.currentTimeMillis()));
@@ -150,6 +160,17 @@ public class OrderService {
         }
         else
         {
+            ResturantRating resturantRating = new ResturantRating();
+            resturantRating.setUser(order.getUser());
+            resturantRating.setResturant(order.getResturant());
+            resturantRating.setCompleted(false);
+            resturantRatingRepository.save(resturantRating);
+            
+            RiderRating riderRating = new RiderRating();
+            riderRating.setUser(order.getUser());
+            riderRating.setRider(order.getRider());
+            riderRating.setCompleted(false);
+            riderRatingRepositiory.save(riderRating);
             order.setOrderDeliveredTimestamp(new Timestamp(System.currentTimeMillis()));
         }
         return new OrderResponse(orderRepository.save(order));
@@ -172,14 +193,14 @@ public class OrderService {
         return results.stream().map(OrderResponse::new).toList();
     }
 
-    public List<OrderCustom> getOrderCustomByResturantId(int resturantId)
+    public List<OrderResponse> getOrderCustomByResturantId(int resturantId)
     {
-        return orderRepository.getOrderCustomByResturant_ResturantId(resturantId);
+        return orderRepository.getOrderCustomByResturant_ResturantId(resturantId).stream().map(OrderResponse::new).toList();
     }
 
-    public List<OrderCustom> getOrderCustomByRiderId(int riderId)
+    public List<OrderResponse> getOrderCustomByRiderId(int riderId)
     {
-        return orderRepository.getOrderCustomByRider_RiderId(riderId);
+        return orderRepository.getOrderCustomByRider_RiderId(riderId).stream().map(OrderResponse::new).toList();
     }
 
     public List<OrderCustom> getOrderCustomByResturantIdAndOrderStatus(int resturantId, OrderStatus orderStatus)
@@ -204,4 +225,5 @@ public class OrderService {
         return orderRepository.getPendingOrdersForResturant(resturantId).stream().map(OrderResponse::new).toList();
         //return orderRepository.getPendingOrdersForResturant(resturantId);
     }
+
 }

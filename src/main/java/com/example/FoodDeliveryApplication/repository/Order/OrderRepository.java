@@ -29,11 +29,14 @@ public interface OrderRepository extends CrudRepository<OrderCustom, Integer> {
 
     public List<OrderCustom> getOrderCustomByResturant_PincodeAndOrderStatus(String resturantPincode, OrderStatus orderStatus);
 
+    public List<OrderCustom> getOrderCustomByOrderStatus(OrderStatus orderStatus);
+
+    public List<OrderCustom> getOrderCustomByRider_riderId(int riderId);
+
     @Query("Select o from OrderCustom o where o.rider.riderId is null and (o.orderStatus = PLACED or o.orderStatus=ACCEPTED or o.orderStatus=READY_FOR_PICKUP) order by o.orderPlacedTimestamp")
     public List<OrderCustom> getOrderCustomForAssigningRider();
 
-    
     @Query("Select o from OrderCustom o where (o.orderStatus = PLACED or o.orderStatus = INITIATED) and o.resturant.resturantId=:resturantId")
     public List<OrderCustom> getPendingOrdersForResturant(int resturantId);
-    
+
 }

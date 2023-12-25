@@ -1,5 +1,7 @@
 package com.example.FoodDeliveryApplication.entities.Rider;
 
+import org.hibernate.annotations.ColumnDefault;
+
 import com.example.FoodDeliveryApplication.entities.User.User;
 
 import jakarta.persistence.Entity;
@@ -17,6 +19,8 @@ public class RiderRating {
     private int riderRatingId;
     @NotBlank(message = "RiderRating cannot be created without rating")
     private int rating;
+    @ColumnDefault(value = "false")
+    private boolean completed;
 
     //foreign relations owning side
     @ManyToOne()
@@ -59,5 +63,12 @@ public class RiderRating {
         this.rider = rider;
     }
 
+    public boolean isCompleted() {
+        return completed;
+    }
+
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
+    }
 
 }
