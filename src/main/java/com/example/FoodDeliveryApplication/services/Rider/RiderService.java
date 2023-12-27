@@ -33,7 +33,7 @@ public class RiderService {
 
     public Rider getRider(int riderId)
     {
-        return riderRepository.findById(riderId).orElseThrow(()-> new EntityDoesNotExistException("Rider with this id does not exist"));
+        return riderRepository.findById(riderId).orElseThrow(()-> new RuntimeException("Rider with this id does not exist"));
     }
 
     public Rider updateRider(Rider rider)
@@ -89,7 +89,7 @@ public class RiderService {
     public InputStreamResource getProfilePicture(int riderId)
     {
         byte[] bytes = getRider(riderId).getImage();
-        if(bytes==null) throw new ImageRequestedDoesNotExistException();
+        if(bytes==null) throw new RuntimeException("The image you requested does not exist");
         InputStream stream = new ByteArrayInputStream(bytes);
         InputStreamResource resource = new InputStreamResource(stream);
         return resource;
@@ -98,7 +98,7 @@ public class RiderService {
     public InputStreamResource getDl(int riderId)
     {
         byte[] bytes = getRider(riderId).getDl();
-        if(bytes==null) throw new ImageRequestedDoesNotExistException();
+        if(bytes==null) throw new RuntimeException("The image you requested does not exist");
         InputStream stream = new ByteArrayInputStream(bytes);
         InputStreamResource resource= new InputStreamResource(stream);
         return resource;

@@ -13,7 +13,7 @@ public enum MenuCategory {
         else if(menuCategory.equals("BENGALI")) return BENGALI;
         else if(menuCategory.equals("NORTH_INDIAN")) return NORTH_INDIAN;
         else if(menuCategory.equals("SOUTH_INDIAN")) return SOUTH_INDIAN;
-        else throw new EnumOptionNotAvailableException("No such menu Category Available");
+        else throw new RuntimeException("No such menu Category Available");
         
     }
 }

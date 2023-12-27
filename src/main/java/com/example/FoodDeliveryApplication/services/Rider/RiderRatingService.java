@@ -27,7 +27,7 @@ public class RiderRatingService {
 
     public RiderRating getRiderRatingByRiderRatingId(int riderRatingId)
     {
-        return riderRatingRepositiory.findById(riderRatingId).orElseThrow(()->new EntityDoesNotExistException("No RiderRating exists with this riderRatingId"));
+        return riderRatingRepositiory.findById(riderRatingId).orElseThrow(()->new RuntimeException("No RiderRating exists with this riderRatingId"));
     }
 
     public List<RiderRating> getRiderRatingByRiderId(int riderId)

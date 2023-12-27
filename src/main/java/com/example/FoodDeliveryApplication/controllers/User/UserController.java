@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.FoodDeliveryApplication.entities.User.User;
+import com.example.FoodDeliveryApplication.model.request.UserRequest;
 import com.example.FoodDeliveryApplication.services.User.UserService;
 
 @RestController
@@ -41,9 +42,9 @@ public class UserController {
     }
 
     @PostMapping(path="/user")
-    ResponseEntity<User> createUser(@RequestBody User user)
+    ResponseEntity<User> createUser(@RequestBody UserRequest userRequest)
     {
-        return new ResponseEntity<User>(userService.createUser(user), HttpStatus.CREATED);
+        return new ResponseEntity<User>(userService.createUser(userRequest), HttpStatus.CREATED);
     }
 
     @PutMapping(path="/user")

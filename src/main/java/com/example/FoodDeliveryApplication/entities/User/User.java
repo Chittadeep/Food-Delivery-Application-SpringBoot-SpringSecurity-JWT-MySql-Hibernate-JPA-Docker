@@ -8,6 +8,7 @@ import org.hibernate.annotations.ColumnDefault;
 import com.example.FoodDeliveryApplication.entities.Order.OrderCustom;
 import com.example.FoodDeliveryApplication.entities.Resturant.ResturantRating;
 import com.example.FoodDeliveryApplication.entities.Rider.RiderRating;
+import com.example.FoodDeliveryApplication.model.request.UserRequest;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -42,8 +43,6 @@ public class User {
     @Lob
     @Column(length=50000000)
     private byte[] image;
-    @NotBlank(message = "Password cannot be blank")
-    private String password;
     @ColumnDefault(value = "true")
     private boolean valid;
 
@@ -66,11 +65,17 @@ public class User {
 
     public User(){}
     
-    public User(String name, String phoneNumber, String mail, String password) {
+    public User(UserRequest userRequest)
+    {
+        this.name=userRequest.getName();
+        this.phoneNumber = userRequest.getPhoneNumber();
+        this.mail = userRequest.getMail();
+    }
+
+    public User(String name, String phoneNumber, String mail) {
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.mail = mail;
-        this.password = password;
     }
     
 
@@ -114,9 +119,6 @@ public class User {
         this.mail = mail;
     }
 
-    public String getPassword() {
-        return password;
-    }
 
     public Set<Address> getAddress() {
         return address;
@@ -126,9 +128,6 @@ public class User {
         this.address = address;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     public boolean isValid() {
         return valid;

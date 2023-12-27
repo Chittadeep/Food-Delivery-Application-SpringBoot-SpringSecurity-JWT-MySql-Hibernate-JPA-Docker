@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.*;
 
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Claims;
@@ -59,7 +60,11 @@ public class JwtService {
         return extractExpiration(token).before(new Date());
     }
 
-    public boolean validateToken(String token){return true;}
+    public boolean validateToken(String token, UserDetails userDetails)
+    {
+        String userName = extractUserName(token);
+        return userName.equals(userDetails.getUsername()) && !isTokenExpired(token);
+    }
 
     public <T> T extractClaim(String token, Function<Claims, T> claimResolver)
     {

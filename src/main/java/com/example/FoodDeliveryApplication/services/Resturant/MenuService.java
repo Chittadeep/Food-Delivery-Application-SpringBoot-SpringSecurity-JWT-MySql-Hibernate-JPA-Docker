@@ -37,7 +37,7 @@ public class MenuService {
 
     public Menu getMenuById(int menuId)
     {
-        return menuRepository.findById(menuId).orElseThrow(()->new EntityDoesNotExistException("No menu item with this id exists"));
+        return menuRepository.findById(menuId).orElseThrow(()->new RuntimeException("No menu item with this id exists"));
     }
 
     public List<Menu> getMenuByResturantId(int resturantId)

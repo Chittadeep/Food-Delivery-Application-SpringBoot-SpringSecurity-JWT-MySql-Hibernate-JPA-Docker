@@ -27,7 +27,7 @@ public class RiderPaymentService {
     
     public RiderPayment getRiderPaymentById(int riderPaymentId)
     {
-        return riderPaymentRepository.findById(riderPaymentId).orElseThrow(()-> new EntityDoesNotExistException("Rider Payment with this id does not exist"));
+        return riderPaymentRepository.findById(riderPaymentId).orElseThrow(()-> new RuntimeException("Rider Payment with this id does not exist"));
     }
 
     public List<RiderPayment> getRiderPaymentByRiderId(int riderId)

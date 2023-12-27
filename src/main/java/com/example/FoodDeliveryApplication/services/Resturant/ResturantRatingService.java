@@ -26,7 +26,7 @@ public class ResturantRatingService {
 
     public ResturantRating getResturantRatingById(int resturantRatingId)
     {
-        return resturantRatingRepository.findById(resturantRatingId).orElseThrow(()->new EntityDoesNotExistException("No resturant rating exists with this id"));
+        return resturantRatingRepository.findById(resturantRatingId).orElseThrow(()->new RuntimeException("No resturant rating exists with this id"));
     }
 
     public List<ResturantRating> getResturantRatingByUserId(int userId)

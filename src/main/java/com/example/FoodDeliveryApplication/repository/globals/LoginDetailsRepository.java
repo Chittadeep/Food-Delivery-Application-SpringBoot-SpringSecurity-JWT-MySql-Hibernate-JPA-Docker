@@ -8,5 +8,5 @@ import com.example.FoodDeliveryApplication.entities.globals.LoginDetails;
 
 @Repository
 public interface LoginDetailsRepository extends CrudRepository<LoginDetails, Integer>{
-    public List<LoginDetails> getLoginDetailsByUserName(String userName);
+    public LoginDetails getLoginDetailsByUserName(String userName);
 }

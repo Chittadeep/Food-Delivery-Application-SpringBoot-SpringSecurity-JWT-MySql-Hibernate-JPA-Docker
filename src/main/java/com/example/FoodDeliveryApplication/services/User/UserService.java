@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,6 +17,7 @@ import com.example.FoodDeliveryApplication.entities.User.User;
 import com.example.FoodDeliveryApplication.entities.globals.LoginDetails;
 import com.example.FoodDeliveryApplication.exceptions.EntityDoesNotExistException;
 import com.example.FoodDeliveryApplication.exceptions.ImageRequestedDoesNotExistException;
+import com.example.FoodDeliveryApplication.model.request.UserRequest;
 import com.example.FoodDeliveryApplication.repository.User.UserRepository;
 import com.example.FoodDeliveryApplication.repository.globals.LoginDetailsRepository;
 
@@ -27,13 +29,17 @@ public class UserService {
     private UserRepository userRepository;
     @Autowired
     private LoginDetailsRepository loginDetailsRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
-    public User createUser(User user)
+    public User createUser(UserRequest userRequest)
     {
+        User user = new User(userRequest);
         user.setValid(true);
         userRepository.save(user);
-        //LoginDetails loginDetails = new LoginDetails(user.getMail(), user.getPassword(), Role.USER);
-        //loginDetailsRepository.save(loginDetails);
+        String passwordEncoded = passwordEncoder.encode(userRequest.getPassword());
+        LoginDetails loginDetails = new LoginDetails(user.getMail(), passwordEncoded, Role.USER);
+        loginDetailsRepository.save(loginDetails);
         return user;
     }
 
@@ -44,7 +50,7 @@ public class UserService {
 
     public User getUser(int id)
     {
-        return userRepository.findById(id).orElseThrow(()-> new EntityDoesNotExistException("wrong data"));
+        return userRepository.findById(id).orElseThrow(()-> new RuntimeException("wrong data"));
     }
 
     public User updateUser(User user)
@@ -52,7 +58,6 @@ public class UserService {
         User oldUser = getUser(user.getUserId());
         oldUser.setMail(user.getMail());
         oldUser.setName(user.getName());
-        oldUser.setPassword(user.getPassword());
         oldUser.setPhoneNumber(user.getPhoneNumber());
         userRepository.save(oldUser);
         //why cant we save the new user directly when both old user and new user have their primary keys equal?
@@ -93,7 +98,7 @@ public class UserService {
     public InputStreamResource getProfilePicture(int userId)
     {
         byte[] bytes = getUser(userId).getImage();
-        if(bytes==null) throw new ImageRequestedDoesNotExistException();
+        if(bytes==null) throw new RuntimeException("The image you requested does not exist");
         InputStream stream = new ByteArrayInputStream(bytes);
         InputStreamResource resource = new InputStreamResource(stream);
         return resource;

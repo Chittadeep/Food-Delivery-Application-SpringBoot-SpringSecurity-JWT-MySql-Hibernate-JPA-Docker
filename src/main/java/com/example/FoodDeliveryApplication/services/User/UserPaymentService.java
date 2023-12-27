@@ -42,7 +42,7 @@ public class UserPaymentService {
 
     public UserPayment getUserPaymentById(int userPaymentId)
     {
-        return userPaymentRepository.findById(userPaymentId).orElseThrow(()-> new EntityDoesNotExistException("No user payment with such userPaymentId exists"));
+        return userPaymentRepository.findById(userPaymentId).orElseThrow(()-> new RuntimeException("No user payment with such userPaymentId exists"));
     }
 
     public UserPayment getUserPaymentByOrderId(int orderId)
@@ -58,7 +58,7 @@ public class UserPaymentService {
     public UserPayment completeUserPayment(int userPaymentId, ModeOfPayment modeOfPayment)
     {
         UserPayment userPayment = getUserPaymentById(userPaymentId);
-        if(userPayment.isPaid()) throw new PaymentIsAlreadyPaidException();
+        if(userPayment.isPaid()) throw new RuntimeException("The payment was already completed previously");
         userPayment.setModeOfPayment(modeOfPayment);
         userPayment.setPaid(true);
         userPayment.setCompletedTimestamp(new Timestamp(System.currentTimeMillis()));

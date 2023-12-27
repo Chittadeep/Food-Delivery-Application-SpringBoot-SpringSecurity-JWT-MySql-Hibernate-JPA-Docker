@@ -27,7 +27,7 @@ public class AddressService {
 
     public Address getAddressById(int addressId)
     {
-        return addressRepository.findById(addressId).orElseThrow(()-> new EntityDoesNotExistException("Adress with this addressId does not exist"));
+        return addressRepository.findById(addressId).orElseThrow(()-> new RuntimeException("Adress with this addressId does not exist"));
     }
 
     public List<Address> getAdressOfAnUser(int userId)

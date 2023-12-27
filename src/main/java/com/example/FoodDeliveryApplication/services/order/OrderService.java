@@ -23,7 +23,6 @@ import com.example.FoodDeliveryApplication.entities.User.User;
 import com.example.FoodDeliveryApplication.entities.User.UserPayment;
 import com.example.FoodDeliveryApplication.entities.globals.Globals;
 import com.example.FoodDeliveryApplication.exceptions.AddressIsNotOfUserException;
-import com.example.FoodDeliveryApplication.exceptions.ItemDoesNotBelongToTheMenuOfTheResturantException;
 import com.example.FoodDeliveryApplication.exceptions.MenuNotAvailableInAnyResturantException;
 import com.example.FoodDeliveryApplication.exceptions.OrderAlreadyCancelledException;
 import com.example.FoodDeliveryApplication.exceptions.ResturantAndUserAddressTooFarException;
@@ -73,8 +72,8 @@ public class OrderService {
         Address address = session.get(Address.class, order.getAddress().getAddressId());
         System.out.println(address.getPincode());
         System.out.println(resturant.getPincode());
-        if(address.getUserId()!=user.getUserId()) throw new AddressIsNotOfUserException();
-        if(!address.getPincode().equals(resturant.getPincode())) throw new ResturantAndUserAddressTooFarException();
+        if(address.getUserId()!=user.getUserId()) throw new RuntimeException("Address is not of the user given");
+        if(!address.getPincode().equals(resturant.getPincode())) throw new RuntimeException("Address and Resturant too far");
         List<OrderItem> items =  updatePrice(order.getOrderItems(), session);
         items.stream().forEach((item)->{
             item.setOrder(order);});
@@ -115,7 +114,7 @@ public class OrderService {
     {
         for(OrderItem orderItem : orderItems)
         {
-            if(orderItem.getMenu()==null) throw new MenuNotAvailableInAnyResturantException();
+            if(orderItem.getMenu()==null) throw new RuntimeException("The price menu you want to update does not exist for any resturant");
             orderItem.setMenu(session.get(Menu.class, orderItem.getMenu().getMenuId()));
             orderItem.setPrice(orderItem.getQuantity()*orderItem.getMenu().getPrice());
         }
@@ -136,8 +135,8 @@ public class OrderService {
     {
         OrderCustom order = getOrder(id);
         order.setOrderStatus(status);
-        if(order.getOrderStatus()==OrderStatus.CANCELLED) throw new OrderAlreadyCancelledException();
-        if(order.getOrderStatus()==OrderStatus.DELIVERED) throw new OrderAlreadyCancelledException();
+        if(order.getOrderStatus()==OrderStatus.CANCELLED) throw new RuntimeException("Order is already cancelled so the order cannot be changed");
+        if(order.getOrderStatus()==OrderStatus.DELIVERED) throw new RuntimeException("Order is already delivered so the order status cannot be changed");
         if(status.equals(OrderStatus.INITIATED))
         {
             order.setOrderInitiatedTimestamp(new Timestamp(System.currentTimeMillis()));
@@ -152,6 +151,7 @@ public class OrderService {
         }
         else if(status.equals(OrderStatus.READY_FOR_PICKUP))
         {
+            if(!status.equals(OrderStatus.ACCEPTED)) throw new RuntimeException("Order is not accepted then how is it ready for pickup");
             order.setOrderReadyForPickupTimestamp(new Timestamp(System.currentTimeMillis()));
         }
         else if(status.equals(OrderStatus.ON_THE_WAY))
