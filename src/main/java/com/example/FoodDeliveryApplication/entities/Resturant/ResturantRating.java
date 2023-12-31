@@ -4,6 +4,7 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.validator.constraints.Length;
 
 import com.example.FoodDeliveryApplication.entities.User.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -19,16 +20,18 @@ public class ResturantRating {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int resturantRatingId;
-    @Length(max = 6, min = 1)
+    //@Length(max = 6, min = 1)
     private int rating;
     @ColumnDefault(value="false")
     private boolean completed;
     
     //foreign relations owning side
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "resturantId", referencedColumnName = "resturantId")
     private Resturant resturant;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name="userId", referencedColumnName = "userId")
     private User user;

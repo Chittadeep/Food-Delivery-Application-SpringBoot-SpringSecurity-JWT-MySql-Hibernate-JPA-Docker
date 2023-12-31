@@ -8,6 +8,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -54,7 +56,8 @@ public class UserService {
     }
 
     public User updateUser(User user)
-    {
+    {   
+        validateUser(user.getUserId());     
         User oldUser = getUser(user.getUserId());
         oldUser.setMail(user.getMail());
         oldUser.setName(user.getName());
@@ -102,5 +105,12 @@ public class UserService {
         InputStream stream = new ByteArrayInputStream(bytes);
         InputStreamResource resource = new InputStreamResource(stream);
         return resource;
+    }
+
+    private void validateUser(int userId)
+    {
+        UserDetails userDetail = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User loggedInUser = userRepository.getUserByMail(userDetail.getUsername());
+        if(loggedInUser.getUserId()!=userId) throw new RuntimeException("This user cannot update other users details");
     }
 }

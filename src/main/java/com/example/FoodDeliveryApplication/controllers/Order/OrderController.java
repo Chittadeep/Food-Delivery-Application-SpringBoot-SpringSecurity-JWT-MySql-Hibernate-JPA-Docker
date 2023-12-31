@@ -50,6 +50,12 @@ public class OrderController {
         return new ResponseEntity<List<OrderResponse>>(orderService.getOrderCustomByUserId(userId), HttpStatus.OK);
     }
 
+    @GetMapping(path="/rider/{riderId}/order")
+    public ResponseEntity<List<OrderResponse>> getOrderCustomByRiderId(@PathVariable int riderId)
+    {
+        return new ResponseEntity<List<OrderResponse>>(orderService.getOrderCustomByRiderId(riderId), HttpStatus.OK);
+    }
+
     @PostMapping(path="/order")
     public ResponseEntity<OrderResponse> createOrder(@RequestBody OrderCustom order)
     {
@@ -57,8 +63,8 @@ public class OrderController {
     }
 
     @GetMapping(path="/order/{resturantId}/{orderStatus}")
-    public ResponseEntity<List<OrderCustom>> getOrderCustomByResturantIdAndOrderStatus(@PathVariable int resturantId, @PathVariable OrderStatus orderStatus) {
-        return new ResponseEntity<List<OrderCustom>>(orderService.getOrderCustomByResturantIdAndOrderStatus(resturantId, orderStatus), HttpStatus.OK);
+    public ResponseEntity<List<OrderResponse>> getOrderCustomByResturantIdAndOrderStatus(@PathVariable int resturantId, @PathVariable OrderStatus orderStatus) {
+        return new ResponseEntity<List<OrderResponse>>(orderService.getOrderCustomByResturantIdAndOrderStatus(resturantId, orderStatus), HttpStatus.OK);
     }
 
     @GetMapping(path="/order/{resturantId}/checkPendingOrders")
@@ -74,8 +80,11 @@ public class OrderController {
     
     @GetMapping(path="/order/{riderId}/getOrderForRiderToPickUp")
     public ResponseEntity<List<OrderResponse>> getOrderForRiderToPickUp(@PathVariable int riderId) {
-        return new ResponseEntity<List<OrderResponse>>(orderService.getOrderCustomByRiderId(riderId), HttpStatus.OK);
+        return new ResponseEntity<List<OrderResponse>>(orderService.getOrderCustomForRiderToPickUp(riderId), HttpStatus.OK);
     }
     
-
+    @GetMapping(path="/order/{riderId}/getOrderForRider/{orderStatus}")
+    public ResponseEntity<List<OrderResponse>> getOrderCustomByRiderIdAndOrderStatus(@PathVariable int riderId, @PathVariable OrderStatus orderStatus) {
+        return new ResponseEntity<List<OrderResponse>>(orderService.getOrderCustomByRiderIdAndOrderStatus(riderId, orderStatus), HttpStatus.OK);
+    }
 }

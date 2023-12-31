@@ -120,8 +120,10 @@ public class RiderService {
         return true;
     }
 
-    public boolean updateRiderLocation(int riderId, String pincode, double latitude, double longitude)  {
+    public boolean updateRiderLocation(int riderId, String pincode, String address, String city, double latitude, double longitude)  {
         Rider rider = getRider(riderId);
+        rider.setCity(city);
+        rider.setAddress(address);
         rider.setPincode(pincode);
         rider.setLatitude(latitude);
         rider.setLongitude(longitude);

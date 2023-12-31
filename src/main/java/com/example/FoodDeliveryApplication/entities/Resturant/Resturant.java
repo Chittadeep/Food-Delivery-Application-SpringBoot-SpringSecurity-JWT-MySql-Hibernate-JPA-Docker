@@ -6,6 +6,7 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.validator.constraints.URL;
 
 import com.example.FoodDeliveryApplication.entities.Enums.ResturantType;
+import com.example.FoodDeliveryApplication.model.request.ResturantRequest;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
@@ -63,8 +64,6 @@ public class Resturant {
     @Email(message = "The email address is invalid")
     @Column(unique = true)
     private String email;
-    @NotBlank(message = "Password for a resturant cannot be null")
-    private String password;
     @ColumnDefault(value = "false")
     private boolean approved;
 
@@ -79,6 +78,21 @@ public class Resturant {
 
     public Resturant() {}
     
+    public Resturant(ResturantRequest resturantRequest)
+    {
+        this.resturantName = resturantRequest.getResturantName();
+        this.phoneNumber = resturantRequest.getPhoneNumber();
+        this.email = resturantRequest.getMail();
+        this.address = resturantRequest.getAddress();
+        this.city = resturantRequest.getCity();
+        this.fssaiStatus = resturantRequest.getFssaiStatus();
+        this.latitude = resturantRequest.getLatitude();
+        this.longitude = resturantRequest.getLongitude();
+        this.gst = resturantRequest.getGst();
+        this.website = resturantRequest.getWebsite();
+        this.pincode = resturantRequest.getPincode();
+    }
+
     public int getResturantId() {
         return resturantId;
     }
@@ -150,12 +164,6 @@ public class Resturant {
     }
     public void setEmail(String email) {
         this.email = email;
-    }
-    public String getPassword() {
-        return password;
-    }
-    public void setPassword(String password) {
-        this.password = password;
     }
     public boolean isApproved() {
         return approved;

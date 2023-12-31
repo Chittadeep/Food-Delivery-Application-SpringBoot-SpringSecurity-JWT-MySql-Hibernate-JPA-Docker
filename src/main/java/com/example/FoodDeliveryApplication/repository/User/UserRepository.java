@@ -8,5 +8,5 @@ import com.example.FoodDeliveryApplication.entities.User.User;
 
 @Repository
 public interface UserRepository extends CrudRepository<User, Integer> {
-    
+    public User getUserByMail(String mail);
 }

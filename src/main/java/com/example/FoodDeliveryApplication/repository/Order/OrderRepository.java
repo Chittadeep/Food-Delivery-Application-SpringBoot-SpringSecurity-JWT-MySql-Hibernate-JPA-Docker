@@ -33,6 +33,8 @@ public interface OrderRepository extends CrudRepository<OrderCustom, Integer> {
 
     public List<OrderCustom> getOrderCustomByRider_riderId(int riderId);
 
+    public List<OrderCustom> getOrderCustomByRider_riderIdAndOrderStatus(int riderId, OrderStatus orderStatus);
+
     @Query("Select o from OrderCustom o where o.rider.riderId is null and (o.orderStatus = PLACED or o.orderStatus=ACCEPTED or o.orderStatus=READY_FOR_PICKUP) order by o.orderPlacedTimestamp")
     public List<OrderCustom> getOrderCustomForAssigningRider();
 

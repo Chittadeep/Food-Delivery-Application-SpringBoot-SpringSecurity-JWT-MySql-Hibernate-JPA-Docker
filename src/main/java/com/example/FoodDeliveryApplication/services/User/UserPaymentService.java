@@ -24,10 +24,6 @@ public class UserPaymentService {
     private UserPaymentRepository userPaymentRepository;
     @Autowired
     private OrderRepository orderRepository;
-    @Autowired
-    private RiderRepository riderRepository;
-
-    private boolean isAssignedRiderThreadInitialized = false;
 
     public UserPayment createUserPayment(UserPayment userPayment)
     {
@@ -47,6 +43,7 @@ public class UserPaymentService {
 
     public UserPayment getUserPaymentByOrderId(int orderId)
     {
+        orderRepository.findById(orderId).orElseThrow(()-> new RuntimeException("No such order available"));
         return userPaymentRepository.getUserPaymentByOrderId(orderId);
     }
 

@@ -3,6 +3,8 @@ package com.example.FoodDeliveryApplication.services.order;
 import java.sql.Timestamp;
 import java.util.*;
 
+import javax.management.RuntimeErrorException;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -134,32 +136,39 @@ public class OrderService {
     public OrderResponse updateOrderStatus(int id, OrderStatus status)
     {
         OrderCustom order = getOrder(id);
-        order.setOrderStatus(status);
-        if(order.getOrderStatus()==OrderStatus.CANCELLED) throw new RuntimeException("Order is already cancelled so the order cannot be changed");
-        if(order.getOrderStatus()==OrderStatus.DELIVERED) throw new RuntimeException("Order is already delivered so the order status cannot be changed");
+        if(order.getOrderStatus()==OrderStatus.CANCELLED) throw new RuntimeException("Order is already CANCELLED so the order cannot be changed");
+        if(order.getOrderStatus()==OrderStatus.DELIVERED) throw new RuntimeException("Order is already DELIVERED so the order status cannot be changed");
         if(status.equals(OrderStatus.INITIATED))
         {
             order.setOrderInitiatedTimestamp(new Timestamp(System.currentTimeMillis()));
         }
         else if(status.equals(OrderStatus.PLACED))
         {
+            if(!order.getOrderStatus().equals(OrderStatus.INITIATED))throw new RuntimeException("The order cannot hava a status it should have before after it has moved to the previous status");
             order.setOrderPlacedTimestamp(new Timestamp(System.currentTimeMillis()));
+            
         }
         else if(status.equals(OrderStatus.ACCEPTED))
         {
+            if(!order.getOrderStatus().equals(OrderStatus.PLACED)) throw new RuntimeException("Order is not PLACED then how is it ACCEPTED");
             order.setOrderAcceptedTimestamp(new Timestamp(System.currentTimeMillis()));
         }
         else if(status.equals(OrderStatus.READY_FOR_PICKUP))
         {
-            if(!status.equals(OrderStatus.ACCEPTED)) throw new RuntimeException("Order is not accepted then how is it ready for pickup");
+            if(!order.getOrderStatus().equals(OrderStatus.ACCEPTED)) throw new RuntimeException("Order is not ACCEPTED then how is it READY_FOR_PICKUP");
             order.setOrderReadyForPickupTimestamp(new Timestamp(System.currentTimeMillis()));
+
+            //resturant payment should be created here.
         }
         else if(status.equals(OrderStatus.ON_THE_WAY))
         {
+            if(!order.getOrderStatus().equals(OrderStatus.READY_FOR_PICKUP)) throw new RuntimeException("Order is not READY_FOR_PICKUP then how is it ON_THE_WAY");
             order.setOrderOnTheWayTimestamp(new Timestamp(System.currentTimeMillis()));
         }
         else
         {
+            if(!order.getOrderStatus().equals(OrderStatus.ON_THE_WAY)) throw new RuntimeException("Order without being ON_THE_WAY cannot be delivered");
+            
             ResturantRating resturantRating = new ResturantRating();
             resturantRating.setUser(order.getUser());
             resturantRating.setResturant(order.getResturant());
@@ -173,6 +182,7 @@ public class OrderService {
             riderRatingRepositiory.save(riderRating);
             order.setOrderDeliveredTimestamp(new Timestamp(System.currentTimeMillis()));
         }
+        order.setOrderStatus(status);
         return new OrderResponse(orderRepository.save(order));
     }
 
@@ -203,11 +213,39 @@ public class OrderService {
         return orderRepository.getOrderCustomByRider_RiderId(riderId).stream().map(OrderResponse::new).toList();
     }
 
-    public List<OrderCustom> getOrderCustomByResturantIdAndOrderStatus(int resturantId, OrderStatus orderStatus)
+    public List<OrderResponse> getOrderCustomByRiderIdAndOrderStatus(int riderId, OrderStatus orderStatus)
     {
-        return orderRepository.getOrderCustomByResturant_ResturantIdAndOrderStatus(resturantId, orderStatus);
+        return orderRepository.getOrderCustomByRider_riderIdAndOrderStatus(riderId, orderStatus).stream().map(OrderResponse::new).toList();
     }
 
+    public List<OrderResponse> getOrderCustomByResturantIdAndOrderStatus(int resturantId, OrderStatus orderStatus)
+    {
+        return orderRepository.getOrderCustomByResturant_ResturantIdAndOrderStatus(resturantId, orderStatus).stream().map(OrderResponse::new).toList();
+    }
+
+    public List<OrderResponse> getOrderCustomForRiderToPickUp(int riderId)
+    {
+        List<OrderResponse> orders1 =  getOrderCustomByRiderIdAndOrderStatus(riderId, OrderStatus.ACCEPTED);
+        
+        System.out.println("list1 " + orders1.size());
+        List<OrderResponse> orders2 =  getOrderCustomByRiderIdAndOrderStatus(riderId, OrderStatus.READY_FOR_PICKUP);
+        
+        System.out.println("list2 " + orders2.size());
+        List<OrderResponse> orders3 =  getOrderCustomByRiderIdAndOrderStatus(riderId, OrderStatus.INITIATED);
+        
+        System.out.println("list3 " + orders3.size());
+
+        List<OrderResponse> results = new ArrayList<OrderResponse>();
+        results.addAll(orders1);
+        results.addAll(orders2);
+        results.addAll(orders3);
+        return results;
+     
+        
+        // add 3 lists where all the lists can be null and give a resultant list without using another extra list.
+        // Use addAll for that
+    }
+    
     public List<OrderResponse> getOrderCustomPendingByResturantId(int resturantId)
     {
         /*

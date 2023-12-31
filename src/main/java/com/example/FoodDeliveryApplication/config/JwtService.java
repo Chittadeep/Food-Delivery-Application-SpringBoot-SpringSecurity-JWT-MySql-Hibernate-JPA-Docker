@@ -12,12 +12,13 @@ import org.springframework.stereotype.Component;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 
 @Component
 public class JwtService {
 
-    public static final String SECRET = "ABCDEFGHIJKLMNOPQRSTWUVXYZ1234567890";
+    public static final String SECRET = "QUJDREVGR0hJSktMTU5PUFFSU1RXVVZYWVoxMjM0NTY3ODkw";
 
     public String generateToken(String username)
     { 
@@ -29,15 +30,16 @@ public class JwtService {
         return Jwts.builder().claims(claims)
         .setSubject(username)
         .setIssuedAt(new Date(System.currentTimeMillis()))
-        .setExpiration(new Date(System.currentTimeMillis()+(10*60*1000)))
-        .signWith(getKey(),SignatureAlgorithm.HS256)
+        .setExpiration(new Date(System.currentTimeMillis()+(5*60*60*1000)))
+        .signWith(SignatureAlgorithm.HS256,SECRET)
         .compact();
     }
 
 
     private Key getKey()
     {
-        return Keys.secretKeyFor(SignatureAlgorithm.HS256);
+        byte[] bytes = Decoders.BASE64.decode(SECRET);
+        return Keys.hmacShaKeyFor(bytes);
     }
 
     private Claims getClaims(String token)
@@ -72,9 +74,11 @@ public class JwtService {
         return claimResolver.apply(claims);
     }
 
-    /*public static void main(String[] args) {
+    /*
+    public static void main(String[] args) {
         JwtService jwtService = new JwtService();
         String token = jwtService.generateToken("Chittadeep");
         System.err.println(token);
-    }*/
+    }
+    */
 }

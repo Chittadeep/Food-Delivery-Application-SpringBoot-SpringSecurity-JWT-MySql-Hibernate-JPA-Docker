@@ -43,4 +43,16 @@ public class ResturantRatingService {
     {
         return resturantRatingRepository.getResturantRatingByResturant_ResturantIdAndUser_UserId(resturantID, userId);
     }
+
+    public ResturantRating completeResturantRating(int resturantRatingId, int rating)
+    {
+        ResturantRating oldResturantRating = getResturantRatingById(resturantRatingId);
+        if(rating>0 && rating<6)
+        {
+            oldResturantRating.setRating(rating);
+            oldResturantRating.setCompleted(true);
+            return resturantRatingRepository.save(oldResturantRating);    
+        }
+        throw new RuntimeException("the rating should be within range from 0 to 5");
+    }
 }

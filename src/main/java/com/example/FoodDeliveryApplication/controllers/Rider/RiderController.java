@@ -57,7 +57,7 @@ public class RiderController {
         return new ResponseEntity<Boolean>(riderService.blockRider(riderId), HttpStatus.OK);
     }
 
-    @PatchMapping(path="/ridder/unblock/{riderId}")
+    @PatchMapping(path="/rider/unblock/{riderId}")
     public ResponseEntity<Boolean> unblockRider(@PathVariable int riderId)
     {
         return new ResponseEntity<Boolean>(riderService.unblockRider(riderId), HttpStatus.OK);
@@ -79,9 +79,9 @@ public class RiderController {
     } 
 
     @PatchMapping(path = "/rider/updateLocation")
-    public ResponseEntity<Boolean> updateRiderLocation(@RequestParam int riderId, @RequestParam String pincode, @RequestParam double latitude, @RequestParam double longitude)
+    public ResponseEntity<Boolean> updateRiderLocation(@RequestParam int riderId,@RequestParam String address, @RequestParam String city, @RequestParam String pincode, @RequestParam double latitude, @RequestParam double longitude)
     {
-        return new ResponseEntity<Boolean>(riderService.updateRiderLocation(riderId, pincode, latitude, longitude), HttpStatus.OK);
+        return new ResponseEntity<Boolean>(riderService.updateRiderLocation(riderId, pincode, address, city, latitude, longitude), HttpStatus.OK);
     }
 
     @PatchMapping(path = "/rider/{riderId}/makeRiderAvailable")

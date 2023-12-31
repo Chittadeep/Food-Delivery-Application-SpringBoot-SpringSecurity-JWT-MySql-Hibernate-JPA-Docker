@@ -53,5 +53,15 @@ public class RiderRatingService {
         return oldRiderRating;
     }
 
-    
+    public RiderRating completeRiderRating(int riderRatingId, int rating)
+    {
+        RiderRating oldRiderRating = getRiderRatingByRiderRatingId(riderRatingId);
+        if(rating>0 && rating<6)
+        {
+        oldRiderRating.setRating(rating);
+        oldRiderRating.setCompleted(true);
+        return riderRatingRepositiory.save(oldRiderRating);
+        }
+        throw new RuntimeException("the rating should be within range from 0 to 5");
+    }    
 }

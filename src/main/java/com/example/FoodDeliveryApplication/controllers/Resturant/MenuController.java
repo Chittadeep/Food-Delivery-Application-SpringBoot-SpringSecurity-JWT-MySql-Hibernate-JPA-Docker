@@ -37,7 +37,7 @@ public class MenuController {
         return new ResponseEntity<List<Menu>>(menuService.getAllMenusOutThere(), HttpStatus.OK);
     }
 
-    @GetMapping(path = "/menu/{id}")
+    @GetMapping(path = "/menu/{menuId}")
     public ResponseEntity<Menu> getMenuById(@PathVariable int menuId)
     {
         return new ResponseEntity<Menu>(menuService.getMenuById(menuId), HttpStatus.OK);

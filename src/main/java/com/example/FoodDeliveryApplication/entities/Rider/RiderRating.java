@@ -3,6 +3,7 @@ package com.example.FoodDeliveryApplication.entities.Rider;
 import org.hibernate.annotations.ColumnDefault;
 
 import com.example.FoodDeliveryApplication.entities.User.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -17,16 +18,18 @@ public class RiderRating {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int riderRatingId;
-    @NotBlank(message = "RiderRating cannot be created without rating")
+    //@NotBlank(message = "RiderRating cannot be created without rating")
     private int rating;
     @ColumnDefault(value = "false")
     private boolean completed;
 
     //foreign relations owning side
+    @JsonIgnore
     @ManyToOne()
     @JoinColumn(name = "userId", referencedColumnName = "userId")
     private User user;
 
+    @JsonIgnore
     @ManyToOne()
     @JoinColumn(name = "riderId", referencedColumnName="riderId")
     private Rider rider;

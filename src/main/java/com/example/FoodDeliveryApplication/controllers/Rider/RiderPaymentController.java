@@ -15,31 +15,31 @@ import com.example.FoodDeliveryApplication.services.Rider.RiderPaymentService;
 public class RiderPaymentController {
     @Autowired
     RiderPaymentService riderPaymentService;
-    @PostMapping(path="/rider")
+    @PostMapping(path="/riderPayment")
     public ResponseEntity<RiderPayment> createRiderPayment(RiderPayment riderPayment)
     {
         return new ResponseEntity<RiderPayment>(riderPaymentService.createRiderPayment(riderPayment), HttpStatus.ACCEPTED);
     }
 
-    @GetMapping(path = "/rider")
+    @GetMapping(path = "/riderPayment")
     public ResponseEntity<List<RiderPayment>> getAllRiderPayments()
     {
         return new ResponseEntity<List<RiderPayment>>(riderPaymentService.getAllRiderPayments(), HttpStatus.OK);
     }
 
-    @GetMapping(path = "/rider/{riderPaymentId}")
+    @GetMapping(path = "/riderPayment/{riderPaymentId}")
     public ResponseEntity<RiderPayment> getRiderPaymentById(@PathVariable int riderPaymentId)
     {
         return new ResponseEntity<RiderPayment>(riderPaymentService.getRiderPaymentById(riderPaymentId), HttpStatus.OK);
     }
 
-    @GetMapping(path = "/rider/riderId/{riderId}")
+    @GetMapping(path = "/riderPayment/riderId/{riderId}")
     public ResponseEntity<List<RiderPayment>> getRiderPaymentByRiderId(@PathVariable int riderId)
     {
         return new ResponseEntity<List<RiderPayment>>(riderPaymentService.getRiderPaymentByRiderId(riderId), HttpStatus.OK);
     }
 
-    @GetMapping(path = "/rider/transactionId/{transactionId}")
+    @GetMapping(path = "/riderPayment/transactionId/{transactionId}")
     public ResponseEntity<RiderPayment> getRiderPaymentByTransactionId(@PathVariable String transactionId)
     {
         return new ResponseEntity<RiderPayment>(riderPaymentService.getRiderPaymentByTransactionId(transactionId), HttpStatus.OK);

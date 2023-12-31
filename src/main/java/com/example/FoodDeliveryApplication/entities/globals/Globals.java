@@ -2,7 +2,7 @@ package com.example.FoodDeliveryApplication.entities.globals;
 
 import jakarta.persistence.Entity;
 
-@Entity
+
 public class Globals {
     private static double gstPercentage =  10;
     private static double deliveryFeePerKm = 5;
