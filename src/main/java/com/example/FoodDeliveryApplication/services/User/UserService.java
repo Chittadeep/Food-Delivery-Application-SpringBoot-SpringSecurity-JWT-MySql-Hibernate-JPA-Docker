@@ -69,6 +69,7 @@ public class UserService {
     
     public boolean changeProfilePicture(int userId, MultipartFile file)
     {
+        validateUser(userId);
         User oldUser = getUser(userId);
         try {
             oldUser.setImage(file.getBytes());
@@ -100,11 +101,34 @@ public class UserService {
 
     public InputStreamResource getProfilePicture(int userId)
     {
+        //validateUser(userId);
         byte[] bytes = getUser(userId).getImage();
         if(bytes==null) throw new RuntimeException("The image you requested does not exist");
         InputStream stream = new ByteArrayInputStream(bytes);
         InputStreamResource resource = new InputStreamResource(stream);
         return resource;
+    }
+
+    public boolean updateUserToAdmin(int userId)
+    {
+        User oldUser = getUser(userId);
+        oldUser.setAdmin(true);
+        userRepository.save(oldUser);
+        LoginDetails loginDetails =loginDetailsRepository.getLoginDetailsByUserName(oldUser.getMail());
+        loginDetails.setRole(Role.ADMIN);
+        loginDetailsRepository.save(loginDetails);
+        return true;
+    }
+
+    public boolean removeUserAsAdmin(int userId)
+    {
+        User oldUser = getUser(userId);
+        oldUser.setAdmin(false);
+        userRepository.save(oldUser);
+        LoginDetails loginDetails =loginDetailsRepository.getLoginDetailsByUserName(oldUser.getMail());
+        loginDetails.setRole(Role.USER);
+        loginDetailsRepository.save(loginDetails);
+        return true;
     }
 
     private void validateUser(int userId)
@@ -113,4 +137,5 @@ public class UserService {
         User loggedInUser = userRepository.getUserByMail(userDetail.getUsername());
         if(loggedInUser.getUserId()!=userId) throw new RuntimeException("This user cannot update other users details");
     }
+
 }

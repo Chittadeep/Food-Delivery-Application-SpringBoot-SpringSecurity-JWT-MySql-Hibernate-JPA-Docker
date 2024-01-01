@@ -11,4 +11,6 @@ public interface RiderRepository extends CrudRepository<Rider, Integer> {
     public List<Rider> getRiderByPincode(String pincode);
 
     public List<Rider> getRiderByPincodeAndIsAvailable(String pincode, boolean isAvailable);
+
+    public Rider getRiderByMail(String mail);
 }

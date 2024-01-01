@@ -9,6 +9,7 @@ import org.hibernate.annotations.ColumnDefault;
 
 import com.example.FoodDeliveryApplication.entities.Enums.VehicleType;
 import com.example.FoodDeliveryApplication.entities.Order.OrderCustom;
+import com.example.FoodDeliveryApplication.model.request.RiderRequest;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 
@@ -58,8 +59,6 @@ public class Rider {
     @Email(message = "The email address is invalid")
     @Column(unique = true)
     private String mail;
-    @NotBlank(message = "Rider cannot be created without password")
-    private String password;
     @Lob
     @Column(length=50000000)
     private byte[] dl;
@@ -86,6 +85,21 @@ public class Rider {
     private Set<OrderCustom> orders;
 
     public Rider(){}
+
+    public Rider(RiderRequest riderRequest)
+    {
+        this.name = riderRequest.getName();
+        this.city = riderRequest.getCity();
+        this.address = riderRequest.getAddress();
+        this.dob = riderRequest.getDob();
+        this.state = riderRequest.getState();
+        this.pincode = riderRequest.getPincode();
+        this.phoneNumber = riderRequest.getPhoneNumber();
+        this.mail = riderRequest.getMail();
+        this.vehicleType = riderRequest.getVehicleType();
+        this.latitude = riderRequest.getLatitude();
+        this.longitude = riderRequest.getLongitude();
+    }
 
     public int getRiderId() {
         return riderId;
@@ -140,12 +154,6 @@ public class Rider {
     }
     public void setMail(String mail) {
         this.mail = mail;
-    }
-    public String getPassword() {
-        return password;
-    }
-    public void setPassword(String password) {
-        this.password = password;
     }
     public String getVehicle() {
         return vehicle;

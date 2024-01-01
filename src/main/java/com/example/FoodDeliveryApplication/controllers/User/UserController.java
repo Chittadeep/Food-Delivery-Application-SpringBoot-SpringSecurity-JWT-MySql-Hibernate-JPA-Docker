@@ -77,5 +77,17 @@ public class UserController {
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=userProfilePic.jpg");
         return ResponseEntity.ok().headers(headers).contentType(MediaType.IMAGE_JPEG).body(userService.getProfilePicture(userId));
-    } 
+    }
+    
+    @PatchMapping(path = "/user/{userId}/setUserAsAdmin")
+    public ResponseEntity<Boolean> setUserAsAdmin(@PathVariable int userId)
+    {
+        return new ResponseEntity<Boolean>(userService.updateUserToAdmin(userId), HttpStatus.OK);
+    }
+
+    @PatchMapping(path = "/user/{userId}/removeUserAsAdmin")
+    public ResponseEntity<Boolean> removeUserAsAdmin(@PathVariable int userId)
+    {
+        return new ResponseEntity<Boolean>(userService.removeUserAsAdmin(userId), HttpStatus.OK);
+    }
 }

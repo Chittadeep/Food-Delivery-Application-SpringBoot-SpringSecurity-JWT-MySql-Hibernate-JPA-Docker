@@ -45,6 +45,9 @@ public class User {
     private byte[] image;
     @ColumnDefault(value = "true")
     private boolean valid;
+    @ColumnDefault(value = "false")
+    private boolean isAdmin;
+
 
     //foreign relations inverse side
     // @JsonIgnore
@@ -145,4 +148,12 @@ public class User {
         this.image = image;
     }
     
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(boolean isAdmin) {
+        this.isAdmin = isAdmin;
+    }
+
 }

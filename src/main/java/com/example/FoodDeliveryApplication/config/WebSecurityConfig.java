@@ -69,7 +69,7 @@ public class WebSecurityConfig {
                         throws Exception {
                 return httpSecurity.csrf().disable()
                                 .authorizeHttpRequests()
-                                .requestMatchers(HttpMethod.POST, "/login").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/login", "/user", "/rider", "resturant").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/admin/user",
                                                 "/address",
                                                 "/address/getAddressesByCity/*",
@@ -127,7 +127,9 @@ public class WebSecurityConfig {
                                 .hasAnyAuthority("ADMIN")
                                 .requestMatchers(HttpMethod.PUT, "/resturant/menu")
                                 .hasAnyAuthority("ADMIN", "RESTURANT")
-                                .requestMatchers(HttpMethod.PATCH, "/admin/user/block/*",
+                                .requestMatchers(HttpMethod.PATCH, "/user/*/setUserAsAdmin",
+                                "/user/*/removeUserAsAdmin",
+                                "/admin/user/block/*",
                                                 "/admin/user/unblock/*",
                                                 "/rider/block/*",
                                                 "/rider/unblock/*",

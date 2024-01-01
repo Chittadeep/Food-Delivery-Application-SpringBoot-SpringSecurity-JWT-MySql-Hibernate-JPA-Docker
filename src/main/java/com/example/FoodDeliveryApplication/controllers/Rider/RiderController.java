@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.FoodDeliveryApplication.entities.Rider.Rider;
+import com.example.FoodDeliveryApplication.model.request.RiderRequest;
 import com.example.FoodDeliveryApplication.services.Rider.RiderService;
 
 
@@ -40,9 +41,9 @@ public class RiderController {
     }
 
     @PostMapping(path = "/rider")
-    public ResponseEntity<Rider> createRider(@RequestBody Rider rider)
+    public ResponseEntity<Rider> createRider(@RequestBody RiderRequest riderRequest)
     {
-        return new ResponseEntity<Rider>(riderService.createRider(rider), HttpStatus.OK);
+        return new ResponseEntity<Rider>(riderService.createRider(riderRequest), HttpStatus.OK);
     }
 
     @PutMapping(path = "/rider")
