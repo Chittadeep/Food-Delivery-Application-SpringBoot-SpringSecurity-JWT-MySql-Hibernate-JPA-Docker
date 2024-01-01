@@ -50,6 +50,11 @@ public class UserService {
         return (ArrayList<User>) userRepository.findAll();
     }
 
+    public List<User> getAllAdmins()
+    {
+        return (ArrayList<User>) userRepository.getAllAdmins();
+    }
+
     public User getUser(int id)
     {
         return userRepository.findById(id).orElseThrow(()-> new RuntimeException("wrong data"));

@@ -35,32 +35,38 @@ public class UserController {
         return new ResponseEntity<List<User>>(userService.getAllUsers(), HttpStatus.OK);
     }
 
+    @GetMapping(path = "/admins")
+    public ResponseEntity<List<User>> getAllAdmins() {
+        return new ResponseEntity<List<User>>(userService.getAllAdmins(), HttpStatus.OK);
+    }
+    
+
     @GetMapping(path = "/user/{id}")
-    ResponseEntity<User> getUserById(@PathVariable int id)
+    public ResponseEntity<User> getUserById(@PathVariable int id)
     {
         return new ResponseEntity<User>(userService.getUser(id), HttpStatus.OK);
     }
 
     @PostMapping(path="/user")
-    ResponseEntity<User> createUser(@RequestBody UserRequest userRequest)
+    public ResponseEntity<User> createUser(@RequestBody UserRequest userRequest)
     {
         return new ResponseEntity<User>(userService.createUser(userRequest), HttpStatus.CREATED);
     }
 
     @PutMapping(path="/user")
-    ResponseEntity<User> updateUser(@RequestBody User user)
+    public ResponseEntity<User> updateUser(@RequestBody User user)
     {
         return new ResponseEntity<User>(userService.updateUser(user), HttpStatus.ACCEPTED);
     }
 
     @PatchMapping(path="/admin/user/block/{id}")
-    ResponseEntity<Boolean> blockUser(@PathVariable int id)
+    public ResponseEntity<Boolean> blockUser(@PathVariable int id)
     {
         return new ResponseEntity<Boolean>(userService.blockUser(id), HttpStatus.ACCEPTED);
     }
 
     @PatchMapping(path="/admin/user/unblock/{id}")
-    ResponseEntity<Boolean> unblockUser(@PathVariable int id)
+    public ResponseEntity<Boolean> unblockUser(@PathVariable int id)
     {
         return new ResponseEntity<Boolean>(userService.unblockUser(id), HttpStatus.ACCEPTED);
     }

@@ -86,7 +86,8 @@ public class WebSecurityConfig {
                                                 "/admin/menu",
                                                 "/resturantPayment",
                                                 "/resturantRating",
-                                                "/admin/order")
+                                                "/admin/order",
+                                                "/admins")
                                 .hasAuthority("ADMIN")
                                 .requestMatchers(HttpMethod.GET, "/resturantPayment/*",
                                                 "/resturantPayment/resturantId/*",
