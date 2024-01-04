@@ -96,4 +96,17 @@ public class UserController {
     {
         return new ResponseEntity<Boolean>(userService.removeUserAsAdmin(userId), HttpStatus.OK);
     }
+
+    @PatchMapping(path = "/user/updatePassword")
+    public ResponseEntity<Boolean> updateUserPassword(@RequestParam int userId, @RequestParam String password)
+    {
+        return new ResponseEntity<Boolean>(userService.updatePassword(userId, password), HttpStatus.OK);
+    }
+
+    @PatchMapping(path = "/user/updateMail")
+    public ResponseEntity<Boolean> updateUserMail(@RequestParam int userId, @RequestParam String mail)
+    {
+        return new ResponseEntity<Boolean>(userService.updateMail(userId, mail), HttpStatus.OK);
+    }
+
 }

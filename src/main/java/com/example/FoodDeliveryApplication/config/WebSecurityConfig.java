@@ -70,7 +70,9 @@ public class WebSecurityConfig {
                 return httpSecurity.csrf().disable()
                                 .authorizeHttpRequests()
                                 .requestMatchers(HttpMethod.POST, "/login", "/user", "/rider", "resturant").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/admin/user",
+                                .requestMatchers(HttpMethod.GET, "/v3/api-docs",
+                                "/swagger-ui/index.html",
+                                "/admin/user",
                                                 "/address",
                                                 "/address/getAddressesByCity/*",
                                                 "/address/getAddressesByState/*",
@@ -147,13 +149,14 @@ public class WebSecurityConfig {
                                 .requestMatchers(HttpMethod.DELETE, "/address/*").hasAnyAuthority("ADMIN", "USER")
                                 .requestMatchers(HttpMethod.POST, "/user/*",
                                 "/address",
-                                "/order").hasAnyAuthority("USER")
+                                "/order").hasAnyAuthority("USER","ADMIN")
                                 .requestMatchers(HttpMethod.PUT, "/user",
-                                "/address").hasAnyAuthority("USER")
-                                .requestMatchers(HttpMethod.PATCH, "/user/*/changeProfilePicture",
+                                "/address").hasAnyAuthority("USER", "ADMIN")
+                                .requestMatchers(HttpMethod.PATCH,"/user/updateMail", 
+                                "/user/updatePassword","/user/*/changeProfilePicture",
                                 "/userPayment",
                                 "/riderRating/complete",
-                                "/completeResturantRating").hasAnyAuthority("USER")
+                                "/completeResturantRating").hasAnyAuthority("USER", "ADMIN")
                                 .requestMatchers(HttpMethod.POST, "/rider",
                                 "/resturant",
                                 "/menu").hasAnyAuthority("RESTURANT")

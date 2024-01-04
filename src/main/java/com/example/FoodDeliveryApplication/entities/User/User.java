@@ -37,6 +37,7 @@ public class User {
     @Size(min=10, max = 10, message = "phone number should be of 10 digits")
     @Column(unique = true)
     private String phoneNumber;
+    @NotBlank(message = "Email of an user cannot be blank")
     @Email(message = "The email address is invalid")
     @Column(unique=true)
     private String mail;

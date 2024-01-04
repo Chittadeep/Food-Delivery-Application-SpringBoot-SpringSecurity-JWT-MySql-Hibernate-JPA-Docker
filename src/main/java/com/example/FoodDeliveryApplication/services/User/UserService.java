@@ -64,7 +64,6 @@ public class UserService {
     {   
         validateUser(user.getUserId());     
         User oldUser = getUser(user.getUserId());
-        oldUser.setMail(user.getMail());
         oldUser.setName(user.getName());
         oldUser.setPhoneNumber(user.getPhoneNumber());
         userRepository.save(oldUser);
@@ -136,11 +135,36 @@ public class UserService {
         return true;
     }
 
+    public boolean updatePassword(int userId, String password)
+    {
+        validateUser(userId);
+        User user = getUser(userId);
+        LoginDetails oldLoginDetails = loginDetailsRepository.getLoginDetailsByUserName(user.getMail());
+        oldLoginDetails.setPassword(passwordEncoder.encode(password));
+        loginDetailsRepository.save(oldLoginDetails);
+        return true;
+    }
+
+    public boolean updateMail(int userId, String mail)
+    {
+        validateUser(userId);
+        User user = getUser(userId);
+        LoginDetails oldLoginDetails = loginDetailsRepository.getLoginDetailsByUserName(user.getMail());
+        oldLoginDetails.setUserName(mail);
+        user.setMail(mail);
+        loginDetailsRepository.save(oldLoginDetails);
+        userRepository.save(user);
+        return true;
+    }
+
     private void validateUser(int userId)
     {
         UserDetails userDetail = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User loggedInUser = userRepository.getUserByMail(userDetail.getUsername());
-        if(loggedInUser.getUserId()!=userId) throw new RuntimeException("This user cannot update other users details");
+        if(loggedInUser.getUserId()!=userId) 
+        {
+            throw new RuntimeException("This user cannot update other users details");
+        }
     }
 
 }
