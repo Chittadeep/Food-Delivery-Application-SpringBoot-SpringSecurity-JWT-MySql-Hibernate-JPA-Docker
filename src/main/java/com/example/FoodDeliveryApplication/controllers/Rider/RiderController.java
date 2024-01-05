@@ -109,5 +109,16 @@ public class RiderController {
         headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=RiderDl.jpg");
         return ResponseEntity.ok().headers(headers).contentType(MediaType.IMAGE_JPEG).body(riderService.getDl(riderId));
     }
+
+    @PatchMapping(path = "/rider/updatePassword")
+    public ResponseEntity<Boolean> updateRiderPassword(@RequestParam int riderId, @RequestParam String password)
+    {
+        return new ResponseEntity<Boolean>(riderService.updatePassword(riderId, password), HttpStatus.OK);
+    }
     
+    @PatchMapping(path = "/rider/updateMail")
+    public ResponseEntity<Boolean> updateRiderMail(@RequestParam int riderId, @RequestParam String mail)
+    {
+        return new ResponseEntity<Boolean>(riderService.updateMail(riderId, mail), HttpStatus.OK);
+    }
 }

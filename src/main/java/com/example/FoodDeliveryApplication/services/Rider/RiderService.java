@@ -62,7 +62,6 @@ public class RiderService {
         oldRider.setState(rider.getState());
         oldRider.setPincode(rider.getPincode());
         oldRider.setPhoneNumber(rider.getPhoneNumber());
-        oldRider.setImage(rider.getImage());
         oldRider.setMail(rider.getMail());
         //oldRider.setBankAccountInfo(rider.getBankAccountInfo());
         oldRider.setVehicleType(rider.getVehicleType());
@@ -105,6 +104,7 @@ public class RiderService {
 
     public InputStreamResource getProfilePicture(int riderId)
     {
+        validateRider(riderId);
         byte[] bytes = getRider(riderId).getImage();
         if(bytes==null) throw new RuntimeException("The image you requested does not exist");
         InputStream stream = new ByteArrayInputStream(bytes);
@@ -114,6 +114,7 @@ public class RiderService {
 
     public InputStreamResource getDl(int riderId)
     {
+        validateRider(riderId);
         byte[] bytes = getRider(riderId).getDl();
         if(bytes==null) throw new RuntimeException("The image you requested does not exist");
         InputStream stream = new ByteArrayInputStream(bytes);
@@ -164,6 +165,28 @@ public class RiderService {
         Rider rider = getRider(riderId);
         rider.setAvailable(false);
         riderRepository.save(rider);
+        return true;
+    }
+    
+    public boolean updatePassword(int riderId, String password)
+    {
+        validateRider(riderId);
+        Rider rider = getRider(riderId);
+        LoginDetails oldLoginDetails = loginDetailsRepository.getLoginDetailsByUserName(rider.getMail());
+        oldLoginDetails.setPassword(passwordEncoder.encode(password));
+        loginDetailsRepository.save(oldLoginDetails);
+        return true;
+    }
+
+    public boolean updateMail(int riderId, String mail)
+    {
+        validateRider(riderId);
+        Rider oldRider = getRider(riderId);
+        LoginDetails oldLoginDetails = loginDetailsRepository.getLoginDetailsByUserName(oldRider.getMail());
+        oldLoginDetails.setUserName(mail);
+        oldRider.setMail(mail);
+        loginDetailsRepository.save(oldLoginDetails);
+        riderRepository.save(oldRider);
         return true;
     }
 

@@ -12,5 +12,7 @@ public interface ResturantRepository extends CrudRepository<Resturant, Integer> 
 
     public List<Resturant> getResturantByPincodeAndApproved(String pincode, boolean approved);
 
+    public Resturant getResturantByEmail(String email);
+
     //getResturantByPincode and available==true change to be introduced
 }

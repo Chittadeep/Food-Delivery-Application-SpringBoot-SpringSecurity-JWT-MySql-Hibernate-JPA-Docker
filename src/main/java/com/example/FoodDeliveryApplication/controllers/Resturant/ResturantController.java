@@ -91,4 +91,15 @@ public class ResturantController {
         return ResponseEntity.ok().headers(headers).contentType(MediaType.IMAGE_JPEG).body(resturantService.getBankDetailsOfResturant(resturantId));
     }
     
+    @PatchMapping(path = "/resturant/updatePassword")
+    public ResponseEntity<Boolean> updateResturantPassword(@RequestParam int resturantId, @RequestParam String password)
+    {
+        return new ResponseEntity<Boolean>(resturantService.updatePassword(resturantId, password), HttpStatus.OK);
+    }
+
+    @PatchMapping(path = "/resturant/updateMail")
+    public ResponseEntity<Boolean> updateUserMail(@RequestParam int resturantId, @RequestParam String mail)
+    {
+        return new ResponseEntity<Boolean>(resturantService.updateMail(resturantId, mail), HttpStatus.OK);
+    }
 }

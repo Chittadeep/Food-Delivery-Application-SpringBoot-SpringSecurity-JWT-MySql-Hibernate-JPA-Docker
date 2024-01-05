@@ -57,6 +57,7 @@ public class UserService {
 
     public User getUser(int id)
     {
+        validateUserAndAdmin(id);
         return userRepository.findById(id).orElseThrow(()-> new RuntimeException("wrong data"));
     }
 
@@ -105,7 +106,7 @@ public class UserService {
 
     public InputStreamResource getProfilePicture(int userId)
     {
-        //validateUser(userId);
+        validateUserAndAdmin(userId);
         byte[] bytes = getUser(userId).getImage();
         if(bytes==null) throw new RuntimeException("The image you requested does not exist");
         InputStream stream = new ByteArrayInputStream(bytes);
@@ -157,14 +158,25 @@ public class UserService {
         return true;
     }
 
+    //for endpoints which can be triggered by any admin but only user having the userId and its related JWTToken
+    private void validateUserAndAdmin(int userId)
+    {
+        UserDetails userDetail = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User loggedInUser = userRepository.getUserByMail(userDetail.getUsername());
+        if(loggedInUser.isAdmin()) return;
+        if(loggedInUser.getUserId()!=userId) 
+        {
+            throw new RuntimeException("This user cannot access/update other users details");
+        }
+    }
+
     private void validateUser(int userId)
     {
         UserDetails userDetail = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User loggedInUser = userRepository.getUserByMail(userDetail.getUsername());
         if(loggedInUser.getUserId()!=userId) 
         {
-            throw new RuntimeException("This user cannot update other users details");
+            throw new RuntimeException("This user cannot access/update other users details");
         }
     }
-
 }

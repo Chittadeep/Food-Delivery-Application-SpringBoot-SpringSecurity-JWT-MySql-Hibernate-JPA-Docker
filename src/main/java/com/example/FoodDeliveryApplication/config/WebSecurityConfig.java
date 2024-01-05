@@ -69,7 +69,8 @@ public class WebSecurityConfig {
                         throws Exception {
                 return httpSecurity.csrf().disable()
                                 .authorizeHttpRequests()
-                                .requestMatchers(HttpMethod.POST, "/login", "/user", "/rider", "resturant").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/login", "/user", "/rider", "/resturant").permitAll()
+                                .requestMatchers(HttpMethod.GET,"/rider").hasAuthority("ADMIN")
                                 .requestMatchers(HttpMethod.GET, "/v3/api-docs",
                                 "/swagger-ui/index.html",
                                 "/admin/user",
@@ -78,20 +79,19 @@ public class WebSecurityConfig {
                                                 "/address/getAddressesByState/*",
                                                 "/address/getAdressesByPincode/*",
                                                 "/allUserPayments",
-                                                "/rider",
-                                                "/riderPaymemt",
+                                                "/riderPayment",
                                                 "/riderPayment/transactionId/*",
                                                 "/riderRating",
                                                 "/admin/allResturants",
                                                 "/admin/getResturantByPincode/*",
-                                                "/resturant/*",
                                                 "/admin/menu",
                                                 "/resturantPayment",
                                                 "/resturantRating",
                                                 "/admin/order",
                                                 "/admins")
                                 .hasAuthority("ADMIN")
-                                .requestMatchers(HttpMethod.GET, "/resturantPayment/*",
+                                .requestMatchers(HttpMethod.GET,"/resturant/*",
+                                                "/resturantPayment/*",
                                                 "/resturantPayment/resturantId/*",
                                                 "/resturantPayment/amount/*",
                                                 "/resturant/*/order",
@@ -139,7 +139,9 @@ public class WebSecurityConfig {
                                                 "/admin/resturant/block/*",
                                                 "/admin/resturant/unblock/*")
                                 .hasAnyAuthority("ADMIN")
-                                .requestMatchers(HttpMethod.PATCH, "/resturant/menu")
+                                .requestMatchers(HttpMethod.PATCH, "/resturant/menu", 
+                                "/resturant/updatePassword", 
+                                "/resturant/updateMail")
                                 .hasAnyAuthority("ADMIN", "RESTURANT")
                                 .requestMatchers(HttpMethod.PATCH, "/rider/*/changeProfilePicture",
                                                 "/rider/updateLocation",
@@ -157,12 +159,13 @@ public class WebSecurityConfig {
                                 "/userPayment",
                                 "/riderRating/complete",
                                 "/completeResturantRating").hasAnyAuthority("USER", "ADMIN")
-                                .requestMatchers(HttpMethod.POST, "/rider",
+                                .requestMatchers(HttpMethod.POST,
                                 "/resturant",
                                 "/menu").hasAnyAuthority("RESTURANT")
                                 .requestMatchers(HttpMethod.PUT, "/resturant").hasAnyAuthority("RESTURANT")
                                 .requestMatchers(HttpMethod.DELETE, "/resturant/menu/delete/*").hasAnyAuthority("RESTURANT")
-
+                                .requestMatchers(HttpMethod.PUT, "/rider").hasAnyAuthority("RIDER")
+                                .requestMatchers(HttpMethod.PATCH, "/rider").hasAnyAuthority("RIDER")
                                 // .requestMatchers(HttpMethod.GET, "/**").permitAll()
                                 // .requestMatchers(HttpMethod.PUT, "/**").permitAll()
                                 // .requestMatchers(HttpMethod.PATCH, "/**").permitAll()
