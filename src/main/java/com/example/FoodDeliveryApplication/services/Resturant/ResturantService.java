@@ -157,6 +157,7 @@ public class ResturantService {
     {
         UserDetails resturantDetail = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Resturant loggedInResturant = resturantRepository.getResturantByEmail(resturantDetail.getUsername());
+        if(loggedInResturant==null) throw new RuntimeException("This resturant with the JWT token does not exist");
         if(loggedInResturant.getResturantId()!=resturantId) throw new RuntimeException("This resturant cannot modify other resturant details");
     }
 
@@ -167,6 +168,7 @@ public class ResturantService {
         if(loggedInResturant==null)
         {
             User user = userRepository.getUserByMail(resturantDetail.getUsername());
+            if(user==null) throw new RuntimeException("Neither any user resturant nor any admin is registered with the JWT token");
             if(user.isAdmin()) return;
         }
         if(loggedInResturant.getResturantId()!=resturantId) throw new RuntimeException("This resturant cannot modify other resturant details");

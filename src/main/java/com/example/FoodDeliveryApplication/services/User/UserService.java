@@ -22,11 +22,12 @@ import com.example.FoodDeliveryApplication.exceptions.ImageRequestedDoesNotExist
 import com.example.FoodDeliveryApplication.model.request.UserRequest;
 import com.example.FoodDeliveryApplication.repository.User.UserRepository;
 import com.example.FoodDeliveryApplication.repository.globals.LoginDetailsRepository;
+import com.example.FoodDeliveryApplication.services.helpers.UserHelper;
 
 
 
 @Service
-public class UserService {
+public class UserService extends UserHelper{
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -158,25 +159,4 @@ public class UserService {
         return true;
     }
 
-    //for endpoints which can be triggered by any admin but only user having the userId and its related JWTToken
-    private void validateUserAndAdmin(int userId)
-    {
-        UserDetails userDetail = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User loggedInUser = userRepository.getUserByMail(userDetail.getUsername());
-        if(loggedInUser.isAdmin()) return;
-        if(loggedInUser.getUserId()!=userId) 
-        {
-            throw new RuntimeException("This user cannot access/update other users details");
-        }
-    }
-
-    private void validateUser(int userId)
-    {
-        UserDetails userDetail = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User loggedInUser = userRepository.getUserByMail(userDetail.getUsername());
-        if(loggedInUser.getUserId()!=userId) 
-        {
-            throw new RuntimeException("This user cannot access/update other users details");
-        }
-    }
 }

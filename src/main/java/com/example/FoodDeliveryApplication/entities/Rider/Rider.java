@@ -97,6 +97,7 @@ public class Rider {
         this.phoneNumber = riderRequest.getPhoneNumber();
         this.mail = riderRequest.getMail();
         this.vehicleType = riderRequest.getVehicleType();
+        this.vehicle=riderRequest.getVehicle();
         this.latitude = riderRequest.getLatitude();
         this.longitude = riderRequest.getLongitude();
     }

@@ -17,19 +17,14 @@ import com.example.FoodDeliveryApplication.repository.Order.OrderRepository;
 import com.example.FoodDeliveryApplication.repository.Rider.RiderRepository;
 import com.example.FoodDeliveryApplication.repository.User.UserPaymentRepository;
 import com.example.FoodDeliveryApplication.services.AssignRiderService;
+import com.example.FoodDeliveryApplication.services.helpers.UserHelper;
 
 @Service
-public class UserPaymentService {
+public class UserPaymentService extends UserHelper{
     @Autowired
     private UserPaymentRepository userPaymentRepository;
     @Autowired
     private OrderRepository orderRepository;
-
-    public UserPayment createUserPayment(UserPayment userPayment)
-    {
-        userPaymentRepository.save(userPayment);
-        return userPayment;
-    }
 
     public List<UserPayment> getAllUserPayments()
     {
@@ -55,11 +50,12 @@ public class UserPaymentService {
     public UserPayment completeUserPayment(int userPaymentId, ModeOfPayment modeOfPayment)
     {
         UserPayment userPayment = getUserPaymentById(userPaymentId);
+        OrderCustom order =orderRepository.findById(userPayment.getOrderId()).get();
+        validateUserAndAdmin(order.getUser().getUserId());
         if(userPayment.isPaid()) throw new RuntimeException("The payment was already completed previously");
         userPayment.setModeOfPayment(modeOfPayment);
         userPayment.setPaid(true);
         userPayment.setCompletedTimestamp(new Timestamp(System.currentTimeMillis()));
-        OrderCustom order =orderRepository.findById(userPayment.getOrderId()).get();
         order.setOrderStatus(OrderStatus.PLACED);
         order.setOrderPlacedTimestamp(new Timestamp(System.currentTimeMillis()));
         orderRepository.save(order);

@@ -45,12 +45,6 @@ public class UserPaymentController {
         return new ResponseEntity<UserPayment>(userPaymentService.getUserPaymentByTransactionId(transactionId), HttpStatus.OK);
     }
 
-    @PostMapping(path = "/userPayment")
-    public ResponseEntity<UserPayment> createUserPayment(@RequestBody UserPayment userPayment)
-    {
-        return new ResponseEntity<UserPayment>(userPaymentService.createUserPayment(userPayment), HttpStatus.ACCEPTED);
-    }
-
     @PatchMapping(path="/userPayment")
     public ResponseEntity<UserPayment> completeUserPayment(@RequestParam int paymentId, @RequestParam ModeOfPayment modeOfPayment)
     {

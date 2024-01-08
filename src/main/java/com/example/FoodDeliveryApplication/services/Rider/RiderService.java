@@ -15,11 +15,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.example.FoodDeliveryApplication.entities.Enums.Role;
 import com.example.FoodDeliveryApplication.entities.Rider.Rider;
+import com.example.FoodDeliveryApplication.entities.User.User;
 import com.example.FoodDeliveryApplication.entities.globals.LoginDetails;
 import com.example.FoodDeliveryApplication.exceptions.EntityDoesNotExistException;
 import com.example.FoodDeliveryApplication.exceptions.ImageRequestedDoesNotExistException;
 import com.example.FoodDeliveryApplication.model.request.RiderRequest;
 import com.example.FoodDeliveryApplication.repository.Rider.RiderRepository;
+import com.example.FoodDeliveryApplication.repository.User.UserRepository;
 import com.example.FoodDeliveryApplication.repository.globals.LoginDetailsRepository;
 
 @Service
@@ -30,14 +32,16 @@ public class RiderService {
     private LoginDetailsRepository loginDetailsRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private UserRepository userRepository;
 
     public Rider createRider(RiderRequest riderRequest)
     {
         Rider rider = new Rider(riderRequest);
-        riderRepository.save(rider);
         String passwordEncoded = passwordEncoder.encode(riderRequest.getPassword());
         LoginDetails loginDetails = new LoginDetails(rider.getMail(), passwordEncoded, Role.RIDER);
         loginDetailsRepository.save(loginDetails);
+        riderRepository.save(rider);
         return rider;
     }
 
@@ -48,6 +52,7 @@ public class RiderService {
 
     public Rider getRider(int riderId)
     {
+        validateRiderAndAdmin(riderId);
         return riderRepository.findById(riderId).orElseThrow(()-> new RuntimeException("Rider with this id does not exist"));
     }
 
@@ -62,8 +67,6 @@ public class RiderService {
         oldRider.setState(rider.getState());
         oldRider.setPincode(rider.getPincode());
         oldRider.setPhoneNumber(rider.getPhoneNumber());
-        oldRider.setMail(rider.getMail());
-        //oldRider.setBankAccountInfo(rider.getBankAccountInfo());
         oldRider.setVehicleType(rider.getVehicleType());
         oldRider.setVehicle(rider.getVehicle());
         oldRider.setLatitude(rider.getLatitude());
@@ -104,7 +107,7 @@ public class RiderService {
 
     public InputStreamResource getProfilePicture(int riderId)
     {
-        validateRider(riderId);
+        validateRiderAndAdmin(riderId);
         byte[] bytes = getRider(riderId).getImage();
         if(bytes==null) throw new RuntimeException("The image you requested does not exist");
         InputStream stream = new ByteArrayInputStream(bytes);
@@ -114,7 +117,7 @@ public class RiderService {
 
     public InputStreamResource getDl(int riderId)
     {
-        validateRider(riderId);
+        validateRiderAndAdmin(riderId);
         byte[] bytes = getRider(riderId).getDl();
         if(bytes==null) throw new RuntimeException("The image you requested does not exist");
         InputStream stream = new ByteArrayInputStream(bytes);
@@ -139,7 +142,7 @@ public class RiderService {
     }
 
     public boolean updateRiderLocation(int riderId, String pincode, String address, String city, double latitude, double longitude)  {
-        validateRider(riderId);
+        validateRiderAndAdmin(riderId);
         Rider rider = getRider(riderId);
         rider.setCity(city);
         rider.setAddress(address);
@@ -152,7 +155,7 @@ public class RiderService {
 
     public boolean makeRiderAvailable(int riderId)
     {
-        validateRider(riderId);
+        validateRiderAndAdmin(riderId);
         Rider rider = getRider(riderId);
         rider.setAvailable(true);
         riderRepository.save(rider);
@@ -161,7 +164,7 @@ public class RiderService {
 
     public boolean makeRiderUnavailable(int riderId)
     {
-        validateRider(riderId);
+        validateRiderAndAdmin(riderId);
         Rider rider = getRider(riderId);
         rider.setAvailable(false);
         riderRepository.save(rider);
@@ -170,7 +173,7 @@ public class RiderService {
     
     public boolean updatePassword(int riderId, String password)
     {
-        validateRider(riderId);
+        validateRiderAndAdmin(riderId);
         Rider rider = getRider(riderId);
         LoginDetails oldLoginDetails = loginDetailsRepository.getLoginDetailsByUserName(rider.getMail());
         oldLoginDetails.setPassword(passwordEncoder.encode(password));
@@ -180,7 +183,7 @@ public class RiderService {
 
     public boolean updateMail(int riderId, String mail)
     {
-        validateRider(riderId);
+        validateRiderAndAdmin(riderId);
         Rider oldRider = getRider(riderId);
         LoginDetails oldLoginDetails = loginDetailsRepository.getLoginDetailsByUserName(oldRider.getMail());
         oldLoginDetails.setUserName(mail);
@@ -192,10 +195,22 @@ public class RiderService {
 
     private void validateRider(int riderId)
     {
-        UserDetails userDetail = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Rider loggedInRider = riderRepository.getRiderByMail(userDetail.getUsername());
+        UserDetails riderDetail = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Rider loggedInRider = riderRepository.getRiderByMail(riderDetail.getUsername());
+        if(loggedInRider==null) throw new RuntimeException("any rider with the jwt token does not exist");
         if(loggedInRider.getRiderId()!=riderId) throw new RuntimeException("This rider cannot update other riders details");
     }
 
-
+    private void validateRiderAndAdmin(int riderId)
+    {
+        UserDetails riderDetail = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Rider loggedInRider = riderRepository.getRiderByMail(riderDetail.getUsername());
+        if(loggedInRider==null) 
+        {
+            User user = userRepository.getUserByMail(riderDetail.getUsername());
+            if(user==null) throw new RuntimeException("Neither any rider nor any admin is registered with this JWT Token");
+            if(user.isAdmin()) return;
+        }
+        if(loggedInRider.getRiderId()!=riderId) throw new RuntimeException("This rider cannot update other riders details");
+    }
 }

@@ -8,14 +8,16 @@ import org.springframework.stereotype.Service;
 import com.example.FoodDeliveryApplication.entities.User.Address;
 import com.example.FoodDeliveryApplication.exceptions.EntityDoesNotExistException;
 import com.example.FoodDeliveryApplication.repository.User.AddressRepository;
+import com.example.FoodDeliveryApplication.services.helpers.UserHelper;
 
 @Service
-public class AddressService {
+public class AddressService extends UserHelper{
     @Autowired
     private AddressRepository addressRepository;
 
     public Address createAddress(Address address)
     {
+        validateUserAndAdmin(address.getUserId());
         addressRepository.save(address);
         return address;
     }
@@ -27,11 +29,14 @@ public class AddressService {
 
     public Address getAddressById(int addressId)
     {
-        return addressRepository.findById(addressId).orElseThrow(()-> new RuntimeException("Adress with this addressId does not exist"));
+        Address address =addressRepository.findById(addressId).orElseThrow(()-> new RuntimeException("Adress with this addressId does not exist"));
+        validateUserAndAdmin(address.getUserId());
+        return address;
     }
 
     public List<Address> getAdressOfAnUser(int userId)
     {
+        validateUserAndAdmin(userId);
         return addressRepository.getAddressByUserId(userId);
     }
 
@@ -52,6 +57,7 @@ public class AddressService {
 
     public Address updateAddress(Address address)
     {
+        validateUserAndAdmin(address.getUserId());
         Address oldAddress = getAddressById(address.getAddressId());
         oldAddress.setAddress(address.getAddress());
         oldAddress.setCity(address.getCity());
@@ -63,6 +69,7 @@ public class AddressService {
 
     public boolean deleteAddress(int addressId)
     {
+        validateUserAndAdmin(getAddressById(addressId).getUserId());
         addressRepository.deleteById(addressId);
         return true;
     }

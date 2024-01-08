@@ -143,7 +143,9 @@ public class WebSecurityConfig {
                                 "/resturant/updatePassword", 
                                 "/resturant/updateMail")
                                 .hasAnyAuthority("ADMIN", "RESTURANT")
-                                .requestMatchers(HttpMethod.PATCH, "/rider/*/changeProfilePicture",
+                                .requestMatchers(HttpMethod.PATCH,"/rider/updatePassword", 
+                                                "/rider/updateMail", 
+                                                "/rider/*/changeProfilePicture",
                                                 "/rider/updateLocation",
                                                 "/rider/*/makeRiderAvailable",
                                                 "/rider/submitDl/*")

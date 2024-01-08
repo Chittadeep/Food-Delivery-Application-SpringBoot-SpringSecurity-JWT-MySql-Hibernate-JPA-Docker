@@ -3,17 +3,21 @@ package com.example.FoodDeliveryApplication.model.request;
 import java.util.Date;
 
 import com.example.FoodDeliveryApplication.entities.Enums.VehicleType;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 
 public class RiderRequest {
     private String name;
     private String city;
     private String address;
+    @JsonFormat(shape=Shape.STRING, pattern="dd-MM-yyyy")
     private Date dob;
     private String state;
     private String pincode;
     private String phoneNumber;
     private String mail;
     private VehicleType vehicleType;
+    private String vehicle;
     private double Latitude;
     private double longitude;
     private String password;
@@ -90,7 +94,10 @@ public class RiderRequest {
     public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
-
-
-
+    public String getVehicle() {
+        return vehicle;
+    }
+    public void setVehicle(String vehicle) {
+        this.vehicle = vehicle;
+    }
 }
