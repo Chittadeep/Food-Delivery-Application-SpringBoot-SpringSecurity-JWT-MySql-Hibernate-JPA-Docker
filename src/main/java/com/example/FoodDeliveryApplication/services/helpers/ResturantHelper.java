@@ -18,6 +18,7 @@ public abstract class ResturantHelper {
 
     protected void validateResturant(int resturantId)
     {
+        if(resturantId==0) throw new RuntimeException("Resturant Id missing");
         UserDetails resturantDetail = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Resturant loggedInResturant = resturantRepository.getResturantByEmail(resturantDetail.getUsername());
         if(loggedInResturant==null) throw new RuntimeException("This resturant with the JWT token does not exist");
@@ -26,6 +27,7 @@ public abstract class ResturantHelper {
 
     protected void validateResturantAndAdmin(int resturantId)
     {   
+        if(resturantId==0) throw new RuntimeException("Resturant Id missing");
         UserDetails resturantDetail = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Resturant loggedInResturant = resturantRepository.getResturantByEmail(resturantDetail.getUsername());
         if(loggedInResturant==null)

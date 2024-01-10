@@ -41,6 +41,7 @@ public class Menu {
     
 
     //foreign relations owning side
+    @NotNull(message = "menu cannot be created without resturant Id")
     private int resturantId;
 
     public Menu(){}
