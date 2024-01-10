@@ -1,0 +1,7 @@
+resturantId,itemName,description,price,menuCategory
+3,steamed momo,abcd,60,NORTH_INDIAN
+3,fried momo,efgh,70,NORTH_INDIAN
+3,pan fried momo,ijkl,90,NORTH_INDIAN
+3,jhol momo,abcd,80,NORTH_INDIAN
+3,thupka,efgh,110,NORTH_INDIAN
+3,afghani momo,ijkl,90,NORTH_INDIAN

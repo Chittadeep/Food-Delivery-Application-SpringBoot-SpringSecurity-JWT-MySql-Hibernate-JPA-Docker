@@ -21,19 +21,18 @@ import com.example.FoodDeliveryApplication.model.request.ResturantRequest;
 import com.example.FoodDeliveryApplication.repository.Resturant.ResturantRepository;
 import com.example.FoodDeliveryApplication.repository.User.UserRepository;
 import com.example.FoodDeliveryApplication.repository.globals.LoginDetailsRepository;
+import com.example.FoodDeliveryApplication.services.helpers.ResturantHelper;
 
 import jakarta.persistence.EntityNotFoundException;
 
 @Service
-public class ResturantService {
-    @Autowired
-    private ResturantRepository resturantRepository;
+public class ResturantService extends ResturantHelper {
+    
     @Autowired
     private LoginDetailsRepository loginDetailsRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
-    @Autowired
-    private UserRepository userRepository;
+
 
     public Resturant createResturant(ResturantRequest resturantRequest)
     {
@@ -151,27 +150,6 @@ public class ResturantService {
         resturantRepository.save(resturant);
         loginDetailsRepository.save(resturantLoginDetails);
         return true;
-    }
-
-    private void validateResturant(int resturantId)
-    {
-        UserDetails resturantDetail = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Resturant loggedInResturant = resturantRepository.getResturantByEmail(resturantDetail.getUsername());
-        if(loggedInResturant==null) throw new RuntimeException("This resturant with the JWT token does not exist");
-        if(loggedInResturant.getResturantId()!=resturantId) throw new RuntimeException("This resturant cannot modify other resturant details");
-    }
-
-    private void validateResturantAndAdmin(int resturantId)
-    {   
-        UserDetails resturantDetail = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Resturant loggedInResturant = resturantRepository.getResturantByEmail(resturantDetail.getUsername());
-        if(loggedInResturant==null)
-        {
-            User user = userRepository.getUserByMail(resturantDetail.getUsername());
-            if(user==null) throw new RuntimeException("Neither any user resturant nor any admin is registered with the JWT token");
-            if(user.isAdmin()) return;
-        }
-        if(loggedInResturant.getResturantId()!=resturantId) throw new RuntimeException("This resturant cannot modify other resturant details");
     }
 
 }

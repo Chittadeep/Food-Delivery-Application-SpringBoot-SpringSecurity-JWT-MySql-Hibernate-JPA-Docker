@@ -16,16 +16,18 @@ import com.example.FoodDeliveryApplication.entities.Enums.MenuCategory;
 import com.example.FoodDeliveryApplication.entities.Resturant.Menu;
 import com.example.FoodDeliveryApplication.exceptions.EntityDoesNotExistException;
 import com.example.FoodDeliveryApplication.repository.Resturant.MenuRepository;
+import com.example.FoodDeliveryApplication.services.helpers.ResturantHelper;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 
 @Service
-public class MenuService {
+public class MenuService extends ResturantHelper{
     @Autowired
     private MenuRepository menuRepository;
     
     public Menu createMenuItem(Menu menu)
     {
+        validateResturantAndAdmin(menu.getResturantId());
         menuRepository.save(menu);
         return menu;
     }
@@ -55,9 +57,9 @@ public class MenuService {
         return menuRepository.getMenuByPrice(price);
     }
    
-
     public Menu updateMenu(Menu menu)
     {
+        validateResturantAndAdmin(menu.getResturantId());
         Menu oldMenu = getMenuById(menu.getMenuId());
         oldMenu.setImages(menu.getImages());
         oldMenu.setItemName(menu.getItemName());
@@ -71,6 +73,7 @@ public class MenuService {
 
     public boolean deleteMenu(int menuId)
     {
+        validateResturantAndAdmin(getMenuById(menuId).getResturantId());
         menuRepository.deleteById(menuId);
         return true;
     }
@@ -113,5 +116,4 @@ public class MenuService {
     return list;
     }
     
-
 }

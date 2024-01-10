@@ -168,6 +168,13 @@ public class WebSecurityConfig {
                                 .requestMatchers(HttpMethod.DELETE, "/resturant/menu/delete/*").hasAnyAuthority("RESTURANT")
                                 .requestMatchers(HttpMethod.PUT, "/rider").hasAnyAuthority("RIDER")
                                 .requestMatchers(HttpMethod.PATCH, "/rider").hasAnyAuthority("RIDER")
+                                .requestMatchers(HttpMethod.GET, "/menu/*",
+                                "/resturant/*/menu",
+                                "/user/menu/category/*",
+                                "/resturantRating/*",
+                                "/resturantRating/userId/*",
+                                "/resturantRating/ResturantId&UserId"
+                                ).hasAnyAuthority("ADMIN", "USER" ,"RESTURANT")
                                 // .requestMatchers(HttpMethod.GET, "/**").permitAll()
                                 // .requestMatchers(HttpMethod.PUT, "/**").permitAll()
                                 // .requestMatchers(HttpMethod.PATCH, "/**").permitAll()

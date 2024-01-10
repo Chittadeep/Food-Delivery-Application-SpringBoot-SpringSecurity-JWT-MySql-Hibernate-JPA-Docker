@@ -55,7 +55,7 @@ public class MenuController {
         return new ResponseEntity<Menu>(menuService.updateMenu(menu), HttpStatus.ACCEPTED);
     } 
 
-    @GetMapping(path = "/user/menu/category/{category}")
+    @GetMapping(path = "/user/menu/category/{menuCategory}")
     public ResponseEntity<List<Menu>> getMenuByMenuCategory(@PathVariable MenuCategory menuCategory)
     {
         return new ResponseEntity<List<Menu>>(menuService.getMenuByMenuCategory(menuCategory), HttpStatus.OK);
@@ -73,7 +73,6 @@ public class MenuController {
         return new ResponseEntity<Boolean>(menuService.deleteMenu(menuId), HttpStatus.OK);
     }
 
-    
     @PostMapping(path="/menu/createFromCSV")
     public ResponseEntity<List<Menu>> createFromCSV(@RequestParam("file") MultipartFile file) throws IOException
     {
