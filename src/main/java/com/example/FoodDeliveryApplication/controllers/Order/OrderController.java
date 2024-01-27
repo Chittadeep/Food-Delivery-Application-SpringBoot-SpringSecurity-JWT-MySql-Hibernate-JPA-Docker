@@ -17,19 +17,16 @@ import com.example.FoodDeliveryApplication.entities.Order.OrderCustom;
 import com.example.FoodDeliveryApplication.model.response.OrderResponse;
 import com.example.FoodDeliveryApplication.services.order.OrderService;
 
-import io.micrometer.core.ipc.http.HttpSender.Response;
-import org.springframework.web.bind.annotation.RequestParam;
-
 
 @RestController
 public class OrderController {
     @Autowired
-    OrderService orderService;
+    private OrderService orderService;
 
     @GetMapping(path="admin/order")
-    public ResponseEntity<List<OrderCustom>> getAllOrder()
+    public ResponseEntity<List<OrderResponse>> getAllOrder()
     {
-        return new ResponseEntity<List<OrderCustom>>(orderService.getAllOrderForAdmin(), HttpStatus.OK);
+        return new ResponseEntity<List<OrderResponse>>(orderService.getAllOrderForAdmin(), HttpStatus.OK);
     }
 
     @GetMapping(path="/admin/order/{orderId}")

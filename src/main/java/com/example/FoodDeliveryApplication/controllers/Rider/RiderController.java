@@ -26,7 +26,7 @@ import com.example.FoodDeliveryApplication.services.Rider.RiderService;
 @RestController
 public class RiderController {
     @Autowired
-    RiderService riderService;
+    private RiderService riderService;
 
     @GetMapping(path="/rider")
     public ResponseEntity<List<Rider>> getAllRiders()

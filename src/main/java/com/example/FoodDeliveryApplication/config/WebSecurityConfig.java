@@ -70,10 +70,11 @@ public class WebSecurityConfig {
                 return httpSecurity.csrf().disable()
                                 .authorizeHttpRequests()
                                 .requestMatchers(HttpMethod.POST, "/login", "/user", "/rider", "/resturant").permitAll()
-                                .requestMatchers(HttpMethod.GET,"/rider").hasAuthority("ADMIN")
-                                .requestMatchers(HttpMethod.GET, "/v3/api-docs",
+                                .requestMatchers(HttpMethod.GET,"/rider", //RIDER NOT WORKING
+                                "/v3/api-docs",
                                 "/swagger-ui/index.html",
                                 "/admin/user",
+                                "/admin/order",
                                                 "/address",
                                                 "/address/getAddressesByCity/*",
                                                 "/address/getAddressesByState/*",

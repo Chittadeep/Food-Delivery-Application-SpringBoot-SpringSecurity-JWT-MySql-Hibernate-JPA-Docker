@@ -77,7 +77,7 @@ public class OrderService {
         if(address.getUserId()!=user.getUserId()) throw new RuntimeException("Address is not of the user given");
         if(!address.getPincode().equals(resturant.getPincode())) throw new RuntimeException("Address and Resturant too far");
         List<OrderItem> items =  updatePrice(order.getOrderItems(), session);
-        items.stream().forEach((item)->{
+        items.stream().forEach((item)->{    
             item.setOrder(order);});
         order.setOrderStatus(OrderStatus.INITIATED); 
         int id =(Integer) session.save(order);
@@ -191,9 +191,10 @@ public class OrderService {
         return orderRepository.findById(id).orElseThrow(()->new RuntimeException("no such id available for order"));
     }
 
-    public List<OrderCustom> getAllOrderForAdmin()
+    public List<OrderResponse> getAllOrderForAdmin()
     {
-        return (ArrayList<OrderCustom>) orderRepository.findAll();
+        return ((List<OrderCustom>) orderRepository.findAll()).stream().map(OrderResponse::new).toList();
+    
     }
 
     public List<OrderResponse> getOrderCustomByUserId(int userId)

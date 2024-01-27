@@ -117,20 +117,17 @@ public class OrderCustom {
         this.orderItems = orderItems;
     }
 
-        public Resturant getResturant() {
+    public Resturant getResturant() {
         return resturant;
     }
-
 
     public void setResturant(Resturant resturant) {
         this.resturant = resturant;
     }
 
-
     public Address getAddress() {
         return address;
     }
-
 
     public void setAddress(Address address) {
         this.address = address;
