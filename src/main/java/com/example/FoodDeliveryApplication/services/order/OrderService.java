@@ -72,12 +72,15 @@ public class OrderService {
         Resturant resturant = session.get(Resturant.class, order.getResturant().getResturantId());
         User user = session.get(User.class, order.getUser().getUserId());
         Address address = session.get(Address.class, order.getAddress().getAddressId());
-        System.out.println(address.getPincode());
-        System.out.println(resturant.getPincode());
+        if(resturant==null) throw new RuntimeException("No resturant with this id exists");
+        if(address==null) throw new RuntimeException("No address with this id exists");
+        if(user==null) throw new RuntimeException("No user with this id exist");
+        if(!resturant.isApproved()) throw new RuntimeException("The resturant you are trying to order from is not available");
         if(address.getUserId()!=user.getUserId()) throw new RuntimeException("Address is not of the user given");
         if(!address.getPincode().equals(resturant.getPincode())) throw new RuntimeException("Address and Resturant too far");
         List<OrderItem> items =  updatePrice(order.getOrderItems(), session);
         items.stream().forEach((item)->{    
+            if(item.getMenu().getResturantId()!=resturant.getResturantId()) throw new RuntimeException("The resturant from where are you ordering the item " + item.getMenu().getMenuId()+ " name "+ item.getMenu().getItemName()+ "is not available");
             item.setOrder(order);});
         order.setOrderStatus(OrderStatus.INITIATED); 
         int id =(Integer) session.save(order);
